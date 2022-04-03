@@ -1,0 +1,103 @@
+{
+  "classes" : [
+    {
+      "name" : "Tvar",
+      "attributes" : [
+        {
+          "name" : "pocatek",
+          "type" : "Point",
+          "access" : "public"
+        },
+        {
+          "name" : "sirka",
+          "type" : "int",
+          "access" : "public"
+        },
+        {
+          "name" : "vyska",
+          "type" : "int",
+          "access" : "public"
+        }
+      ],
+      "methods" : [
+        {
+          "name" : "kreslit",
+          "type" : "void",
+          "access" : "public",
+          "attributes" : []
+        },
+        {
+          "name" : "obsah",
+          "type" : "void",
+          "access" : "public",
+          "attributes" : []
+        },
+        {
+          "name" : "zmenSirku",
+          "type" : "int",
+          "access" : "public",
+          "attributes" : [
+            {
+              "type" : "int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ctverec",
+      "attributes" : [],
+      "methods" : [
+        {
+          "name" : "kreslit",
+          "type" : "void",
+          "attributes" : [],
+          "access" : "public"
+        },
+        {
+          "name": "obsah",
+          "type": "void",
+          "attributes": [],
+          "access": "public"
+        }
+      ]
+    },
+    {
+      "name" : "Kruh",
+      "attributes" : [
+        {
+          "name" : "polomer",
+          "type" : "int",
+          "access" : "public"
+        }
+      ],
+      "methods" : [
+        {
+          "name" : "kreslit",
+          "type" : "void",
+          "attributes" : [],
+          "access" : "public"
+        },
+        {
+          "name": "obsah",
+          "type": "void",
+          "attributes": [],
+          "access": "public"
+        }
+      ]
+    }
+  ],
+  "interfaces" : [],
+  "relationships" : [
+    {
+      "from" : "Ctverec",
+      "to" : "Tvar",
+      "type" : "generalisation"
+    },
+    {
+      "from" : "Kruh",
+      "to" : "Tvar",
+      "type" : "generalisation"
+    }
+  ]
+}
