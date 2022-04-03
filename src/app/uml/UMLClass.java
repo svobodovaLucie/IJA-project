@@ -1,3 +1,13 @@
+/*
+ * File:         UMLClass.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
+ * File contains implementation od UMLClass class that represents
+ * the UML class.
+ */
 package app.uml;
 
 import java.util.ArrayList;
@@ -5,30 +15,56 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Třída (její instance) reprezentuje model třídy z jazyka UML.
- * Rozšiřuje třídu UMLClassifier. Obsahuje seznam atributů
- * a operací (metod). Třída může být abstraktní.
- *
- * @author Lucie Svobodová
+ * Class represents a UML class. It is inherited from UMLClassifier.
+ * It contains a list of its UML attributes and a list of its UML
+ * methods. The UML class may be abstract.
  */
 public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
     private boolean isAbstract;
 
-    // Test, zda objekt reprezentuje model abstraktní třídy.
+    /**
+     * UMLClass constructor. The UML class is not abstract.
+     *
+     * @param name name of the UML class
+     */
+    public UMLClass(String name) {
+        super(name);
+        this.isAbstract = false;
+        this.attributes = new ArrayList<>();
+        this.methods = new ArrayList<>();
+    }
+
+    /**
+     * Method returns true if the class is abstract, false if not.
+     *
+     * @return true if the UML class is abstract, false if not
+     */
     public boolean isAbstract() {
         return this.isAbstract;
     }
 
-    // Změní informaci objektu, zda reprezentuje abstraktní třídu.
+    /**
+     * Method sets the UML class abstract if the argument isAbstract
+     * is true, else the UML class is set not to be abstract.
+     *
+     * @param isAbstract boolean that represents if the UML class
+     *                   will be abstract or not
+     */
     public void setAbstract(boolean isAbstract) {
-        this.isAbstract = !this.isAbstract;
+        this.isAbstract = isAbstract;
     }
 
-    // Vloží atribut do modelu UML třídy. Atribut se vloží
-    // na konec seznamu (poslední položka). Pokud již třída
-    // obsahuje atribut stejného jména, nedělá nic.
+    /**
+     * Method inserts a UML argument to the UML class. The argument is
+     * inserted at the end of the arguments list. If there is an argument
+     * with the same name as the one to be added, new argument is not added.
+     *
+     * @param attr UML argument to be inserted to the list
+     *
+     * @return true if the argument was successfully added, false if not
+     */
     public boolean addAttribute(UMLAttribute attr) {
         if (this.attributes.contains(attr))
             return true;
@@ -40,32 +76,51 @@ public class UMLClass extends UMLClassifier {
         return true;
     }
 
-    // Blah nova metoda TODO
-    public boolean addMethod(UMLMethod attr) {
-        if (this.methods.contains(attr))
+    /**
+     * Method insert a UML method to the UML class. The amethod is inserted
+     * at the end of the methods list. If there is already a method with the
+     * same name as the one to be added, the method is not added.
+     *
+     * @param method UML method to be inserted to the list
+     *
+     * @return true if the method was successfully added, false if not
+     */
+    public boolean addMethod(UMLMethod method) {
+        if (this.methods.contains(method))
             return true;
         try {
-            this.methods.add(attr);
+            this.methods.add(method);
         } catch (UnsupportedOperationException uoe) {
             return false;
         }
         return true;
     }
 
-    // Vrací pozici atributu v seznamu atributů. Pozice
-    // se indexuje od hodnoty 0. Pokud třída daný atribut
-    // neobsahuje, vrací -1.
+    /**
+     * Method returns the position af an UML argument in the list
+     * of UML class' arguments. The position starts at 0. If the
+     * UML argument is not in the arguments list, -1 is returned.
+     *
+     * @param attr UML argument to be found in the list
+     * @return index of the UML argument in the arguments list,
+     *         -1 if not found
+     */
     public int getAttrPosition(UMLAttribute attr) {
         if (!attributes.contains(attr))
             return -1;
         return attributes.indexOf(attr);
     }
 
-    // Přesune pozici atributu na nově zadanou. Pozice se indexuje
-    // od hodnoty 0. Pokud třída daný atribut neobsahuje, nic
-    // neprovádí a vrací -1. Při přesunu na pozici pos se všechny
-    // stávající položky (atributy) od pozice pos (včetně) posunou
-    // o jednu pozici doprava.
+    /**
+     * Method moves the UML argument specified by attr to the position
+     * pos (counting from 0). If the argument is not present in the
+     * UML class, -1 is returned. When moving to the position pos
+     * all arguments starting at pos will be moved to the right.
+     *
+     * @param attr UML argument to be moved
+     * @param pos position on thatt the UML argument should be moved
+     * @return -1 if the UML argument is not in the list, 0 if moved
+     */
     public int moveAttrAtPosition(UMLAttribute attr, int pos) {
         if (!this.attributes.contains(attr))
             return -1;
@@ -78,19 +133,14 @@ public class UMLClass extends UMLClassifier {
         return 0;
     }
 
-    // Vrací nemodifikovatelný seznam atributů. Lze využít
-    // pro zobrazení atributů třídy.
+    /**
+     * Method returns unmodifiable list of UML class' arguments.
+     *
+     * @return list of arguments of the UML class
+     */
     public List<UMLAttribute> getAttributes() {
         return Collections.unmodifiableList(this.attributes);
     }
 
-    // Konstruktor - vytvoří instanci reprezentující model
-    // třídy z jazyka UML. Třída není abstraktní.
-    public UMLClass(String name) {
-        super(name);
-        this.isAbstract = false;
-        this.attributes = new ArrayList<>();
-        this.methods = new ArrayList<>();
-    }
 }
 

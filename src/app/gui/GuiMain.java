@@ -1,7 +1,12 @@
 /*
- * IJA 2021/22: Demonstrační příklad pro seminář IJA.
- * Ukázka základního GUI v JavaFX včetně zpracování událostí a filtrů.
- * (C) Radek Kočí
+ * File:         GuiMain.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
+ * File contains implementation od GuiMain class that represents
+ * the part of the application and calls the main backend function.
  */
 package app.gui;
 
@@ -16,33 +21,30 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 /**
- * Ukázka základního GUI v JavaFX včetně zpracování událostí a filtrů.
- * @author Radek Kočí
+ * Class represents the main part of the GUI.
  */
 public class GuiMain extends Application {
     /**
+     * Main method for the GUI.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, ParseException {
-        System.out.println(args[0]);
-        // read data and save
-        // new Diagrams = blah nacist diagramy
-        // new Class Diagram = nacist class diagram
-
-
-        //JsonLoader.loadJson(args[0]);
 
         // run the backend
         MainApplication backend = new MainApplication();
         backend.main(args[0]);
-        
-        System.out.println("POHODKA BACKEND ROZJETY");
 
         // run GUI
         launch(args);
     }
 
-    // JavaFX Application Thread
+    /**
+     * JavaFX Application Thread.
+     *
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         // set FXML loader

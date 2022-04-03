@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ File:         AppGuiMain.fxml
+ Institution:  FIT BUT 2021/2022
+ Course:       IJA - Java Programming Language
+ Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+
+ FXML file for the GUI scene.
+ -->
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>

@@ -1,21 +1,46 @@
+/*
+ * File:         ClassDiagram.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
+ * File contains implementation of the UML class diagram.
+ */
 package app.uml;
 
 import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Třída reprezentuje diagram tříd. Je odvozen od třídy Element (má název).
- * Obsahuje seznam tříd (instance třídy UMLClass) příp. klasifikátorů
- * pro uživatelsky nedefinované typy (instance třídy UMLClassifier).
- *
- * @author Lucie Svobodová
+ * Class represents the UML class diagram. It is inherited from Element
+ * class, it has its name, list of UML classes and UML classifiers
+ * (e.g. interfaces, classes and types that are user defined).
  */
 public class ClassDiagram extends Element {
     private List<UMLClass> classes;
     private List<UMLClassifier> classifiers;
 
-    // Vytvoří instanci UML třídy a vloží ji do diagramu.
-    // Pokud v diagramu již existuje třída stejného názvu, vrací null.
+    /**
+     * ClassDiagram constructor.
+     *
+     * @param name name of the class diagram
+     */
+    public ClassDiagram(String name) {
+        super(name);
+        this.classes = new ArrayList<>();
+        this.classifiers = new ArrayList<>();
+    }
+
+    /**
+     * Method creates an instance of UMLClass and inserts it to the
+     * list of classes in the UML class diagram. If the class already
+     * exists, the method returns null.
+     *
+     * @param name name of the UML class to be added
+     * @return new UMLClass if successful,
+     *         null if the class already exists
+     */
     public UMLClass createClass(String name) {
         for (UMLClass cl : this.classes) {
             if (cl.getName().equals(name)) {
@@ -28,12 +53,15 @@ public class ClassDiagram extends Element {
         return newClass;
     }
 
-    // Vyhledá v diagramu klasifikátor podle názvu. Pokud neexistuje,
-    // vytvoří instanci třídy Classifier reprezentující klasifikátor,
-    // který není v diagramu zachycen (viz UMLClassifier.forName(String));
-    // využito např. pro modelování typu proměnné, který v diagramu není.
-    // Tato instance je zařazena do struktur diagramu, tzn. že při dalším
-    // pokusu o vyhledání se použije tato již vytvořená instance.
+    /**
+     * Method finds the UML classifier by its name. If it doesn't exist
+     * in the diagram, it creates an instance of UMLClassifier that is not
+     * user defined. The classifier is added to the classifiers list.
+     *
+     * @param name name of the UML classifier
+     * @return new UMLClassifier if added to the diagram,
+     *         reference to the UMLClassifier if found in the list
+     */
     public UMLClassifier classifierForName(String name) {
         for (UMLClassifier classifier : this.classifiers) {
             if (classifier.getName().equals(name))
@@ -44,20 +72,18 @@ public class ClassDiagram extends Element {
         return newClassifier;
     }
 
-    // Vyhledá v diagramu klasifikátor podle názvu.
-    // Pokud v diagramu neexistuje klasifikátor daného jména, vrací null.
+    /**
+     * Method find the UML classifier in the diagram. If not present,
+     * returns null.
+     *
+     * @param name name of the UML classifier to be found
+     * @return UMLClassifier if found, null if not
+     */
     public UMLClassifier findClassifier(String name) {
         for (UMLClassifier classifier : this.classifiers) {
             if (classifier.getName().equals(name))
                 return classifier;
         }
         return null;
-    }
-
-    // Konstruktor pro vytvoření instance diagramu. Každý diagram má svůj název.
-    public ClassDiagram(String name) {
-        super(name);
-        this.classes = new ArrayList<>();
-        this.classifiers = new ArrayList<>();
     }
 }

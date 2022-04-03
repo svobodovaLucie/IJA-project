@@ -1,3 +1,13 @@
+/*
+ * File:         UMLMethod.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
+ * File contains implementation od UMLMethod class that represents
+ * the UML method.
+ */
 package app.uml;
 
 import java.util.ArrayList;
@@ -5,18 +15,34 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Třída reprezentuje operaci, která má své jméno, návratový typ
- * a seznam argumentů. Je odvozena (rozšiřuje) od třídy UMLAttribute,
- * od které přejímá název a návratový typ. Argument je reprezentován
- * třídou UMLAttribute. Lze použít jako součást UML klasifikátoru
- * třída nebo rozhraní.
- *
- * @author Lucie Svobodová
+ * Class represents a method, that has its name, return type and
+ * a list of arguments. It is inherited from UMLAttribute class,
+ * from that it inherits the name and the list of arguments.
+ * Argument is represented by UMLAttribute class. It can be used
+ * ad a part of UML classifier class or interface.
  */
 public class UMLMethod extends UMLAttribute {
 	private List<UMLAttribute> attributes;
 
-	// Tovární metoda pro vytvoření instance operace.
+	/**
+	 * UMLMethod constructor.
+	 *
+	 * @param name name of the UML method
+	 * @param type type of the UML method
+	 */
+	public UMLMethod(String name, UMLClassifier type) {
+		super(name, type);
+		this.attributes = new ArrayList<>();
+	}
+
+	/**
+	 * Factory method that creates an instance of UMLMethod.
+	 *
+	 * @param name name of the UML method
+	 * @param type type of the UML method
+	 * @param args list of UML arguments
+	 * @return UMLMethod
+	 */
 	public static UMLMethod create(String name, UMLClassifier type,
 								   UMLAttribute... args) {
 		UMLMethod inst = new UMLMethod(name, type);
@@ -24,9 +50,16 @@ public class UMLMethod extends UMLAttribute {
 		return inst;
 	}
 
-	// Přidá nový argument do seznamu argumentů. Argument
-	// se vloží na konec seznamu. Pokud v seznamu již existuje
-	// argument stejného názvu, operaci neprovede.
+	/**
+	 * Method inserts new argument to the list of UMLMethod arguments.
+	 * Argument is inserted to the end of the list. If the list
+	 * already contains an argument with the name same, new argument
+	 * is not added to the list.
+	 *
+	 * @param arg UML argument to be added to the list of UML arguments
+	 * @return true if the argument was inserted,
+	 *         false if an exception is catched
+	 */
 	public boolean addArgument(UMLAttribute arg) {
 		if (this.attributes.contains(arg))
 			return true;
@@ -38,15 +71,13 @@ public class UMLMethod extends UMLAttribute {
 		return true;
 	}
 
-	// Vrací nemodifikovatelný seznam argumentů. Lze využít pro zobrazení.
+	/**
+	 * Method returns a unmodifiable list of the UML method's arguments.
+	 *
+	 * @return list of the method's argument
+	 */
 	public List <UMLAttribute> getArguments() {
 		return this.attributes;
-	}
-
-	// Konstruktor pro vytvoření operace s daným názvem a návratovým typem.
-	public UMLMethod(String name, UMLClassifier type) {
-		super(name, type);
-		this.attributes = new ArrayList<>();
 	}
 }
 

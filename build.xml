@@ -1,7 +1,16 @@
 <?xml version="1.0"?>
-  <project name="ija-app" default="compile" basedir=".">
+<!--
+ File:         build.xml
+ Institution:  FIT BUT 2021/2022
+ Course:       IJA - Java Programming Language
+ Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+
+ ANT file used for application build and run.
+-->
+  <project name="ija-app" default="run" basedir=".">
   <description>
-    IJA: Ukazka build.xml souboru
+    IJA project 2022: Application for viewing and editing class and sequence UML diagrams.
   </description>
   
   <property name="src" location="src"/>
@@ -52,7 +61,7 @@
     </javadoc>
   </target>
     
-  <target name="build" depends="clean,compile, doc">
+  <target name="build" depends="clean, compile">
     <mkdir dir="${dest}"/>
     <jar destfile="${dest}/ija-app.jar">
         <fileset dir="${build}"/>
@@ -71,7 +80,7 @@
     <copy file="src/app/gui/AppGuiMain.fxml" todir="${build}/app/gui"/>
   </target>
 
-  <target name="run" description="run the project with a command line argument">
+  <target name="run" description="Run the project with a command line argument">
     <java jar="${dest}/ija-app.jar"
           dir="${dest}" fork="true">
       <jvmarg line="--module-path lib --add-modules javafx.controls --add-modules javafx.fxml --add-modules json.simple"/>
