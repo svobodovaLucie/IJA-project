@@ -9,13 +9,13 @@
  */
 
 .root {
-    -fx-background-color: #111111;
+    -fx-background-color: #EEEEEE;
 }
 
 .label {
     -fx-font-size: 20;
     -fx-font-family: "Lucida Console";
-    -fx-text-fill: "white";
+    -fx-text-fill: "black";
     -fx-alignment: center;
 }
 

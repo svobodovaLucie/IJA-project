@@ -16,7 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,9 +28,14 @@ public class Controller {
     @FXML
     TextField nameTextField;
 
+    @FXML
+    private VBox class_vbox;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    DraggableObject draggableObject = new DraggableObject();
 
     /**
      * Method is run on event and it changes the scene to scene1
@@ -54,5 +59,9 @@ public class Controller {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void makeDraggable(ActionEvent event) {
+        draggableObject.makeDraggable(class_vbox);
     }
 }
