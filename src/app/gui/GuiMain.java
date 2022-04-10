@@ -13,7 +13,11 @@ package app.gui;
 import app.backend.MainApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import org.json.simple.parser.ParseException;
@@ -48,20 +52,40 @@ public class GuiMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // set FXML loader
-        FXMLLoader loader = new FXMLLoader();
-        System.out.println("UNO");
+        //FXMLLoader loader = new FXMLLoader();
+        //System.out.println("UNO");
 
-        loader.setLocation(getClass().getResource("/AppGuiMain.fxml"));
-        Parent root = loader.load();
+        //loader.setLocation(getClass().getResource("/AppGuiMain.fxml"));
+        //Parent root = loader.load();
 
+        // try
+        Group root = new Group();
         // set the scene
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 600, 600, Color.WHITE);
         System.out.println("DEUX");
         scene.getStylesheets().add("stylesheet.css");
 
+        //int i = 100;
+        //FlowPane pane = new FlowPane();
+
+        // addClass button
+        Button addClass = new Button("Add Class");
+        addClass.setLayoutY(50);
+        addClass.setLayoutX(100);
+        root.getChildren().add(addClass);
+        addClass.setOnAction(e -> root.getChildren().add(new ClassGuiElement("My Name")));
+
+
+
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
         // set and show the stage
+        /*
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
+        */
     }
 }

@@ -17,6 +17,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -31,9 +33,9 @@ public class Controller {
     @FXML
     private VBox class_vbox;
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    private static Stage stage;
+    private static Scene scene;
+    private static Parent root;
 
     DraggableObject draggableObject = new DraggableObject();
 
@@ -63,5 +65,15 @@ public class Controller {
 
     public void makeDraggable(ActionEvent event) {
         draggableObject.makeDraggable(class_vbox);
+    }
+
+    public static void addClass(ActionEvent event, Stage stage) {
+
+        //stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+
+        //root.getChildrenUnmodifiable().add(new Text("ahoj"));
+        scene = new Scene(root, 500, 500, Color.LIGHTCYAN);
+        stage.setScene(scene);
+        stage.show();
     }
 }
