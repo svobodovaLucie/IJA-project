@@ -11,18 +11,18 @@
 package app.gui;
 
 import app.backend.MainApplication;
+import app.umlGui.DiagramLoader;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import jdk.jshell.Diag;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Class represents the main part of the GUI.
@@ -33,11 +33,11 @@ public class GuiMain extends Application {
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) {
 
         // run the backend
-        MainApplication backend = new MainApplication();
-        backend.main(args[0]);
+        //MainApplication backend = new MainApplication();
+        //backend.main(args[0]);
 
         // run GUI
         launch(args);
@@ -46,7 +46,7 @@ public class GuiMain extends Application {
     /**
      * JavaFX Application Thread.
      *
-     * @param primaryStage
+     * @param primaryStage stage
      * @throws Exception
      */
     @Override
@@ -58,15 +58,15 @@ public class GuiMain extends Application {
         //loader.setLocation(getClass().getResource("/AppGuiMain.fxml"));
         //Parent root = loader.load();
 
-        // try
-        Group root = new Group();
+        // load the JSON file
+        Parameters params = getParameters();
+        List<String> args = params.getRaw();
+        DiagramLoader jsonLoader = new DiagramLoader();
+        Group root = jsonLoader.loadClassDiagramGui(args.get(0));
+
         // set the scene
         Scene scene = new Scene(root, 600, 600, Color.WHITE);
-        System.out.println("DEUX");
         scene.getStylesheets().add("stylesheet.css");
-
-        //int i = 100;
-        //FlowPane pane = new FlowPane();
 
         // addClass button
         Button addClass = new Button("Add Class");
@@ -75,17 +75,9 @@ public class GuiMain extends Application {
         root.getChildren().add(addClass);
         addClass.setOnAction(e -> root.getChildren().add(new ClassGuiElement("My Name")));
 
-
-
-
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
-        // set and show the stage
-        /*
-        primaryStage.setTitle("Hello World");
+        // set the stage
+        primaryStage.setTitle("ija-app: diagrams");
         primaryStage.setScene(scene);
         primaryStage.show();
-        */
     }
 }

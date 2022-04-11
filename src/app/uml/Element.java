@@ -13,6 +13,7 @@ package app.uml;
  * Class represents an UML element present in the diagram.
  */
 public class Element {
+
 	private String name;
 
 	/**

@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import app.uml.*;
+
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -23,6 +24,7 @@ import java.io.IOException;
  */
 public class MainApplication {
     private ClassDiagram classDiagram;
+
     // private array of sequence diagrams
 
     /**
@@ -35,6 +37,7 @@ public class MainApplication {
     public void main(String filename) throws IOException, ParseException {
         //ClassDiagram classDiagram = new ClassDiagram();
         // saves the diagram to ClassDiagram
+        System.out.println("Inside backend main\n");
         loadClassDiagram(filename);
     }
 
@@ -42,7 +45,6 @@ public class MainApplication {
      * MainApplication constructor.
      */
     public MainApplication() {
-        // maybe z cmd line args[1] - nazev diagramu
         this.classDiagram = new ClassDiagram("ClassDiagram");
     }
 
@@ -96,6 +98,7 @@ public class MainApplication {
 
     /**
      * Method loads the UML attributes of umlClass from diagram file.
+     *
      * @param umlClass UML class that contains UML attributes to be loaded
      * @param attributes array of UML attributes in JSON
      */
@@ -120,7 +123,7 @@ public class MainApplication {
     }
 
     /**
-     * Method load the UML classes drom the UML class diagram file.
+     * Method loads the UML classes from the UML class diagram file.
      *
      * @param classes array of UML classes in JSON
      */
