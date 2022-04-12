@@ -14,10 +14,15 @@ import app.umlGui.DiagramLoader;
 import app.umlGui.DiagramSaver;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.List;
@@ -43,6 +48,7 @@ public class GuiMain extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         // load the JSON file
         Parameters params = getParameters();
         List<String> args = params.getRaw();
@@ -79,8 +85,11 @@ public class GuiMain extends Application {
 
         // addClass button
         Button addClass = new Button("Add Class");
+        addClass.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: black;\n" +
+                "-fx-font-size: 15;");
         addClass.setLayoutY(50);
-        addClass.setLayoutX(100);
+        addClass.setLayoutX(500);
         root.getChildren().add(addClass);
         // TODO ClassGuiElement to UMLClassGui
         addClass.setOnAction(e -> root.getChildren().add(new ClassGuiElement("My Name")));
@@ -89,5 +98,28 @@ public class GuiMain extends Application {
         primaryStage.setTitle("ija-app: diagrams");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // show the help
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n    Your JSON file was loaded.\n\n" +
+                "    Attributes and methods can be edited\n" +
+                "    (make sure you use UML).\n\n" +
+                "    New class can be added with \n" +
+                "    \"Add Class\" button.\n\n" +
+                "    Your diagrams can be saved with \n" +
+                "    \"Save JSON\" option on the Menu Bar.\n\n" +
+                "    Your file will be saved to:\n" +
+                "    \"dest/savedDiagram.json\".");
+        helpGroup.getChildren().add(text);
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("ija-app: help");
+        helpStage.show();
     }
 }
