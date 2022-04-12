@@ -16,6 +16,7 @@ import app.uml.UMLMethod;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -30,13 +31,13 @@ public class UMLClassGui extends VBox {
 
     // name
     @FXML
-    Label nameLabel;
+    TextField nameLabel;
 
     // list of attributes
-    private List<Label> nodeAttributes;
+    private List<UMLAttributeGui> nodeAttributes;
 
     // list of methods
-    private List<Label> nodeMethods;
+    private List<UMLMethodGui> nodeMethods;
 
     // draggable property
     DraggableObject draggableObject = new DraggableObject();
@@ -55,10 +56,17 @@ public class UMLClassGui extends VBox {
         this.setStyle(cssLayout);
 
         // add name label
-        this.nameLabel = new Label(name);
-        this.nameLabel.setStyle("-fx-font-weight: bold");
-        this.nameLabel.setMaxWidth(Double.MAX_VALUE);
+        this.nameLabel = new TextField(name);
+        this.nameLabel.setStyle("-fx-font-weight: bold;\n" +
+		              "-fx-background-color: transparent;\n" +
+					  "-fx-border-style: none none none none;\n" +
+				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
+					  "-fx-background-radius: 0;\n" +
+					  "-fx-border-color: transparent;");
+
+        //this.nameLabel.setMaxWidth(Double.MAX_VALUE);
         this.getChildren().add(nameLabel);
+
 
         // add a separator
         this.getChildren().add(new Separator());

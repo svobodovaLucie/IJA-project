@@ -11,6 +11,7 @@
 package app.umlGui;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Objects;
  * Argument is represented by UMLAttribute class. It can be used
  * ad a part of UML classifier class or interface.
  */
-public class UMLMethodGui extends Label {
+public class UMLMethodGui extends TextField {
 	// type
 	private UMLClassifierGui nodeType;
 	// name
@@ -45,6 +46,11 @@ public class UMLMethodGui extends Label {
 		this.nodeType = type;
 		this.attributes = new ArrayList<>();
 		this.access = convertAccess(access);
+		this.setStyle("-fx-background-color: transparent;\n" +
+					  "-fx-border-style: none none none none;\n" +
+				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
+					  "-fx-background-radius: 0;\n" +
+					  "-fx-border-color: transparent;");
 	}
 
 	/**

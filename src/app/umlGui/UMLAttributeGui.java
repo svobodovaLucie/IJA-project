@@ -10,6 +10,7 @@
 package app.umlGui;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.util.Objects;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
  * attribute is represented by UMLClassifier type. It can
  * be used as UML class attribute or UML method argument.
  */
-public class UMLAttributeGui extends Label {
+public class UMLAttributeGui extends TextField {
 	// type
 	private UMLClassifierGui nodeType;
 	// name
@@ -39,6 +40,11 @@ public class UMLAttributeGui extends Label {
 		this.nodeType = type;
 		this.access = convertAccess(access);
 		this.setText(this.toStringAttrType());
+		this.setStyle("-fx-background-color: transparent;\n" +
+				"-fx-border-style: none none none none;\n" +
+				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
+				"-fx-background-radius: 0;\n" +
+				"-fx-border-color: transparent;");
 	}
 
 	/**
@@ -79,6 +85,12 @@ public class UMLAttributeGui extends Label {
 	 */
 	public String toStringType() {
 		return this.nodeType.getType();
+	}
+
+	public String toStringAttr() {
+		// need to split attribute name and attribute type - catch exceptions and invalid statements!
+		return this.getText();
+		//return "default";
 	}
 }
 
