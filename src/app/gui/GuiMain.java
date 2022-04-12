@@ -15,6 +15,8 @@ import app.umlGui.DiagramLoader;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -67,6 +69,32 @@ public class GuiMain extends Application {
         // set the scene
         Scene scene = new Scene(root, 600, 600, Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
+
+        // add save button (fix releasing the button)
+        Menu save = new Menu();
+        Button saveButton = new Button("Save JSON");
+        saveButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: regular;\n" +
+                "-fx-font-size: 15;");
+        saveButton.setOnAction(Controller::saveJSON);
+        save.setGraphic(saveButton);
+
+        // add undo button - TODO, fix releasing the button
+        Menu undo = new Menu();
+        Button undoButton = new Button("Undo");
+        undoButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: regular;\n" +
+                "-fx-font-size: 15;");
+        //undoButton.setOnAction(Controller::saveJSON);
+        undo.setGraphic(undoButton);
+
+        // add MenuBar
+        MenuBar menuBar = new MenuBar(save, undo);
+        menuBar.useSystemMenuBarProperty();
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+        root.getChildren().add(menuBar);
 
         // addClass button
         Button addClass = new Button("Add Class");
