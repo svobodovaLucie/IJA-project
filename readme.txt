@@ -10,6 +10,8 @@ It can be edited and saved back to JSON format. Default path where the diagram
 will be saved is `dest/savedDiagram.json`.
 
 ### Build
+Compiles the application and generates the documentation. Jar file will be 
+generated inside the dest/ directory.
 `ant build`
 
 ### Generate documentation
