@@ -12,6 +12,8 @@ package app.umlGui;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,11 +24,11 @@ import java.util.Objects;
  */
 public class UMLAttributeGui extends TextField {
 	// type
-	private UMLClassifierGui nodeType;
+	protected UMLClassifierGui nodeType;
 	// name
-	private String name;
+	protected String name;
 	// access
-	private String access;
+	protected String access;
 
 	/**
 	 * UMLAttributeGui constructor.
@@ -54,7 +56,7 @@ public class UMLAttributeGui extends TextField {
 	 * protected ->  #
 	 *
 	 * @param access access type
-	 * @return string +, -, # or "" if invalid
+	 * @return string +, -, # or " " if invalid
 	 */
 	private String convertAccess(String access) {
 		if (Objects.equals(access, "public"))
@@ -63,7 +65,7 @@ public class UMLAttributeGui extends TextField {
 			return "-";
 		if (Objects.equals(access, "protected"))
 			return "#";
-		return "";
+		return " ";
 	}
 
 	/**
@@ -88,9 +90,41 @@ public class UMLAttributeGui extends TextField {
 	}
 
 	public String toStringAttr() {
-		// need to split attribute name and attribute type - catch exceptions and invalid statements!
-		return this.getText();
+		// TODO need to split attribute name and attribute type - catch exceptions and invalid statements!
+		//return this.getText();
+		return this.name;
 		//return "default";
+	}
+
+	// TODO save as public, private etc.?
+	public String toStringAccess(String access) {
+		if (Objects.equals(access, "+"))
+			return "public";
+		if (Objects.equals(access, "-"))
+			return "private";
+		if (Objects.equals(access, "#"))
+			return "protected";
+		return "";
+	}
+
+	public List<String> getNameTypeAccess() {
+		// TODO get it from the textField string - !!! method vs attribute !!!
+		List<String> nameTypeAccess = new ArrayList<>();
+		// +name:type
+		String toSplit = this.getText();
+		nameTypeAccess.add(toSplit.split(":")[0].substring(1));
+		nameTypeAccess.add(toSplit.split(":")[1]);
+		nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
+		return nameTypeAccess;
+
+/*
+		List<String> name_type_access = new ArrayList<>();
+		name_type_access.add(this.toStringAttr());
+		name_type_access.add(this.toStringType());
+		name_type_access.add(this.toStringAccess());
+		return name_type_access;
+
+ */
 	}
 }
 

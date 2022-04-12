@@ -12,6 +12,7 @@ package app.gui;
 
 import app.backend.MainApplication;
 import app.umlGui.DiagramLoader;
+import app.umlGui.DiagramSaver;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -75,9 +76,8 @@ public class GuiMain extends Application {
         Button saveButton = new Button("Save JSON");
         saveButton.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-color: transparent;\n" +
-                "-fx-font-weight: regular;\n" +
                 "-fx-font-size: 15;");
-        saveButton.setOnAction(Controller::saveJSON);
+        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, root));
         save.setGraphic(saveButton);
 
         // add undo button - TODO, fix releasing the button
@@ -85,7 +85,6 @@ public class GuiMain extends Application {
         Button undoButton = new Button("Undo");
         undoButton.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-color: transparent;\n" +
-                "-fx-font-weight: regular;\n" +
                 "-fx-font-size: 15;");
         //undoButton.setOnAction(Controller::saveJSON);
         undo.setGraphic(undoButton);
@@ -101,6 +100,7 @@ public class GuiMain extends Application {
         addClass.setLayoutY(50);
         addClass.setLayoutX(100);
         root.getChildren().add(addClass);
+        // TODO ClassGuiElement to UMLClassGui
         addClass.setOnAction(e -> root.getChildren().add(new ClassGuiElement("My Name")));
 
         // set the stage

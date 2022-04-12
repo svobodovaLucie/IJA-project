@@ -10,12 +10,10 @@
  */
 package app.umlGui;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Class represents a method, that has its name, return type and
@@ -24,13 +22,10 @@ import java.util.Objects;
  * Argument is represented by UMLAttribute class. It can be used
  * ad a part of UML classifier class or interface.
  */
-public class UMLMethodGui extends TextField {
-	// type
-	private UMLClassifierGui nodeType;
-	// name
-	private String name;
-	// access
-	private String access;
+public class UMLMethodGui extends UMLAttributeGui {
+	// inherited from super (UMLAttributeGui):
+	// type, name, access
+
 	// list of attributes
 	private List<UMLAttributeGui> attributes;
 
@@ -42,10 +37,9 @@ public class UMLMethodGui extends TextField {
 	 * @param access access type of the UML method
 	 */
 	public UMLMethodGui(String name, UMLClassifierGui type, String access) {
-		this.name = name;
-		this.nodeType = type;
+		super(name, type, access);
+
 		this.attributes = new ArrayList<>();
-		this.access = convertAccess(access);
 		this.setStyle("-fx-background-color: transparent;\n" +
 					  "-fx-border-style: none none none none;\n" +
 				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
@@ -87,7 +81,6 @@ public class UMLMethodGui extends TextField {
 			return true;
 		try {
 			this.attributes.add(arg);
-			//this.getChildren().add(this.attributes.get(attributes.size() - 1));
 		} catch (UnsupportedOperationException uoe) {
 			return false;
 		}
@@ -115,6 +108,49 @@ public class UMLMethodGui extends TextField {
 		// returnType
 		tmp = tmp + "):" + this.nodeType.getType() ;
 		return tmp;
+	}
+
+	public List<UMLAttributeGui> getMethodAttributes() {
+		return this.attributes;
+	}
+
+	// TODO FIX
+	public List<String> getMethodAttributesTypes() {
+		List<String> attr = new ArrayList<>();
+		String string = this.getText();
+		string = string.split("\\(")[1];
+		while (string.length() > 0) {
+			if (Pattern.matches(".*,.*\\).*", string)) {
+				// has more types
+				attr.add(string.split(",")[0]);	// int
+				string = string.split(",")[1];	// void):string
+			} else if (Pattern.matches(".*\\).*", string)) {
+				// check if there is last type
+				if (string.charAt(0) == ')') {
+					// ) - no more type
+					attr.add("");
+				} else {
+					// type)
+					attr.add(string.split("\\)")[0]);	// void
+				}
+				break;
+			} else {
+				System.out.println("Invalid type\n");
+				break;
+				// change color to red or sth
+			}
+		}
+		return attr;
+	}
+
+	public List<String> getNameTypeAccess() {
+		List<String> nameTypeAccess = new ArrayList<>();
+		// +name(type,type):type
+		String toSplit = this.getText();
+		nameTypeAccess.add(toSplit.split("\\(")[0].substring(1));
+		nameTypeAccess.add(toSplit.split(":")[1]);
+		nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
+		return nameTypeAccess;
 	}
 }
 

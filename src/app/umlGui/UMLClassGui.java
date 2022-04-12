@@ -65,15 +65,11 @@ public class UMLClassGui extends VBox {
 
         // make the UMLClassGui object dragable
         draggableObject.makeDraggable(this);
-        // set the style
-        //String cssLayout = "-fx-border-color: black;\n" +
-        //        "-fx-border-width: 1;\n";
-        //this.setStyle(cssLayout);
 
+        // set transparent border for easier dragging
         BorderStroke borderStroke = new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null,
                 new BorderWidths(5));
         this.setBorder(new Border(borderStroke));
-
         Insets insets = new Insets(5, 5, 5, 5);
 
         // add name label
@@ -86,13 +82,7 @@ public class UMLClassGui extends VBox {
                       "-fx-border-width: 2 2 1 2;\n" +
 					  "-fx-border-color: black;");
         this.nameLabel.setAlignment(Pos.CENTER);
-
-        //this.nameLabel.setMaxWidth(Double.MAX_VALUE);
         this.getChildren().add(nameLabel);
-        //GridPane.setConstraints(this.nameLabel, 0, 0);
-
-        // add a separator
-        //this.getChildren().add(new Separator());
 
         // create lists of attributes
         this.nodeAttributes = new ArrayList<>();
@@ -100,8 +90,6 @@ public class UMLClassGui extends VBox {
         // create GridPane for attributes
         this.attributesGridPane = new GridPane();
         this.attributesGridPane.setPadding(insets);
-        //this.attributesGridPane.setVgap(2);
-        //this.attributesGridPane.setHgap(5);
         this.attributesGridPane.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-width: 1 2 1 2;\n" +
@@ -114,14 +102,11 @@ public class UMLClassGui extends VBox {
         // create GridPane for methods
         this.methodsGridPane = new GridPane();
         this.methodsGridPane.setPadding(insets);
-        //this.methodsGridPane.setVgap(2);
-        //this.methodsGridPane.setHgap(5);
         this.methodsGridPane.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-width: 1 2 2 2;\n" +
                 "-fx-border-color: black;");
         this.getChildren().add(this.methodsGridPane);
-
     }
 
     /**
@@ -208,6 +193,18 @@ public class UMLClassGui extends VBox {
             return false;
         }
         return true;
+    }
+
+    public List<UMLAttributeGui> getAttributes() {
+        return this.nodeAttributes;
+    }
+
+    public List<UMLMethodGui> getMethods() {
+        return this.nodeMethods;
+    }
+
+    public String getName() {
+        return this.nameLabel.getText();
     }
 }
 
