@@ -14,13 +14,18 @@ import app.gui.DraggableObject;
 import app.uml.UMLAttribute;
 import app.uml.UMLMethod;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class represents a UML class. It is inherited from UMLClassifier.
@@ -29,15 +34,22 @@ import java.util.List;
  */
 public class UMLClassGui extends VBox {
 
+    // grid pane
+    //@FXML
+    GridPane attributesGridPane;
+    GridPane methodsGridPane;
+
     // name
-    @FXML
+    //@FXML
     TextField nameLabel;
 
     // list of attributes
     private List<UMLAttributeGui> nodeAttributes;
+    private List<Button> attributeButtons;
 
     // list of methods
     private List<UMLMethodGui> nodeMethods;
+    private List<Button> methodButtons;
 
     // draggable property
     DraggableObject draggableObject = new DraggableObject();
@@ -48,32 +60,68 @@ public class UMLClassGui extends VBox {
      * @param name name of the UML class
      */
     public UMLClassGui(String name) {
+        // set margin
+        HBox.setMargin(this, new Insets(15, 15, 15, 15));
+
         // make the UMLClassGui object dragable
         draggableObject.makeDraggable(this);
         // set the style
-        String cssLayout = "-fx-border-color: black;\n" +
-                "-fx-border-width: 1;\n";
-        this.setStyle(cssLayout);
+        //String cssLayout = "-fx-border-color: black;\n" +
+        //        "-fx-border-width: 1;\n";
+        //this.setStyle(cssLayout);
+
+        BorderStroke borderStroke = new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null,
+                new BorderWidths(5));
+        this.setBorder(new Border(borderStroke));
+
+        Insets insets = new Insets(5, 5, 5, 5);
 
         // add name label
         this.nameLabel = new TextField(name);
+        this.nameLabel.setPadding(new Insets(5, 5, 5, 5));
         this.nameLabel.setStyle("-fx-font-weight: bold;\n" +
 		              "-fx-background-color: transparent;\n" +
-					  "-fx-border-style: none none none none;\n" +
-				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
+					  "-fx-border-style: solid;\n" +
 					  "-fx-background-radius: 0;\n" +
-					  "-fx-border-color: transparent;");
+                      "-fx-border-width: 2 2 1 2;\n" +
+					  "-fx-border-color: black;");
+        this.nameLabel.setAlignment(Pos.CENTER);
 
         //this.nameLabel.setMaxWidth(Double.MAX_VALUE);
         this.getChildren().add(nameLabel);
-
+        //GridPane.setConstraints(this.nameLabel, 0, 0);
 
         // add a separator
-        this.getChildren().add(new Separator());
+        //this.getChildren().add(new Separator());
 
-        // create lists of attributes and methods
+        // create lists of attributes
         this.nodeAttributes = new ArrayList<>();
+        this.attributeButtons = new ArrayList<>();
+        // create GridPane for attributes
+        this.attributesGridPane = new GridPane();
+        this.attributesGridPane.setPadding(insets);
+        //this.attributesGridPane.setVgap(2);
+        //this.attributesGridPane.setHgap(5);
+        this.attributesGridPane.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-width: 1 2 1 2;\n" +
+                "-fx-border-color: black;");
+        this.getChildren().add(this.attributesGridPane);
+
+        // create list of methods
         this.nodeMethods = new ArrayList<>();
+        this.methodButtons = new ArrayList<>();
+        // create GridPane for methods
+        this.methodsGridPane = new GridPane();
+        this.methodsGridPane.setPadding(insets);
+        //this.methodsGridPane.setVgap(2);
+        //this.methodsGridPane.setHgap(5);
+        this.methodsGridPane.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-width: 1 2 2 2;\n" +
+                "-fx-border-color: black;");
+        this.getChildren().add(this.methodsGridPane);
+
     }
 
     /**
@@ -86,11 +134,34 @@ public class UMLClassGui extends VBox {
      * @return true if the argument was successfully added, false if not
      */
     public boolean addAttributeGui(UMLAttributeGui attr) {
+        // add attr to attribute grid pane
         if (this.nodeAttributes.contains(attr))
+            // can't have two attributes with the same name
             return true;
         try {
+            int lastRowNumber = nodeAttributes.size();
             this.nodeAttributes.add(attr);
-            this.getChildren().add(this.nodeAttributes.get(nodeAttributes.size() - 1));
+
+            // add the attribute to the grid pane
+            GridPane.setConstraints(this.nodeAttributes.get(lastRowNumber), 0, lastRowNumber);
+            this.attributesGridPane.getChildren().add(this.nodeAttributes.get(lastRowNumber));
+
+            // add a button that can remove the attribute
+            this.attributeButtons.add(new Button("-"));
+            this.attributeButtons.get(lastRowNumber).setStyle("-fx-background-color: transparent;\n" +
+                    "-fx-border-color: transparent;\n" +
+                    "-fx-font-weight: bold;");
+            this.attributeButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
+                // row number 0 may be null
+                if (lastRowNumber == 0) {
+                    this.attributesGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
+                } else {
+                    this.attributesGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                }
+            });
+            GridPane.setConstraints(this.attributeButtons.get(lastRowNumber), 1, lastRowNumber);
+            this.attributesGridPane.getChildren().add(this.attributeButtons.get(lastRowNumber));
+
         } catch (UnsupportedOperationException uoe) {
             return false;
         }
@@ -110,8 +181,29 @@ public class UMLClassGui extends VBox {
         if (this.nodeMethods.contains(meth))
             return true;
         try {
+            int lastRowNumber = nodeMethods.size();
             this.nodeMethods.add(meth);
-            this.getChildren().add(this.nodeMethods.get(nodeMethods.size() - 1));
+
+            // add the method to the grid pane
+            GridPane.setConstraints(this.nodeMethods.get(lastRowNumber), 0, lastRowNumber);
+            this.methodsGridPane.getChildren().add(this.nodeMethods.get(lastRowNumber));
+
+            // add a button that can remove the method
+            this.methodButtons.add(new Button("-"));
+            this.methodButtons.get(lastRowNumber).setStyle("-fx-background-color: transparent;\n" +
+                    "-fx-border-color: transparent;\n" +
+                    "-fx-font-weight: bold;");
+            this.methodButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
+                // row number 0 may be null
+                if (lastRowNumber == 0) {
+                    this.methodsGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
+                } else {
+                    this.methodsGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                }
+            });
+            GridPane.setConstraints(this.methodButtons.get(lastRowNumber), 1, lastRowNumber);
+            this.methodsGridPane.getChildren().add(this.methodButtons.get(lastRowNumber));
+
         } catch (UnsupportedOperationException uoe) {
             return false;
         }

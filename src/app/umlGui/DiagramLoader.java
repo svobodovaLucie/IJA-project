@@ -68,7 +68,7 @@ public class DiagramLoader {
 
             // load attributes and methods
             saveAttributesGui(umlClass, (JSONArray)classObj.get("attributes"));
-            umlClass.getChildren().add(new Separator());    // GUI separator
+            //umlClass.getChildren().add(new Separator());    // GUI separator
             saveMethodsGui(umlClass, (JSONArray)classObj.get("methods"));
         }
     }
