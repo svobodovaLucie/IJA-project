@@ -96,7 +96,6 @@ public class DiagramSaver {
 
         // save all method attributes
         for (String type : umlMethod.getMethodAttributesTypes()) {
-            System.out.println("methodAttribute: " + type);
             JSONObject oneMethAttr = new JSONObject();
             oneMethAttr.put("type", type);
             methodAttributes.add(oneMethAttr);

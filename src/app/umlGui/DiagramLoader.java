@@ -11,6 +11,7 @@
 package app.umlGui;
 
 import javafx.scene.Group;
+import javafx.scene.layout.VBox;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
