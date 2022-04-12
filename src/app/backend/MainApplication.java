@@ -35,7 +35,6 @@ public class MainApplication {
      * @throws ParseException
      */
     public void main(String filename) throws IOException, ParseException {
-        //ClassDiagram classDiagram = new ClassDiagram();
         // saves the diagram to ClassDiagram
         System.out.println("Inside backend main\n");
         loadClassDiagram(filename);

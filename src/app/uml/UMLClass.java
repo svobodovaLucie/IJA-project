@@ -10,9 +10,6 @@
  */
 package app.uml;
 
-import app.gui.DraggableObject;
-import javafx.scene.control.Label;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,17 +20,10 @@ import java.util.List;
  * methods. The UML class may be abstract.
  */
 public class UMLClass extends UMLClassifier {
-
-    // seznam atributu
-    //private List<Label> nodeAttributes;
     private List<UMLAttribute> attributes;
-
-    // seznam metod
-    //private List<Label> nodeMethods;
     private List<UMLMethod> methods;
 
     private boolean isAbstract;
-    //DraggableObject draggableObject = new DraggableObject();
 
     /**
      * UMLClass constructor. The UML class is not abstract.
@@ -45,18 +35,6 @@ public class UMLClass extends UMLClassifier {
         this.isAbstract = false;
         this.attributes = new ArrayList<>();
         this.methods = new ArrayList<>();
-
-        /*
-        // GUI
-        this.nodeAttributes = new ArrayList<>();
-        this.nodeMethods = new ArrayList<>();
-        draggableObject.makeDraggable(this);
-        String cssLayout = "-fx-border-color: black;\n" +
-                "-fx-border-width: 1;\n";
-        this.setStyle(cssLayout);
-        */
-
-
     }
 
     /**
@@ -164,6 +142,5 @@ public class UMLClass extends UMLClassifier {
     public List<UMLAttribute> getAttributes() {
         return Collections.unmodifiableList(this.attributes);
     }
-
 }
 

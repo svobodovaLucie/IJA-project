@@ -5,8 +5,8 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation od UMLClassifier class that represents
- * the UML classifier.
+ * File contains implementation od UMLClassifierGui class that represents
+ * the UML classifier displayed in the GUI.
  */
 package app.umlGui;
 
@@ -16,7 +16,6 @@ package app.umlGui;
  * attribute etc.
  */
 public class UMLClassifierGui {
-	//private boolean isUserDefined;
 	private String name;
 
 	/**
@@ -36,9 +35,7 @@ public class UMLClassifierGui {
 	 */
 
 	public String getType() {
-
 		return this.name;// + "(" + this.isUserDefined + ")";
 	}
-
 }
 

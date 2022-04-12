@@ -5,7 +5,7 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * Main project file. This project is bla bla bla.
+ * Main project file.
  */
 package app;
 

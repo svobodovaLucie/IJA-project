@@ -5,27 +5,20 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * GUI main scene controller.
+ * GUI main scene controller - TO BE DONE.
  */
 package app.gui;
 
-import app.umlGui.UMLClassGui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -68,15 +61,22 @@ public class Controller {
         stage.show();
     }
 
+    /**
+     * Method makes an object draggable.
+     *
+     * @param event
+     */
     public void makeDraggable(ActionEvent event) {
         draggableObject.makeDraggable(class_vbox);
     }
 
+    /**
+     * Method adds a new class to the diagram.
+     *
+     * @param event
+     * @param stage
+     */
     public static void addClass(ActionEvent event, Stage stage) {
-
-        //stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-
-        //root.getChildrenUnmodifiable().add(new Text("ahoj"));
         scene = new Scene(root, 500, 500, Color.LIGHTCYAN);
         stage.setScene(scene);
         stage.show();

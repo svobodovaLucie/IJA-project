@@ -5,22 +5,17 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation od UMLMethod class that represents
- * the UML method.
+ * File contains implementation od UMLMethodGui class that represents
+ * the UML method displayed in the GUI.
  */
 package app.umlGui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Class represents a method, that has its name, return type and
- * a list of arguments. It is inherited from UMLAttribute class,
- * from that it inherits the name and the list of arguments.
- * Argument is represented by UMLAttribute class. It can be used
- * ad a part of UML classifier class or interface.
+ * Class represents a method displayed in the GUI.
  */
 public class UMLMethodGui extends UMLAttributeGui {
 	// inherited from super (UMLAttributeGui):
@@ -45,25 +40,6 @@ public class UMLMethodGui extends UMLAttributeGui {
 				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
 					  "-fx-background-radius: 0;\n" +
 					  "-fx-border-color: transparent;");
-	}
-
-	/**
-	 * Method converts the access string to the character.
-	 * public    ->  +
-	 * private   ->  -
-	 * protected ->  #
-	 *
-	 * @param access access type
-	 * @return string +, -, # or "" if invalid
-	 */
-	private String convertAccess(String access) {
-		if (Objects.equals(access, "public"))
-			return "+";
-		if (Objects.equals(access, "private"))
-			return "-";
-		if (Objects.equals(access, "protected"))
-			return "#";
-		return "";
 	}
 
 	/**
@@ -110,11 +86,22 @@ public class UMLMethodGui extends UMLAttributeGui {
 		return tmp;
 	}
 
+	/**
+	 * Method returns a list of UMLAttributeGui attributes.
+	 *
+	 * @return list of attributes
+	 */
 	public List<UMLAttributeGui> getMethodAttributes() {
 		return this.attributes;
 	}
 
-	// TODO FIX
+	/**
+	 * Method loads the text input and saves the types of method's attributes
+	 * in a list of strings.
+	 * Eg. [int, void, string]
+	 *
+	 * @return list of strings with the method's attributes
+	 */
 	public List<String> getMethodAttributesTypes() {
 		List<String> attr = new ArrayList<>();
 		String string = this.getText();
@@ -135,14 +122,20 @@ public class UMLMethodGui extends UMLAttributeGui {
 				}
 				break;
 			} else {
+				// change color to red or sth
 				System.out.println("Invalid type\n");
 				break;
-				// change color to red or sth
 			}
 		}
 		return attr;
 	}
 
+	/**
+	 * Method returns a list of strings that contains name,
+	 * type and access of UML method.
+	 *
+	 * @return list of strings [name, type, access]
+	 */
 	public List<String> getNameTypeAccess() {
 		List<String> nameTypeAccess = new ArrayList<>();
 		// +name(type,type):type

@@ -11,14 +11,9 @@
 package app.umlGui;
 
 import app.gui.DraggableObject;
-import app.uml.UMLAttribute;
-import app.uml.UMLMethod;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -34,14 +29,14 @@ import java.util.Objects;
  */
 public class UMLClassGui extends VBox {
 
+    // name
+    TextField nameLabel;
+
     // grid pane
-    //@FXML
     GridPane attributesGridPane;
     GridPane methodsGridPane;
 
-    // name
-    //@FXML
-    TextField nameLabel;
+
 
     // list of attributes
     private List<UMLAttributeGui> nodeAttributes;

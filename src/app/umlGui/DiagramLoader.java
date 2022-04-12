@@ -11,7 +11,6 @@
 package app.umlGui;
 
 import javafx.scene.Group;
-import javafx.scene.control.Separator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,7 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Main backend class that stores the UML class diagram.
+ * Class that loads the diagram from its JSON representation.
  */
 public class DiagramLoader {
 
@@ -68,7 +67,6 @@ public class DiagramLoader {
 
             // load attributes and methods
             saveAttributesGui(umlClass, (JSONArray)classObj.get("attributes"));
-            //umlClass.getChildren().add(new Separator());    // GUI separator
             saveMethodsGui(umlClass, (JSONArray)classObj.get("methods"));
         }
     }

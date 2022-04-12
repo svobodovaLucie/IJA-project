@@ -5,11 +5,10 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation of the UML attribute.
+ * File contains implementation of the UML attribute displayed in GUI.
  */
 package app.umlGui;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
@@ -18,9 +17,6 @@ import java.util.Objects;
 
 /**
  * Class represents the UML attribute with name and type.
- * It is inherited from the Element class. The type of the
- * attribute is represented by UMLClassifier type. It can
- * be used as UML class attribute or UML method argument.
  */
 public class UMLAttributeGui extends TextField {
 	// type
@@ -89,14 +85,16 @@ public class UMLAttributeGui extends TextField {
 		return this.nodeType.getType();
 	}
 
-	public String toStringAttr() {
-		// TODO need to split attribute name and attribute type - catch exceptions and invalid statements!
-		//return this.getText();
-		return this.name;
-		//return "default";
-	}
-
-	// TODO save as public, private etc.?
+	/**
+	 * Method returns string with the full name of access
+	 * from a string containing the shortened version.
+	 * + -> public
+	 * - -> private
+	 * # -> protected
+	 *
+	 * @param access short version of access (+, -, #)
+	 * @return long version of access (public, private, protected)
+	 */
 	public String toStringAccess(String access) {
 		if (Objects.equals(access, "+"))
 			return "public";
@@ -107,24 +105,19 @@ public class UMLAttributeGui extends TextField {
 		return "";
 	}
 
+	/**
+	 * Method returns a list of strings that contains name,
+	 * type and access of UML attribute.
+	 *
+	 * @return list of strings [name, type, access]
+	 */
 	public List<String> getNameTypeAccess() {
-		// TODO get it from the textField string - !!! method vs attribute !!!
 		List<String> nameTypeAccess = new ArrayList<>();
-		// +name:type
 		String toSplit = this.getText();
 		nameTypeAccess.add(toSplit.split(":")[0].substring(1));
 		nameTypeAccess.add(toSplit.split(":")[1]);
 		nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
 		return nameTypeAccess;
-
-/*
-		List<String> name_type_access = new ArrayList<>();
-		name_type_access.add(this.toStringAttr());
-		name_type_access.add(this.toStringType());
-		name_type_access.add(this.toStringAccess());
-		return name_type_access;
-
- */
 	}
 }
 

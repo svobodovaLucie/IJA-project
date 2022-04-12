@@ -6,11 +6,10 @@
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
  * File contains implementation od GuiMain class that represents
- * the part of the application and calls the main backend function.
+ * the main part of the application.
  */
 package app.gui;
 
-import app.backend.MainApplication;
 import app.umlGui.DiagramLoader;
 import app.umlGui.DiagramSaver;
 import javafx.application.Application;
@@ -21,10 +20,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import jdk.jshell.Diag;
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,12 +32,6 @@ public class GuiMain extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-        // run the backend
-        //MainApplication backend = new MainApplication();
-        //backend.main(args[0]);
-
-        // run GUI
         launch(args);
     }
 
@@ -54,18 +43,12 @@ public class GuiMain extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // set FXML loader
-        //FXMLLoader loader = new FXMLLoader();
-        //System.out.println("UNO");
-
-        //loader.setLocation(getClass().getResource("/AppGuiMain.fxml"));
-        //Parent root = loader.load();
-
         // load the JSON file
         Parameters params = getParameters();
         List<String> args = params.getRaw();
         DiagramLoader jsonLoader = new DiagramLoader();
-        Group root = jsonLoader.loadClassDiagramGui(args.get(0));
+
+        Group root = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
 
         // set the scene
         Scene scene = new Scene(root, 600, 600, Color.WHITE);
@@ -86,7 +69,6 @@ public class GuiMain extends Application {
         undoButton.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-color: transparent;\n" +
                 "-fx-font-size: 15;");
-        //undoButton.setOnAction(Controller::saveJSON);
         undo.setGraphic(undoButton);
 
         // add MenuBar
