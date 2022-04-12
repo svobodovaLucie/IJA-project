@@ -52,6 +52,9 @@ public class ClassGuiElement extends VBox {
         Button addAttr = new Button("Add Attribute");
         addAttr.setLayoutY(100);
         addAttr.setLayoutX(100);
+        addAttr.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
         this.getChildren().add(addAttr);
         addAttr.setOnAction(e -> addAttribute());
 
@@ -59,6 +62,9 @@ public class ClassGuiElement extends VBox {
         Button addMeth = new Button("Add Method");
         addMeth.setLayoutY(100);
         addMeth.setLayoutX(100);
+        addMeth.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
         this.getChildren().add(addMeth);
         addMeth.setOnAction(e -> addMethod());
     }
