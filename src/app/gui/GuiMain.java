@@ -12,6 +12,7 @@ package app.gui;
 
 import app.umlGui.DiagramLoader;
 import app.umlGui.DiagramSaver;
+import app.umlGui.UMLClassGui;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -91,8 +92,7 @@ public class GuiMain extends Application {
         addClass.setLayoutY(50);
         addClass.setLayoutX(500);
         root.getChildren().add(addClass);
-        // TODO ClassGuiElement to UMLClassGui
-        addClass.setOnAction(e -> root.getChildren().add(new ClassGuiElement("My Name")));
+        addClass.setOnAction(e -> root.getChildren().add(new UMLClassGui("YourClass")));
 
         // set the stage
         primaryStage.setTitle("ija-app: diagrams");
@@ -108,7 +108,7 @@ public class GuiMain extends Application {
         text.setTextAlignment(TextAlignment.JUSTIFY);
         text.setText("\n\n    Your JSON file was loaded.\n\n" +
                 "    Attributes and methods can be edited\n" +
-                "    (make sure you use UML).\n\n" +
+                "    (adding them is not implemented yet).\n\n" +
                 "    New class can be added with \n" +
                 "    \"Add Class\" button.\n\n" +
                 "    Your diagrams can be saved with \n" +
