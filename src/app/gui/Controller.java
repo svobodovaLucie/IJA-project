@@ -9,9 +9,11 @@
  */
 package app.gui;
 
+import app.umlGui.UMLClassGui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -80,85 +82,5 @@ public class Controller {
         stage.show();
     }
 
-    public static void saveJSON(ActionEvent event) {
-        // class attribute
-        JSONObject oneAttr = new JSONObject();
-        oneAttr.put("name", "pocatek");
-        oneAttr.put("type", "Point");
-        oneAttr.put("access", "private");
 
-        JSONArray attributes = new JSONArray();
-        attributes.add(oneAttr);
-        // add second attribute etc.
-
-        // class method attributes
-        JSONObject oneMethAttr = new JSONObject();
-        oneMethAttr.put("type", "int");
-
-        JSONArray methodAttributes = new JSONArray();
-        methodAttributes.add(oneMethAttr);
-
-        // class method
-        JSONObject oneMeth = new JSONObject();
-        oneMeth.put("name", "kreslit");
-        oneMeth.put("type", "void");
-        oneMeth.put("access", "public");
-        oneMeth.put("attributes", methodAttributes);
-
-        JSONArray methods = new JSONArray();
-        methods.add(oneMeth);
-        // add second attribute etc.
-
-        JSONObject oneClass = new JSONObject();
-        oneClass.put("name", "Tvar");
-        oneClass.put("attributes", attributes);
-        oneClass.put("methods", methods);
-
-        JSONArray classes = new JSONArray();
-        classes.add(oneClass);
-
-        JSONObject classes_interfaces_relationships = new JSONObject();
-        classes_interfaces_relationships.put("classes", classes);
-
-        //Write JSON file
-        try (FileWriter file = new FileWriter("/home/lucos/fit/ija/IJA-project/savedDiagram.json")) {
-            //We can write any JSONArray or JSONObject instance to the file
-            //file.write(employeeList.toJSONString());
-            System.out.println("Diagram saved.\n");
-            file.write(classes_interfaces_relationships.toJSONString());
-            file.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        /*
-        JSONObject employeeObject = new JSONObject();
-        employeeObject.put("employee", employeeDetails);
-
-        //Second Employee
-        JSONObject employeeDetails2 = new JSONObject();
-        employeeDetails2.put("firstName", "Brian");
-        employeeDetails2.put("lastName", "Schultz");
-        employeeDetails2.put("website", "example.com");
-
-        JSONObject employeeObject2 = new JSONObject();
-        employeeObject2.put("employee", employeeDetails2);
-
-        //Add employees to list
-        JSONArray employeeList = new JSONArray();
-        employeeList.add(employeeObject);
-        employeeList.add(employeeObject2);
-
-        //Write JSON file
-        try (FileWriter file = new FileWriter("employees.json")) {
-            //We can write any JSONArray or JSONObject instance to the file
-            file.write(employeeList.toJSONString());
-            file.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-    }
 }
