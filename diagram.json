@@ -99,5 +99,56 @@
       "to" : "Tvar",
       "type" : "generalisation"
     }
+  ],
+  "Sequence_diagrams" : [
+    {
+      "name": "Seq_one",
+      "Actors" : [
+        {
+          "name" : "Ctverec",
+          "class" : "Tvar"
+        },
+        {
+          "name" : "Ctverec",
+          "class" : "Tvar"
+        }
+      ],
+      "Messages" : [
+        {
+          "from" : "Ctverec",
+          "to" : "Tvar",
+          "type" : "normal"
+        },
+        {
+          "from" : "Kruh",
+          "to" : "Tvar",
+          "type" : "response"
+        }
+      ]
+    },{
+      "name": "Seq_two",
+      "Actors" : [
+        {
+          "name" : "Ctverec",
+          "class" : "Tvar"
+        },
+        {
+          "name" : "Ctverec",
+          "class" : "Tvar"
+        }
+      ],
+      "Messages" : [
+        {
+          "from" : "Ctverec",
+          "to" : "Tvar",
+          "type" : "normal"
+        },
+        {
+          "from" : "Kruh",
+          "to" : "Tvar",
+          "type" : "response"
+        }
+      ]
+    }
   ]
 }
