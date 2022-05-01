@@ -20,10 +20,30 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 
+
 /**
  * Class that loads the diagram from its JSON representation.
  */
 public class DiagramLoader {
+
+    /**
+     * Method returns Root (type Group), that 'll contain all the seq diagrams.
+     *
+     *             root
+     *        /   |     \     \
+     *     seq1  seq2   ...  seqn
+     *
+     * where seq1 is one seq diagram
+     *
+     * @param filename name of the file that contains the diagram in JSON format
+     * @throws IOException
+     * @throws ParseException
+     *
+     */
+    public Group loadSeqDiagramsGui(String filename) throws IOException, ParseException{
+        Group root = new Group();
+        return null;
+    }
 
     /**
      * Method loads the UML class diagram from JSON diagram file into the application.

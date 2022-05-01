@@ -38,6 +38,7 @@ public class GuiMain extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println("tu");
         launch(args);
     }
 
@@ -52,13 +53,16 @@ public class GuiMain extends Application {
 
         // load the JSON file
         Parameters params = getParameters();
+        System.out.println(params);
         List<String> args = params.getRaw();
         DiagramLoader jsonLoader = new DiagramLoader();
 
-        Group root = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
+
+        Group root_seq   = jsonLoader.loadSeqDiagramsGui(args.get(0));
+        Group root_class = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
 
         // set the scene
-        Scene scene = new Scene(root, 600, 600, Color.WHITE);
+        Scene scene = new Scene(root_class, 600, 600, Color.LIGHTGRAY);
         scene.getStylesheets().add("stylesheet.css");
 
         // add save button (fix releasing the button)
@@ -67,7 +71,7 @@ public class GuiMain extends Application {
         saveButton.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-color: transparent;\n" +
                 "-fx-font-size: 15;");
-        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, root));
+        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, root_class));
         save.setGraphic(saveButton);
 
         // add undo button - TODO, fix releasing the button
@@ -82,7 +86,7 @@ public class GuiMain extends Application {
         MenuBar menuBar = new MenuBar(save, undo);
         menuBar.useSystemMenuBarProperty();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
-        root.getChildren().add(menuBar);
+        root_class.getChildren().add(menuBar);
 
         // addClass button
         Button addClass = new Button("Add Class");
@@ -91,8 +95,8 @@ public class GuiMain extends Application {
                 "-fx-font-size: 15;");
         addClass.setLayoutY(50);
         addClass.setLayoutX(500);
-        root.getChildren().add(addClass);
-        addClass.setOnAction(e -> root.getChildren().add(new UMLClassGui("YourClass")));
+        root_class.getChildren().add(addClass);
+        addClass.setOnAction(e -> root_class.getChildren().add(new UMLClassGui("YourClass")));
 
         // set the stage
         primaryStage.setTitle("ija-app: diagrams");

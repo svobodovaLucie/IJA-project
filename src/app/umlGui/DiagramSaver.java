@@ -26,7 +26,7 @@ public class DiagramSaver {
     /**
      * Method saves the UML class diagram in a JSON format to a file.
      *
-     * @param event
+     * @param event todo
      * @param root root containing the diagram
      */
     public static void saveJSON(ActionEvent event, Group root) {
