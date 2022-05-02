@@ -7,6 +7,7 @@
  *
  * File contains implementation od GuiMain class that represents
  * the main part of the application.
+ *
  */
 package app.gui;
 
@@ -64,24 +65,12 @@ public class GuiMain extends Application {
         Group rootClass = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
 
         // set the scene for sequence diagram
-        // todo button (add Actor)
         // todo button (add Message) (should choose from some types)
-        System.out.println("###");
-        System.out.println(rootSeq);
-        System.out.println(rootSeq.get(0).getChildren());
-        System.out.println(rootSeq.get(1).getChildren());
-        System.out.println(rootSeq.get(0).getChildren().get(0));
-        System.out.println("###");
 
-        UMLSeqDiaGui neco = (UMLSeqDiaGui)rootSeq.get(0).getChildren().get(0);
-        neco.addAllActorsGUI();
-        System.out.println(neco.getName());
-        Scene sceneSeqTest = new Scene(rootSeq.get(0), 1000, 750, Color.WHITE);
-        sceneSeqTest.getStylesheets().add("stylesheet.css");
-        Stage sceneSeqStage = new Stage();
-        sceneSeqStage.setScene(sceneSeqTest);
-        sceneSeqStage.setTitle("seq ");
-        sceneSeqStage.show();
+        // todo maybe like variable for just active scene ....
+        for (int i = 0; i < rootSeq.size(); i++){
+            this.createSeqDiagScene(i, rootSeq, primaryStage);
+        }
 
         // set the scene
         Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
@@ -117,6 +106,52 @@ public class GuiMain extends Application {
         // show the help
         this.helpMessage();
 
+    }
+
+    /**
+     * Create scene for sequece diagram
+      * @param n
+     */
+    private void createSeqDiagScene(int n, List<Group> rootSeq, Stage primaryStage){
+
+        UMLSeqDiaGui temp = (UMLSeqDiaGui)rootSeq.get(n).getChildren().get(0);
+        temp.addAllActorsGUI();
+        System.out.println(temp.getName());
+        Scene sceneSeqTest = new Scene(rootSeq.get(n), 1000, 750, Color.WHITE);
+        sceneSeqTest.getStylesheets().add("stylesheet.css");
+        Stage sceneSeqStage = new Stage();
+        sceneSeqStage.setScene(sceneSeqTest);
+        sceneSeqStage.setTitle("Sequence Diagram Editor");
+        sceneSeqStage.show();
+
+        // add save button (fix releasing the button)
+        Button saveButton = this.createButton("Save JSON", 0);
+        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootSeq.get(n)));
+        Menu save = this.createMenu(saveButton);
+
+        // add undo button - TODO, fix releasing the button
+        Button undoButton = this.createButton("Undo", 0);
+        Menu undo = this.createMenu(undoButton);
+
+        // add MenuBar
+        MenuBar menuBar = new MenuBar(save, undo);
+        //menuBar.useSystemMenuBarProperty();
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+        rootSeq.get(n).getChildren().add(menuBar);
+
+        // Add Actor button
+        Button addActor = createButton("Add Actor", 1);
+        //addClass.setOnAction(e -> rootSeq.get(n).getChildren().add(new UMLClassGui("YourClass")));
+        addActor.setLayoutY(50);
+        addActor.setLayoutX(10);
+        rootSeq.get(n).getChildren().add(addActor);
+
+        // Add Message button
+        Button addMessage = createButton("Add Message", 1);
+        //addClass.setOnAction(e -> rootSeq.get(n).getChildren().add(new UMLClassGui("YourClass")));
+        addMessage.setLayoutY(85);
+        addMessage.setLayoutX(10);
+        rootSeq.get(n).getChildren().add(addMessage);
     }
 
     /**

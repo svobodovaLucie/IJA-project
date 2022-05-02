@@ -104,8 +104,6 @@ public class DiagramLoader {
         return root;
     }
 
-
-
     /**
      * actorList = name_met1 -> class2 -> name_met2 -> class2 ...
      * @param actors JSONArray that has all the sequence diagram actors
@@ -144,7 +142,6 @@ public class DiagramLoader {
         }
         return messageList;
     }
-
 
     /**
      * Method loads the UML class diagram from JSON diagram file into the application.

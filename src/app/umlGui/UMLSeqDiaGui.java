@@ -92,12 +92,13 @@ public class UMLSeqDiaGui extends AnchorPane {
         // Find out actor order
         int n = getActorsCounter();
 
-        UMLActorGui newActor = new UMLActorGui(name, n);
+        UMLActorGui newActor = new UMLActorGui(getNActorActorName(n), n);
         this.ActorsGui.add(newActor);
 
         System.out.println("tu");
         this.getChildren().add(newActor.getTextField());
         System.out.println( this.getChildren().get(0));
+
 
         setActorsCounter(n+1);
 

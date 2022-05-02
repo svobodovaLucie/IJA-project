@@ -22,7 +22,8 @@ public class UMLActorGui extends Label {
      */
     public UMLActorGui(String name, int n){
         int x_space = 150;
-        int borders = 25;
+        int x_borders = 200;
+        int y_borders = 75;
 
         // todo restyle
         this.actorNameGui = new Label(name);
@@ -35,8 +36,8 @@ public class UMLActorGui extends Label {
         this.actorNameGui.setFont(new Font("Arial", 13));
 
         // set position
-        this.actorNameGui.setLayoutX(borders+(x_space*n));
-        this.actorNameGui.setLayoutY(borders);
+        this.actorNameGui.setLayoutX(x_borders+(x_space*n));
+        this.actorNameGui.setLayoutY(y_borders);
 
     }
 
