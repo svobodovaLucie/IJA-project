@@ -27,6 +27,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.List;
+import app.umlGui.UMLSeqDiaGui;
 
 /**
  * Class represents the main part of the GUI.
@@ -59,45 +60,54 @@ public class GuiMain extends Application {
 
         // both are roots because they will be in different Scene
         // there will be scene for each seq diagram
-        Group[] root_seq   = jsonLoader.loadSeqDiagramsGui(args.get(0));
-        Group root_class = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
+        List<Group> rootSeq  = jsonLoader.loadSeqDiagramsGui(args.get(0));
+        Group rootClass = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
+
+        // set the scene for sequence diagram
+        // todo button (add Actor)
+        // todo button (add Message) (should choose from some types)
+        System.out.println("###");
+        System.out.println(rootSeq);
+        System.out.println(rootSeq.get(0).getChildren());
+        System.out.println(rootSeq.get(1).getChildren());
+        System.out.println(rootSeq.get(0).getChildren().get(0));
+        System.out.println("###");
+
+        UMLSeqDiaGui neco = (UMLSeqDiaGui)rootSeq.get(0).getChildren().get(0);
+        neco.addAllActorsGUI();
+        System.out.println(neco.getName());
+        Scene sceneSeqTest = new Scene(rootSeq.get(0), 1000, 750, Color.WHITE);
+        sceneSeqTest.getStylesheets().add("stylesheet.css");
+        Stage sceneSeqStage = new Stage();
+        sceneSeqStage.setScene(sceneSeqTest);
+        sceneSeqStage.setTitle("seq ");
+        sceneSeqStage.show();
 
         // set the scene
-        Scene scene = new Scene(root_class, 600, 600, Color.LIGHTGRAY);
+        Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
 
         // add save button (fix releasing the button)
-        Menu save = new Menu();
-        Button saveButton = new Button("Save JSON");
-        saveButton.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: transparent;\n" +
-                "-fx-font-size: 15;");
-        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, root_class));
-        save.setGraphic(saveButton);
+        Button saveButton = this.createButton("Save JSON", 0);
+        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootClass));
+        Menu save = this.createMenu(saveButton);
 
         // add undo button - TODO, fix releasing the button
-        Menu undo = new Menu();
-        Button undoButton = new Button("Undo");
-        undoButton.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: transparent;\n" +
-                "-fx-font-size: 15;");
-        undo.setGraphic(undoButton);
+        Button undoButton = this.createButton("Undo", 0);
+        Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
         MenuBar menuBar = new MenuBar(save, undo);
         menuBar.useSystemMenuBarProperty();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
-        root_class.getChildren().add(menuBar);
+        rootClass.getChildren().add(menuBar);
 
         // addClass button
-        Button addClass = new Button("Add Class");
-        addClass.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: black;\n" +
-                "-fx-font-size: 15;");
+        Button addClass = createButton("Add Class", 1);
+        addClass.setOnAction(e -> rootClass.getChildren().add(new UMLClassGui("YourClass")));
         addClass.setLayoutY(50);
         addClass.setLayoutX(500);
-        root_class.getChildren().add(addClass);
-        addClass.setOnAction(e -> root_class.getChildren().add(new UMLClassGui("YourClass")));
+        rootClass.getChildren().add(addClass);
 
         // set the stage
         primaryStage.setTitle("ija-app: diagrams");
@@ -105,6 +115,14 @@ public class GuiMain extends Application {
         primaryStage.show();
 
         // show the help
+        this.helpMessage();
+
+    }
+
+    /**
+     * Just print help message
+     */
+    private void helpMessage(){
         Group helpGroup = new Group();
         Text text = new Text();
         text.setFont(new Font(15));
@@ -127,4 +145,38 @@ public class GuiMain extends Application {
         helpStage.setTitle("ija-app: help");
         helpStage.show();
     }
+
+    /**
+     * Create button with given text
+     * @param text Button text that ll be displayed
+     * @param style 0 for normal buttons
+     *              1 for diagrams buttons
+     * @return new button
+     */
+    private Button createButton(String text, int style){
+        Button button = new Button(text);
+        if (style == 0){
+            button.setStyle("-fx-background-color: transparent;\n" +
+                    "-fx-border-color: transparent;\n" +
+                    "-fx-font-size: 15;");
+        }
+        else if (style == 1){
+            button.setStyle("-fx-background-color: transparent;\n" +
+                    "-fx-border-color: black;\n" +
+                    "-fx-font-size: 15;");
+        }
+        return button;
+    }
+
+    /**
+     * Create menu with given button
+     * @param button button that ll be connected to menu
+     * @return new menu
+     */
+    private Menu createMenu(Button button){
+        Menu menu = new Menu();
+        menu.setGraphic(button);
+        return menu;
+    }
+
 }

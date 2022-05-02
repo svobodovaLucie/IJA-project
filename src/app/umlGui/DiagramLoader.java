@@ -46,12 +46,12 @@ public class DiagramLoader {
      * @param filename name of the file that contains the diagram in JSON format
      * @throws IOException
      * @throws ParseException
-     * @return Array of Group - each group is one seq diagram
+     * @return List of Group - each node is one seq diagram
      *
      */
-    public Group[] loadSeqDiagramsGui(String filename) throws IOException, ParseException{
+    public List<Group> loadSeqDiagramsGui(String filename) throws IOException, ParseException{
         // create array of groups
-        Group[] root_arr;
+        List<Group> root_list = new ArrayList<Group>();
 
         // load the JSON file
         JSONParser jsonParser = new JSONParser();
@@ -71,18 +71,40 @@ public class DiagramLoader {
             List<String> actorsList = this.getSeqActors((JSONArray) oneDiag.get("Actors"));
             List<String> messageList = this.getSeqMethods((JSONArray) oneDiag.get("Messages"));
 
+            // Strings are converted to group data type here
+            Group root = seqDiagramGroup(diagName, actorsList, messageList);
+
             System.out.println("......");
-            System.out.println(diagName);
+            System.out.println(root.getChildren());
             System.out.println(actorsList);
             System.out.println(messageList);
             System.out.println("......");
 
-
-
-
+            // add group to list //store one seq diagram
+            root_list.add(root);
         }
-        return null;
+        return root_list;
     }
+
+    /**
+     * Method converse strings to Group that represent one sequence diagram
+     *
+     * @param diagName Diagram name
+     * @param actorsList Actors list can be obtained by getSeqActors()
+     * @param messageList Messages list can be obtained by getSeqMethods()
+     * @return group that represent one sequence diagram
+     */
+    private Group seqDiagramGroup(String diagName, List<String> actorsList,
+                                                   List<String> messageList){
+        Group root = new Group();
+
+        UMLSeqDiaGui seqDia = new UMLSeqDiaGui(actorsList, messageList, diagName);
+        root.getChildren().add(seqDia);
+
+        return root;
+    }
+
+
 
     /**
      * actorList = name_met1 -> class2 -> name_met2 -> class2 ...
@@ -94,7 +116,7 @@ public class DiagramLoader {
         List<String> actorsList = new ArrayList<String>();
         for (Object ac : actors){
             JSONObject oneActor = (JSONObject) ac;
-            String nameMet      = (String) oneActor.get("name_met");
+            String nameMet      = (String) oneActor.get("actorName");
             String nameClass    = (String) oneActor.get("class");
             actorsList.add(nameMet);
             actorsList.add(nameClass);
