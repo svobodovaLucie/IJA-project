@@ -57,8 +57,9 @@ public class GuiMain extends Application {
         List<String> args = params.getRaw();
         DiagramLoader jsonLoader = new DiagramLoader();
 
-
-        Group root_seq   = jsonLoader.loadSeqDiagramsGui(args.get(0));
+        // both are roots because they will be in different Scene
+        // there will be scene for each seq diagram
+        Group[] root_seq   = jsonLoader.loadSeqDiagramsGui(args.get(0));
         Group root_class = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
 
         // set the scene

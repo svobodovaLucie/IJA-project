@@ -17,8 +17,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -27,23 +30,99 @@ import java.io.IOException;
 public class DiagramLoader {
 
     /**
-     * Method returns Root (type Group), that 'll contain all the seq diagrams.
-     *
-     *             root
-     *        /   |     \     \
-     *     seq1  seq2   ...  seqn
-     *
      * where seq1 is one seq diagram
+     *
+     *
+     *              sequence_diagram_name
+     *              |                    |
+     *            ACTORS                Messages
+     *           |      |               |      |
+     *          name1   name2         type1    type2
+     *           |        |             |       |
+     *          class    class        from     from
+     *                                  |        |
+     *                                 to        to
      *
      * @param filename name of the file that contains the diagram in JSON format
      * @throws IOException
      * @throws ParseException
+     * @return Array of Group - each group is one seq diagram
      *
      */
-    public Group loadSeqDiagramsGui(String filename) throws IOException, ParseException{
-        Group root = new Group();
+    public Group[] loadSeqDiagramsGui(String filename) throws IOException, ParseException{
+        // create array of groups
+        Group[] root_arr;
+
+        // load the JSON file
+        JSONParser jsonParser = new JSONParser();
+
+        // load everything to diagram object
+        Object input = jsonParser.parse(new FileReader(filename));
+        JSONObject diagram = (JSONObject)input;
+
+        JSONArray seqDigs = (JSONArray) diagram.get("Sequence_diagrams");
+
+        int i = 0; // indexing groups
+        for (Object seqDig : seqDigs) {
+            JSONObject oneDiag = (JSONObject) seqDig;
+
+            String diagName    = (String) oneDiag.get("name_seq");
+            // Actors array (name, class)
+            List<String> actorsList = this.getSeqActors((JSONArray) oneDiag.get("Actors"));
+            List<String> messageList = this.getSeqMethods((JSONArray) oneDiag.get("Messages"));
+
+            System.out.println("......");
+            System.out.println(diagName);
+            System.out.println(actorsList);
+            System.out.println(messageList);
+            System.out.println("......");
+
+
+
+
+        }
         return null;
     }
+
+    /**
+     * actorList = name_met1 -> class2 -> name_met2 -> class2 ...
+     * @param actors JSONArray that has all the sequence diagram actors
+     * @return  List of sequence diagram actors
+     */
+    private List<String> getSeqActors(JSONArray actors){
+        // actorList = name_met1 -> class2 -> name_met2 -> class2
+        List<String> actorsList = new ArrayList<String>();
+        for (Object ac : actors){
+            JSONObject oneActor = (JSONObject) ac;
+            String nameMet      = (String) oneActor.get("name_met");
+            String nameClass    = (String) oneActor.get("class");
+            actorsList.add(nameMet);
+            actorsList.add(nameClass);
+        }
+        return  actorsList;
+    }
+
+    /**
+     * messageList = name_met1 -> class2 -> name_met2 -> class2 ...
+     * @param messages JSONArray that has all the sequence diagram messages
+     * @return List of sequence diagram messages
+     */
+    private List<String> getSeqMethods(JSONArray messages){
+
+        // messageList = from1 -> to1 -> type1 -> from2 -> to2 -> type2
+        List<String> messageList = new ArrayList<String>();
+        for (Object me : messages){
+            JSONObject oneMessage = (JSONObject) me;
+            String from         = (String) oneMessage.get("from");
+            String to           = (String) oneMessage.get("to");
+            String type         = (String) oneMessage.get("type");
+            messageList.add(from);
+            messageList.add(to);
+            messageList.add(type);
+        }
+        return messageList;
+    }
+
 
     /**
      * Method loads the UML class diagram from JSON diagram file into the application.
