@@ -101,4 +101,16 @@ public class ClassDiagram extends Element {
         }
         return null;
     }
+
+    public UMLClass findClass(String name) {
+        // find class
+        for (UMLClass cls : this.getClasses()) {
+            if (cls.getName().equals(name)) {
+                return cls;
+            }
+        }
+
+        // not found -> null
+        return null;
+    }
 }

@@ -49,6 +49,7 @@ public class DiagramLoader {
      * @return List of Group - each node is one seq diagram
      *
      */
+    /*
     public List<Group> loadSeqDiagramsGui(String filename) throws IOException, ParseException{
         // create array of groups
         List<Group> root_list = new ArrayList<Group>();
@@ -73,6 +74,7 @@ public class DiagramLoader {
 
             // Strings are converted to group data type here
             Group root = seqDiagramGroup(diagName, actorsList, messageList);
+            Group root = seqDiagramGroup()
 
             System.out.println("......");
             System.out.println(root.getChildren());
@@ -86,6 +88,8 @@ public class DiagramLoader {
         return root_list;
     }
 
+     */
+
     /**
      * Method converse strings to Group that represent one sequence diagram
      *
@@ -94,6 +98,7 @@ public class DiagramLoader {
      * @param messageList Messages list can be obtained by getSeqMethods()
      * @return group that represent one sequence diagram
      */
+    /*
     private Group seqDiagramGroup(String diagName, List<String> actorsList,
                                                    List<String> messageList){
         Group root = new Group();
@@ -104,11 +109,14 @@ public class DiagramLoader {
         return root;
     }
 
+     */
+
     /**
      * actorList = name_met1 -> class2 -> name_met2 -> class2 ...
      * @param actors JSONArray that has all the sequence diagram actors
      * @return  List of sequence diagram actors
      */
+    /*
     private List<String> getSeqActors(JSONArray actors){
         // actorList = name_met1 -> class2 -> name_met2 -> class2
         List<String> actorsList = new ArrayList<String>();
@@ -122,11 +130,14 @@ public class DiagramLoader {
         return  actorsList;
     }
 
+     */
+
     /**
      * messageList = name_met1 -> class2 -> name_met2 -> class2 ...
      * @param messages JSONArray that has all the sequence diagram messages
      * @return List of sequence diagram messages
      */
+    /*
     private List<String> getSeqMethods(JSONArray messages){
 
         // messageList = from1 -> to1 -> type1 -> from2 -> to2 -> type2
@@ -142,6 +153,8 @@ public class DiagramLoader {
         }
         return messageList;
     }
+
+     */
 
     /**
      * Method loads the UML class diagram from JSON diagram file into the application.

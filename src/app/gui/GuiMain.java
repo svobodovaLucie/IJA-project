@@ -26,6 +26,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+
+import java.util.ArrayList;
 import java.util.List;
 import app.umlGui.UMLSeqDiaGui;
 
@@ -56,12 +58,28 @@ public class GuiMain extends Application {
 
         // load GUI from BE for Class Diagram
         GuiLoader guiLoader = new GuiLoader();
-        Group root = guiLoader.loadClassDiagramGui(BEdiagrams.getClassDiagram());
+        Group rootClass = guiLoader.loadClassDiagramGui(BEdiagrams.getClassDiagram());
 
-        // TODO load seq diagram from BE
+        // load seq diagram from BE
+        // both are roots because they will be in different Scene
+        // there will be scene for each seq diagram
+        List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
 
+        // create class diagram scene
+        createClassDiagScene(rootClass, primaryStage);
+
+        // set the scene for sequence diagram
+        // todo button (add Message) (should choose from some types)
+        // todo maybe like variable for just active scene ....
+        for (int i = 0; i < rootSeq.size(); i++){
+            this.createSeqDiagScene(i, rootSeq, primaryStage);
+        }
+
+        // show the help
+        this.helpMessage();
+        /*
         // set the scene
-        Scene scene = new Scene(root, 600, 600, Color.WHITE);
+        Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
 
         // add save button (fix releasing the button)
@@ -94,9 +112,9 @@ public class GuiMain extends Application {
                 "-fx-font-size: 15;");
         addClass.setLayoutY(50);
         addClass.setLayoutX(500);
-        root.getChildren().add(addClass);
+        rootClass.getChildren().add(addClass);
         //addClass.setOnAction(e -> root.getChildren().add(new UMLClassGui("YourClass")));
-        addClass.setOnAction(e -> root.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"))));
+        addClass.setOnAction(e -> rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"))));
 
         // set the stage
         primaryStage.setTitle("ija-app: diagrams");
@@ -181,7 +199,44 @@ public class GuiMain extends Application {
         // show the help
         this.helpMessage();
 
+
+         */
     }
+
+    private void createClassDiagScene(Group rootClass, Stage primaryStage){
+        // set the scene
+        Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
+        scene.getStylesheets().add("stylesheet.css");
+
+        // add save button (fix releasing the button)
+        Button saveButton = this.createButton("Save JSON", 0);
+        saveButton.setOnAction(e -> DiagramSaverNoGui.saveJSON(e, BEdiagrams, "savedDiagram.json"));
+        //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootClass));
+        Menu save = this.createMenu(saveButton);
+
+        // add undo button - TODO, fix releasing the button
+        Button undoButton = this.createButton("Undo", 0);
+        Menu undo = this.createMenu(undoButton);
+
+        // add MenuBar
+        MenuBar menuBar = new MenuBar(save, undo);
+        menuBar.useSystemMenuBarProperty();
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+        rootClass.getChildren().add(menuBar);
+
+        // addClass button
+        Button addClass = createButton("Add Class", 1);
+        addClass.setOnAction(e -> rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"))));
+        addClass.setLayoutY(50);
+        addClass.setLayoutX(500);
+        rootClass.getChildren().add(addClass);
+
+        // set the stage
+        primaryStage.setTitle("ija-app: diagrams");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
 
     /**
      * Create scene for sequece diagram
@@ -189,9 +244,15 @@ public class GuiMain extends Application {
      */
     private void createSeqDiagScene(int n, List<Group> rootSeq, Stage primaryStage){
 
-        UMLSeqDiaGui temp = (UMLSeqDiaGui)rootSeq.get(n).getChildren().get(0);
-        temp.addAllActorsGUI();
-        System.out.println(temp.getName());
+        //UMLSeqDiaGui temp = (UMLSeqDiaGui)rootSeq.get(n).getChildren().get(0);
+        //temp.addAllActorsGUI();
+        //List <String> mess = new ArrayList<>();
+        //mess.add("UNO");
+        //mess.add("DEUX");
+        //System.out.println(temp.getName());
+
+        //rootSeq.get(n).getChildren().add(temp);
+
         Scene sceneSeqTest = new Scene(rootSeq.get(n), 1000, 750, Color.WHITE);
         sceneSeqTest.getStylesheets().add("stylesheet.css");
         Stage sceneSeqStage = new Stage();

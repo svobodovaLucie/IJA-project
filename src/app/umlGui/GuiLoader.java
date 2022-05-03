@@ -11,10 +11,7 @@
 package app.umlGui;
 
 import app.backend.Diagrams;
-import app.uml.ClassDiagram;
-import app.uml.UMLAttribute;
-import app.uml.UMLClass;
-import app.uml.UMLMethod;
+import app.uml.*;
 import javafx.scene.Group;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +28,24 @@ import java.util.List;
  */
 public class GuiLoader {
 
+    public List <Group> loadSeqDiagramGui(List <SeqDiagram> seqDiagrams) {
+        //Group root = new Group();
+        List <Group> root = new ArrayList<>();
+
+        for (SeqDiagram seqDig : seqDiagrams) {
+            // group for one diagram
+            Group rootSeq = new Group();
+
+            // load the diagram
+            UMLSeqDiaGui seqDiaGui = new UMLSeqDiaGui(seqDig);
+            rootSeq.getChildren().add(seqDiaGui);
+
+            // add to list of Groups
+            root.add(rootSeq);
+        }
+
+        return root;
+    }
     /**
      * Method loads the UML class diagram from JSON diagram file into the application.
      *

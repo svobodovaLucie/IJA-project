@@ -10,6 +10,8 @@
 package app.umlGui;
 
 import app.gui.DraggableObject;
+import app.uml.SeqDiagram;
+import app.uml.UMLClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -24,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class UMLSeqDiaGui extends AnchorPane {
+
+    // SeqDiagram to be represented
+    private SeqDiagram seqDiagram;
 
     // NO GUI data
     // name_met1 -> class1 -> name_met2 -> class2 -> name_met2 -> class2 ....
@@ -47,16 +52,20 @@ public class UMLSeqDiaGui extends AnchorPane {
      * @param messageList
      * @param name
      */
-    public UMLSeqDiaGui(List<String> actorsList, List<String> messageList, String name){
+    public UMLSeqDiaGui(SeqDiagram seqDiagram){
+        this.seqDiagram = seqDiagram;
 
-        this.actorsList  = actorsList;
-        this.messageList = messageList;
-        this.name        = name;
+        //this.actorsList  = seqDiagram.getActors();
+        //this.messageList = seqDiagram.getMessages();
+
+        //this.ActorsGui
+        this.name        = seqDiagram.getName();
 
         this.messageCounter = 0;
         this.actorsCounter  = 0;
 
         this.ActorsGui = new ArrayList<>();
+        loadActorsFromBE(seqDiagram);
 
         // set transparent border for easier dragging
         /*
@@ -66,6 +75,14 @@ public class UMLSeqDiaGui extends AnchorPane {
 
          */
 
+    }
+
+    private void loadActorsFromBE(SeqDiagram seqDiagram) {
+        int n = 0;
+        for (UMLClass actor : seqDiagram.getActors()) {
+            UMLActorGui actorGui = new UMLActorGui(actor, n++);
+            this.ActorsGui.add(actorGui);
+        }
     }
 
     /**
@@ -87,12 +104,13 @@ public class UMLSeqDiaGui extends AnchorPane {
         // add name label
 
     }
-
     public void addActorGUI(){
         // Find out actor order
         int n = getActorsCounter();
 
-        UMLActorGui newActor = new UMLActorGui(getNActorActorName(n), n);
+        // TODO musime najit danou tridu v diagramu trid jestli existuje (az budeme pridavat dynamicky dalsi actory v GUI)
+        // prozatim to je ok - jen nacitani z uz nacteneho SeqDiagramu z JSONu
+        UMLActorGui newActor = new UMLActorGui(seqDiagram.getActor(getNActorActorName(n)), n);
         this.ActorsGui.add(newActor);
 
         System.out.println("tu");

@@ -1,5 +1,6 @@
 package app.umlGui;
 
+import app.uml.UMLClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
@@ -10,7 +11,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class UMLActorGui extends Label {
-
+    // UMLClass that is represented in Seq GUI
+    private UMLClass umlClass;
 
     private Label actorNameGui;
 
@@ -20,13 +22,15 @@ public class UMLActorGui extends Label {
      * @param name Actor name
      * @param n Actor order
      */
-    public UMLActorGui(String name, int n){
+    public UMLActorGui(UMLClass umlClass, int n){
+        this.umlClass = umlClass;
+
         int x_space = 150;
         int x_borders = 200;
         int y_borders = 75;
 
         // todo restyle
-        this.actorNameGui = new Label(name);
+        this.actorNameGui = new Label(umlClass.getName());
         this.actorNameGui.setAlignment(Pos.CENTER);
         this.actorNameGui.setContentDisplay(ContentDisplay.CENTER);
         this.actorNameGui.prefHeight(100);

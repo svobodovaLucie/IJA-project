@@ -11,6 +11,7 @@
 package app.umlGui;
 
 import app.backend.Diagrams;
+import app.gui.GuiMain;
 import app.uml.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -91,7 +92,20 @@ public class DiagramLoaderNoGui {
 
             // create new diagram
             SeqDiagram seqDiagram = new SeqDiagram(diagName);
-            seqDiagram.addActors(actorsList);
+
+            // for each actor find its UMLClass (TODO vyresit nekonzistenci - pokud vrati null, zabarvi se napr. cervene)
+            for (String actor : actorsList) {
+                UMLClass umlClass = diagrams.getClassDiagram().findClass(actor);
+                if (umlClass == null) {
+                    // TODO poresit
+                    System.out.println("NEKONZISTENCE!!!");
+                } else {
+                    seqDiagram.addActor(umlClass);
+                }
+            }
+            //seqDiagram.addActors(actorsList);
+
+            // for each message find its UMLMethod (TODO krome free, create atd.)
             seqDiagram.addMessages(messageList);
             // load
             diagrams.addSeqDiagram(seqDiagram);
