@@ -40,7 +40,6 @@ public class GuiMain extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("tu");
         launch(args);
     }
 
@@ -55,23 +54,29 @@ public class GuiMain extends Application {
 
         // load the JSON file
         Parameters params = getParameters();
-        System.out.println(params);
         List<String> args = params.getRaw();
-        DiagramLoader jsonLoader = new DiagramLoader();
 
-        // both are roots because they will be in different Scene
-        // there will be scene for each seq diagram
+        DiagramLoader jsonLoader = new DiagramLoader();
         List<Group> rootSeq  = jsonLoader.loadSeqDiagramsGui(args.get(0));
         Group rootClass = jsonLoader.loadClassDiagramGui(args.get(0));   // TODO fix if we don't want to load a diagram from a file
 
         // set the scene for sequence diagram
         // todo button (add Message) (should choose from some types)
-
         // todo maybe like variable for just active scene ....
         for (int i = 0; i < rootSeq.size(); i++){
             this.createSeqDiagScene(i, rootSeq, primaryStage);
         }
 
+        // create class diagram scene
+        createClassDiagScene(rootClass, primaryStage);
+
+        // show the help
+        this.helpMessage();
+
+    }
+
+
+    private void createClassDiagScene(Group rootClass, Stage primaryStage){
         // set the scene
         Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
@@ -102,11 +107,8 @@ public class GuiMain extends Application {
         primaryStage.setTitle("ija-app: diagrams");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        // show the help
-        this.helpMessage();
-
     }
+
 
     /**
      * Create scene for sequece diagram

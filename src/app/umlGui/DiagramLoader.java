@@ -74,12 +74,6 @@ public class DiagramLoader {
             // Strings are converted to group data type here
             Group root = seqDiagramGroup(diagName, actorsList, messageList);
 
-            System.out.println("......");
-            System.out.println(root.getChildren());
-            System.out.println(actorsList);
-            System.out.println(messageList);
-            System.out.println("......");
-
             // add group to list //store one seq diagram
             root_list.add(root);
         }
@@ -98,7 +92,8 @@ public class DiagramLoader {
                                                    List<String> messageList){
         Group root = new Group();
 
-        UMLSeqDiaGui seqDia = new UMLSeqDiaGui(actorsList, messageList, diagName);
+        // todo set good true or false param
+        UMLSeqDiaGui seqDia = new UMLSeqDiaGui(actorsList, messageList, diagName, false);
         root.getChildren().add(seqDia);
 
         return root;

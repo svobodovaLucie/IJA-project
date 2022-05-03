@@ -33,6 +33,18 @@ public class UMLSeqDiaGui extends AnchorPane {
     private String       name;
     private int messageCounter;
     private int actorsCounter;
+    private boolean createdByMessage;
+
+    /**
+     * Typy zprav
+     * synchronní zpráva,    .....    synch
+     *  -- vyzaduje reply
+     * asynchronní zpráva,   .....    asynch
+     * návrat zprávy,        .....    response
+     * tvorba objektu,       .....    creat
+     * zánik (uvolnění) objektu. .    free
+     */
+
 
     // Gui data
     private List<UMLActorGui> ActorsGui;
@@ -47,11 +59,14 @@ public class UMLSeqDiaGui extends AnchorPane {
      * @param messageList
      * @param name
      */
-    public UMLSeqDiaGui(List<String> actorsList, List<String> messageList, String name){
+    public UMLSeqDiaGui(List<String> actorsList, List<String> messageList
+                        ,String name, Boolean createdByMessage){
 
-        this.actorsList  = actorsList;
-        this.messageList = messageList;
-        this.name        = name;
+        this.actorsList       = actorsList;
+        this.messageList      = messageList;
+        this.name             = name;
+        this.createdByMessage = true;
+
 
         this.messageCounter = 0;
         this.actorsCounter  = 0;
