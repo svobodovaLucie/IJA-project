@@ -14,7 +14,7 @@ package app.uml;
  */
 public class Element {
 
-	private String name;
+	protected String name;
 
 	/**
 	 * Element contructor.

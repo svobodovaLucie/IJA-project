@@ -10,29 +10,47 @@
  */
 package app.umlGui;
 
+import app.uml.UMLMethod;
+import javafx.scene.control.TextField;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
  * Class represents a method displayed in the GUI.
  */
-public class UMLMethodGui extends UMLAttributeGui {
+public class UMLMethodGui extends TextField {
+	// method to be represented
+	private UMLMethod method;
+
 	// inherited from super (UMLAttributeGui):
 	// type, name, access
+	// TODO probably not inherited
 
+	// type
+	protected String type;
+	// name
+	protected String name;
+	// access
+	protected String access;
 	// list of attributes
 	private List<UMLAttributeGui> attributes;
 
 	/**
 	 * UMLMethodGui constructor.
 	 *
-	 * @param name name of the UML method
-	 * @param type type of the UML method
-	 * @param access access type of the UML method
+	 * @param umlMethod UMLMethod to be represented in GUI
 	 */
-	public UMLMethodGui(String name, UMLClassifierGui type, String access) {
-		super(name, type, access);
+	public UMLMethodGui(UMLMethod umlMethod) {
+		this.method = umlMethod;
+
+		List <String> nameTypeAccess = method.getNameTypeAccess();
+		this.name = nameTypeAccess.get(0);
+		this.type = nameTypeAccess.get(1);
+		this.access = nameTypeAccess.get(2);
 
 		this.attributes = new ArrayList<>();
 		this.setStyle("-fx-background-color: transparent;\n" +
@@ -82,7 +100,7 @@ public class UMLMethodGui extends UMLAttributeGui {
 			tmp = tmp.substring(0, tmp.length() - 1);
 		}
 		// returnType
-		tmp = tmp + "):" + this.nodeType.getType() ;
+		tmp = tmp + "):" + this.type;
 		return tmp;
 	}
 
@@ -128,6 +146,26 @@ public class UMLMethodGui extends UMLAttributeGui {
 			}
 		}
 		return attr;
+	}
+
+	/**
+	 * Method returns string with the full name of access
+	 * from a string containing the shortened version.
+	 * + -> public
+	 * - -> private
+	 * # -> protected
+	 *
+	 * @param access short version of access (+, -, #)
+	 * @return long version of access (public, private, protected)
+	 */
+	public String toStringAccess(String access) {
+		if (Objects.equals(access, "+"))
+			return "public";
+		if (Objects.equals(access, "-"))
+			return "private";
+		if (Objects.equals(access, "#"))
+			return "protected";
+		return "";
 	}
 
 	/**

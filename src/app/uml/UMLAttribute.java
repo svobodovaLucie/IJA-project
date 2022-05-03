@@ -9,8 +9,6 @@
  */
 package app.uml;
 
-import app.umlGui.UMLClassifierGui;
-
 import java.util.ArrayList;
 import java.util.List;
 

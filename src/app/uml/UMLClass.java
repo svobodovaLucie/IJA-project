@@ -152,5 +152,9 @@ public class UMLClass extends UMLClassifier {
         return Collections.unmodifiableList(this.methods);
     }
 
+    // method change the name
+    public void setName(String newName) {
+        this.name = newName;
+    }
 }
 

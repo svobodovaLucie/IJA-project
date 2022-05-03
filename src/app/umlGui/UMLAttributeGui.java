@@ -25,7 +25,7 @@ public class UMLAttributeGui extends TextField {
 	private UMLAttribute umlAttribute;
 
 	// type
-	protected UMLClassifierGui nodeType;
+	protected String type;
 	// name
 	protected String name;
 	// access
@@ -34,14 +34,14 @@ public class UMLAttributeGui extends TextField {
 	/**
 	 * UMLAttributeGui constructor.
 	 *
-	 * @param name name of the UML attribute
-	 * @param type type of the UML attribute
-	 * @param access access type
+	 * @param umlAttribute UMLAttribute to be represented in GUI
 	 */
-	public UMLAttributeGui(String name, UMLClassifierGui type, String access) {
-		this.name = name;
-		this.nodeType = type;
-		this.access = convertAccess(access);
+	public UMLAttributeGui(UMLAttribute umlAttribute) {
+		this.umlAttribute = umlAttribute;
+		List <String> nameTypeAccess = umlAttribute.getNameTypeAccess();
+		this.name = nameTypeAccess.get(0);
+		this.type = nameTypeAccess.get(1);
+		this.access = convertAccess(nameTypeAccess.get(2));
 		this.setText(this.toStringAttrType());
 		this.setStyle("-fx-background-color: transparent;\n" +
 				"-fx-border-style: none none none none;\n" +
@@ -78,7 +78,7 @@ public class UMLAttributeGui extends TextField {
 	 * @return string
 	 */
 	public String toStringAttrType() {
-		return this.access + this.name + ":" + this.nodeType.getType();
+		return this.access + this.name + ":" + this.type;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class UMLAttributeGui extends TextField {
 	 * @return string
 	 */
 	public String toStringType() {
-		return this.nodeType.getType();
+		return this.type;
 	}
 
 	/**

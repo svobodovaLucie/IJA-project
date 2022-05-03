@@ -12,6 +12,7 @@ package app.umlGui;
 
 import app.gui.DraggableObject;
 import app.uml.UMLClass;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -109,6 +110,13 @@ public class UMLClassGui extends VBox {
                 "-fx-border-width: 1 2 2 2;\n" +
                 "-fx-border-color: black;");
         this.getChildren().add(this.methodsGridPane);
+
+        // event listener
+        this.nameLabel.textProperty().addListener(((observableValue, s, t1) ->
+                    this.umlClass.setName(t1)
+                    //update()
+                ));
+
     }
 
     /**

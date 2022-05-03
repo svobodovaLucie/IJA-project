@@ -93,9 +93,9 @@ public class GuiLoader {
             // get name, type, access
             List <String> nameTypeAccess = attr.getNameTypeAccess();
             // create UMLClassifierGui
-            UMLClassifierGui typeGui = new UMLClassifierGui(nameTypeAccess.get(1));
+            //UMLClassifierGui typeGui = new UMLClassifierGui(nameTypeAccess.get(1));
             // create GUI attribute
-            UMLAttributeGui attrGui = new UMLAttributeGui(nameTypeAccess.get(0), typeGui, nameTypeAccess.get(2));
+            UMLAttributeGui attrGui = new UMLAttributeGui(attr);
 
             // add attribute to the GUI
             umlClassGui.addAttributeGui(attrGui);
@@ -115,8 +115,7 @@ public class GuiLoader {
             List <String> nameTypeAccess = method.getNameTypeAccess();
 
             // create UMLMethodGui object and add it to the root
-            UMLClassifierGui umlTypeGui = new UMLClassifierGui(nameTypeAccess.get(1));
-            UMLMethodGui umlMethodGui = new UMLMethodGui(nameTypeAccess.get(0), umlTypeGui, nameTypeAccess.get(2));
+            UMLMethodGui umlMethodGui = new UMLMethodGui(method);
             umlClassGui.addMethodGui(umlMethodGui);
 
             // get method attributes
@@ -137,8 +136,7 @@ public class GuiLoader {
         // load all attributes of a umlMethod
         for (UMLAttribute methodAttribute : methodAttributes) {
             // create the method attribute object and add it to the root
-            UMLClassifierGui umlTypeGui = new UMLClassifierGui(methodAttribute.getType());
-            UMLAttributeGui umlAttrGui = new UMLAttributeGui("", umlTypeGui, "");
+            UMLAttributeGui umlAttrGui = new UMLAttributeGui(methodAttribute);
             umlMethodGui.addArgumentGui(umlAttrGui);
         }
     }

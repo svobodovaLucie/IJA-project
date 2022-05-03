@@ -10,13 +10,8 @@
  */
 package app.uml;
 
-import app.umlGui.UMLAttributeGui;
-import app.umlGui.UMLClassifierGui;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Class represents a method, that has its name, return type and
