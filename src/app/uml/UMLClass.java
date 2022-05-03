@@ -142,5 +142,15 @@ public class UMLClass extends UMLClassifier {
     public List<UMLAttribute> getAttributes() {
         return Collections.unmodifiableList(this.attributes);
     }
+
+    /**
+     * Method returns unmodifiable list of UML class' methods.
+     *
+     * @return list of methods of the UML class
+     */
+    public List<UMLMethod> getMethods() {
+        return Collections.unmodifiableList(this.methods);
+    }
+
 }
 

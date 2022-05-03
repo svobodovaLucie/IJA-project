@@ -23,7 +23,7 @@ import java.io.IOException;
  * Main backend class that stores the UML class diagram.
  */
 public class MainApplication {
-    private ClassDiagram classDiagram;
+    //private ClassDiagram classDiagram;
 
     // private array of sequence diagrams
 
@@ -34,18 +34,24 @@ public class MainApplication {
      * @throws IOException
      * @throws ParseException
      */
+    /*
     public void main(String filename) throws IOException, ParseException {
         // saves the diagram to ClassDiagram
         System.out.println("Inside backend main\n");
         loadClassDiagram(filename);
     }
 
+     */
+
     /**
      * MainApplication constructor.
      */
+    /*
     public MainApplication() {
         this.classDiagram = new ClassDiagram("ClassDiagram");
     }
+
+     */
 
     /**
      * Method loads the UML method attributes from the diagram file.
@@ -53,6 +59,7 @@ public class MainApplication {
      * @param umlMethod UML method that contains the UML attributes to be loaded
      * @param methodAttributes array of UML method attributes in JSON
      */
+    /*
     private void saveMethodAttributes (UMLMethod umlMethod, JSONArray methodAttributes) {
         for (Object methodAttribute : methodAttributes) {
             JSONObject methodAttr = (JSONObject) methodAttribute;
@@ -67,12 +74,15 @@ public class MainApplication {
         }
     }
 
+     */
+
     /**
      * Method that load the UML class diagram methods from the diagram text file.
      *
      * @param umlClass UML class that contains UML methods to be loaded
      * @param methods array of UML methods in JSON
      */
+    /*
     private void saveMethods (UMLClass umlClass, JSONArray methods) {
         for (Object methodObj : methods) {
             JSONObject method = (JSONObject) methodObj;
@@ -95,12 +105,15 @@ public class MainApplication {
         }
     }
 
+     */
+
     /**
      * Method loads the UML attributes of umlClass from diagram file.
      *
      * @param umlClass UML class that contains UML attributes to be loaded
      * @param attributes array of UML attributes in JSON
      */
+    /*
     private void saveAttributes(UMLClass umlClass, JSONArray attributes) {
         for (Object attribute : attributes) {
             JSONObject attr = (JSONObject) attribute;
@@ -121,11 +134,14 @@ public class MainApplication {
         }
     }
 
+     */
+
     /**
      * Method loads the UML classes from the UML class diagram file.
      *
      * @param classes array of UML classes in JSON
      */
+    /*
     private void saveClasses(JSONArray classes) {
         for (Object aClass : classes) {
             JSONObject classObj = (JSONObject) aClass;
@@ -139,6 +155,8 @@ public class MainApplication {
         }
     }
 
+     */
+
     /**
      * Method loads the UML class diagram from diagram file into the application.
      *
@@ -146,6 +164,7 @@ public class MainApplication {
      * @throws IOException
      * @throws ParseException
      */
+    /*
     private void loadClassDiagram(String filename) throws IOException, ParseException {
         // load the JSON file
         JSONParser jsonParser = new JSONParser();
@@ -157,4 +176,6 @@ public class MainApplication {
         // save all parameters loaded from the input file
         saveClasses((JSONArray)diagram.get("classes"));
     }
+
+     */
 }

@@ -32,6 +32,7 @@ public class DiagramLoader {
      * @throws IOException
      * @throws ParseException
      */
+    /*
     public Group loadClassDiagramGui(String filename) throws IOException, ParseException {
         // create a Group
         Group root = new Group();
@@ -50,12 +51,15 @@ public class DiagramLoader {
         return root;
     }
 
+     */
+
     /**
      * Method loads the UML classes from the UML class diagram file.
      *
      * @param classes array of UML classes in JSON
      * @param root root element that contains the GUI objects
      */
+    /*
     private void saveClassesGui(JSONArray classes, Group root) {
         // load every class from the JSON file
         for (Object aClass : classes) {
@@ -72,12 +76,15 @@ public class DiagramLoader {
         }
     }
 
+     */
+
     /**
      * Method loads the UML attributes of umlClass from diagram file.
      *
      * @param umlClass UML class that contains UML attributes to be loaded
      * @param attributes array of UML attributes in JSON
      */
+    /*
     private void saveAttributesGui(UMLClassGui umlClass, JSONArray attributes) {
         // load all attributes of a umlClass
         for (Object attribute : attributes) {
@@ -95,12 +102,15 @@ public class DiagramLoader {
         }
     }
 
+     */
+
     /**
      * Method loads the UML class diagram methods from the diagram text file.
      *
      * @param umlClass UML class that contains UML methods to be loaded
      * @param methods array of UML methods in JSON
      */
+    /*
     private void saveMethodsGui (UMLClassGui umlClass, JSONArray methods) {
         // load all methods of a umlClass
         for (Object methodObj : methods) {
@@ -124,12 +134,15 @@ public class DiagramLoader {
         }
     }
 
+     */
+
     /**
      * Method loads the UML method attributes from the diagram file.
      *
      * @param umlMethod UML method that contains the UML attributes to be loaded
      * @param methodAttributes array of UML method attributes in JSON
      */
+    /*
     private void saveMethodAttributesGui (UMLMethodGui umlMethod, JSONArray methodAttributes) {
         // load all attributes of a umlMethod
         for (Object methodAttribute : methodAttributes) {
@@ -144,4 +157,5 @@ public class DiagramLoader {
             umlMethod.addArgumentGui(umlAttr);
         }
     }
+    */
 }

@@ -9,7 +9,12 @@
  */
 package app;
 
+import app.backend.Diagrams;
 import app.gui.GuiMain;
+import app.uml.ClassDiagram;
+import app.umlGui.DiagramLoader;
+import app.umlGui.DiagramLoaderNoGui;
+import javafx.scene.Group;
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
@@ -17,6 +22,9 @@ import java.io.IOException;
  * Main class for the application run.
  */
 public class Main {
+    // public // TODO static?
+    public static Diagrams diagrams;
+
     /**
      * Main method.
      *
@@ -24,7 +32,13 @@ public class Main {
      * @throws IOException
      * @throws ParseException
      */
+    // TODO static method?
     public static void main(String[] args) throws IOException, ParseException {
-        GuiMain.main(args);
+        // load JSON to BE
+        DiagramLoaderNoGui jsonLoader = new DiagramLoaderNoGui();
+        diagrams = jsonLoader.loadDiagrams(args[0]);   // TODO fix if we don't want to load a diagram from a file
+
+        // load GUI from BE
+        GuiMain.main(args, diagrams);
     }
 }

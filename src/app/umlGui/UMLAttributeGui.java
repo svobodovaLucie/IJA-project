@@ -9,6 +9,7 @@
  */
 package app.umlGui;
 
+import app.uml.UMLAttribute;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ import java.util.Objects;
  * Class represents the UML attribute with name and type.
  */
 public class UMLAttributeGui extends TextField {
+
+	// BE attribute that is represented in GUI
+	private UMLAttribute umlAttribute;
+
 	// type
 	protected UMLClassifierGui nodeType;
 	// name

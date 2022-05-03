@@ -11,6 +11,7 @@
 package app.umlGui;
 
 import app.gui.DraggableObject;
+import app.uml.UMLClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -28,6 +29,9 @@ import java.util.Objects;
  * methods. The UML class may be abstract.
  */
 public class UMLClassGui extends VBox {
+
+    // class that is represented in GUI
+    private UMLClass umlClass;
 
     // name
     TextField nameLabel;
@@ -52,9 +56,12 @@ public class UMLClassGui extends VBox {
     /**
      * UMLClass constructor. The UML class is not abstract.
      *
-     * @param name name of the UML class
+     * @param umlClass BE UMLClass to be represented
      */
-    public UMLClassGui(String name) {
+    public UMLClassGui(UMLClass umlClass) {
+        // add BE class
+        this.umlClass = umlClass;
+
         // set margin
         HBox.setMargin(this, new Insets(15, 15, 15, 15));
 
@@ -68,7 +75,7 @@ public class UMLClassGui extends VBox {
         Insets insets = new Insets(5, 5, 5, 5);
 
         // add name label
-        this.nameLabel = new TextField(name);
+        this.nameLabel = new TextField(this.umlClass.getName());
         this.nameLabel.setPadding(new Insets(5, 5, 5, 5));
         this.nameLabel.setStyle("-fx-font-weight: bold;\n" +
 		              "-fx-background-color: transparent;\n" +

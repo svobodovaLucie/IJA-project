@@ -10,9 +10,13 @@
  */
 package app.uml;
 
+import app.umlGui.UMLAttributeGui;
+import app.umlGui.UMLClassifierGui;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Class represents a method, that has its name, return type and
@@ -29,9 +33,10 @@ public class UMLMethod extends UMLAttribute {
 	 *
 	 * @param name name of the UML method
 	 * @param type type of the UML method
+	 * @param access type of access (private, public, protected)
 	 */
-	public UMLMethod(String name, UMLClassifier type) {
-		super(name, type);
+	public UMLMethod(String name, UMLClassifier type, String access) {
+		super(name, type, access);
 		this.attributes = new ArrayList<>();
 	}
 
@@ -43,12 +48,15 @@ public class UMLMethod extends UMLAttribute {
 	 * @param args list of UML arguments
 	 * @return UMLMethod
 	 */
+	/*
 	public static UMLMethod create(String name, UMLClassifier type,
 								   UMLAttribute... args) {
 		UMLMethod inst = new UMLMethod(name, type);
 		inst.attributes.addAll(Arrays.asList(args));
 		return inst;
 	}
+
+	 */
 
 	/**
 	 * Method inserts new argument to the list of UMLMethod arguments.
@@ -76,7 +84,34 @@ public class UMLMethod extends UMLAttribute {
 	 *
 	 * @return list of the method's argument
 	 */
+	/*
 	public List <UMLAttribute> getArguments() {
+		return this.attributes;
+	}
+
+	 */
+
+	/**
+	 * Method returns a list of strings that contains name,
+	 * type and access of UML method.
+	 *
+	 * @return list of strings [name, type, access]
+	 */
+	/*
+	// TODO zde se uz vse uklada ve spravnem formatu
+	public List<String> getNameTypeAccess() {
+		List<String> nameTypeAccess = new ArrayList<>();
+		nameTypeAccess.add(this.name);
+		nameTypeAccess.add(this.type.getName());
+		nameTypeAccess.add(this.access);
+
+		return nameTypeAccess;
+	}
+
+	 */
+
+	// TODO
+	public List<UMLAttribute> getAttributes() {
 		return this.attributes;
 	}
 }

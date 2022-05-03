@@ -10,9 +10,9 @@
  */
 package app.gui;
 
-import app.umlGui.DiagramLoader;
-import app.umlGui.DiagramSaver;
-import app.umlGui.UMLClassGui;
+import app.backend.Diagrams;
+import app.uml.ClassDiagram;
+import app.umlGui.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -26,18 +26,23 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import jdk.jshell.Diag;
+
 import java.util.List;
 
 /**
  * Class represents the main part of the GUI.
  */
 public class GuiMain extends Application {
+    // BE diagrams
+    static Diagrams BEdiagrams;
     /**
      * Main method for the GUI.
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String args[], Diagrams diagrams) {
+        BEdiagrams = diagrams;
         launch(args);
     }
 
@@ -50,6 +55,80 @@ public class GuiMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        // load GUI from BE for Class Diagram
+        GuiLoader guiLoader = new GuiLoader();
+        Group root = guiLoader.loadClassDiagramGui(BEdiagrams.getClassDiagram());
+
+        // TODO load seq diagram from BE
+
+        // set the scene
+        Scene scene = new Scene(root, 600, 600, Color.WHITE);
+        scene.getStylesheets().add("stylesheet.css");
+
+        // add save button (fix releasing the button)
+        Menu save = new Menu();
+        Button saveButton = new Button("Save JSON");
+        saveButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-size: 15;");
+        saveButton.setOnAction(e -> DiagramSaverNoGui.saveJSON(e, BEdiagrams, "savedDiagram.json"));
+        save.setGraphic(saveButton);
+
+        // add undo button - TODO, fix releasing the button
+        Menu undo = new Menu();
+        Button undoButton = new Button("Undo");
+        undoButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-size: 15;");
+        undo.setGraphic(undoButton);
+
+        // add MenuBar
+        MenuBar menuBar = new MenuBar(save, undo);
+        menuBar.useSystemMenuBarProperty();
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+        root.getChildren().add(menuBar);
+
+        // addClass button
+        Button addClass = new Button("Add Class");
+        addClass.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: black;\n" +
+                "-fx-font-size: 15;");
+        addClass.setLayoutY(50);
+        addClass.setLayoutX(500);
+        root.getChildren().add(addClass);
+        //addClass.setOnAction(e -> root.getChildren().add(new UMLClassGui("YourClass")));
+        addClass.setOnAction(e -> root.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"))));
+
+        // set the stage
+        primaryStage.setTitle("ija-app: diagrams");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        // show the help
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n    Your JSON file was loaded.\n\n" +
+                "    Attributes and methods can be edited\n" +
+                "    (adding them is not implemented yet).\n\n" +
+                "    New class can be added with \n" +
+                "    \"Add Class\" button.\n\n" +
+                "    Your diagrams can be saved with \n" +
+                "    \"Save JSON\" option on the Menu Bar.\n\n" +
+                "    Your file will be saved to:\n" +
+                "    \"dest/savedDiagram.json\".");
+        helpGroup.getChildren().add(text);
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("ija-app: help");
+        helpStage.show();
+
+
+        /*
         // load the JSON file
         Parameters params = getParameters();
         List<String> args = params.getRaw();
@@ -121,5 +200,6 @@ public class GuiMain extends Application {
         helpStage.setScene(helpScene);
         helpStage.setTitle("ija-app: help");
         helpStage.show();
+        */
     }
 }

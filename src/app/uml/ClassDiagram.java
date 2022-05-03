@@ -32,6 +32,21 @@ public class ClassDiagram extends Element {
         this.classifiers = new ArrayList<>();
     }
 
+    // TODO osetrit, aby se nemohla stejna trida pridat vickrat
+
+    /**
+     * Method adds new class to the class diagram.
+     *
+     * @param umlClass class to be added
+     */
+    public void addClass(UMLClass umlClass) {
+        this.classes.add(umlClass);
+    }
+
+    // TODO
+    public List <UMLClass> getClasses () {
+        return this.classes;
+    }
     /**
      * Method creates an instance of UMLClass and inserts it to the
      * list of classes in the UML class diagram. If the class already
