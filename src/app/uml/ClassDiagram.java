@@ -82,7 +82,7 @@ public class ClassDiagram extends Element {
             if (classifier.getName().equals(name))
                 return classifier;
         }
-        UMLClassifier newClassifier = new UMLClassifier(name, false);
+        UMLClassifier newClassifier = new UMLClassifier(name);
         this.classifiers.add(newClassifier);
         return newClassifier;
     }

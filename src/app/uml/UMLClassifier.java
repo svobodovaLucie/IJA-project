@@ -15,17 +15,19 @@ package app.uml;
  * from this class represents various classifiers - class, interface,
  * attribute etc.
  */
-public class UMLClassifier extends Element {
-	private boolean isUserDefined;
+public class UMLClassifier {
+	//private boolean isUserDefined;
 
+	// name
+	protected String name;
 	/**
 	 * UMLClassifier constructor.
 	 *
 	 * @param name name of the classifier
 	 */
 	public UMLClassifier(String name) {
-		super(name);
-		this.isUserDefined = true;
+		this.name = name;
+		//this.isUserDefined = true;
 	}
 
 	/**
@@ -35,10 +37,13 @@ public class UMLClassifier extends Element {
 	 * @param isUserDefined true if the classifier is user defined
 	 *                      (is implemented in the diagram), false if not
 	 */
+	/*
 	public UMLClassifier(String name, boolean isUserDefined) {
 		super(name);
 		this.isUserDefined = isUserDefined;
 	}
+
+	 */
 
 	/**
 	 * Factory method that creates an instance of the UML classifier.
@@ -48,7 +53,7 @@ public class UMLClassifier extends Element {
 	 * @return UMLClassifier
 	 */
 	public static UMLClassifier forName(String name) {
-		return new UMLClassifier(name, false);
+		return new UMLClassifier(name);
 	}
 
 	/**
@@ -58,9 +63,12 @@ public class UMLClassifier extends Element {
 	 * @return true if the classifier is user defined,
 	 *         false if not
 	 */
+	/*
 	public boolean isUserDefined() {
 		return this.isUserDefined;
 	}
+	 */
+
 
 	/**
 	 * Method returns the classifier as a string:
@@ -68,8 +76,18 @@ public class UMLClassifier extends Element {
 	 *
 	 * @return string "name(isUserDefined)"
 	 */
+	/*
 	public String toString() {
 		return getName() + "(" + this.isUserDefined + ")";
+	}
+	 */
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 }
 

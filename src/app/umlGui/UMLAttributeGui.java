@@ -48,6 +48,12 @@ public class UMLAttributeGui extends TextField {
 				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
 				"-fx-background-radius: 0;\n" +
 				"-fx-border-color: transparent;");
+
+		// event listener
+		this.textProperty().addListener(((observableValue, s, t1) ->
+				this.umlAttribute.setNameTypeAccess(this.getNameTypeAccess())
+		));
+
 	}
 
 	/**

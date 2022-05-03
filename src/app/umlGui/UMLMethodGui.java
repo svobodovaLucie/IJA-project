@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  */
 public class UMLMethodGui extends TextField {
 	// method to be represented
-	private UMLMethod method;
+	private UMLMethod umlMethod;
 
 	// inherited from super (UMLAttributeGui):
 	// type, name, access
@@ -45,12 +45,12 @@ public class UMLMethodGui extends TextField {
 	 * @param umlMethod UMLMethod to be represented in GUI
 	 */
 	public UMLMethodGui(UMLMethod umlMethod) {
-		this.method = umlMethod;
+		this.umlMethod = umlMethod;
 
-		List <String> nameTypeAccess = method.getNameTypeAccess();
+		List <String> nameTypeAccess = umlMethod.getNameTypeAccess();
 		this.name = nameTypeAccess.get(0);
 		this.type = nameTypeAccess.get(1);
-		this.access = nameTypeAccess.get(2);
+		this.access = convertAccess(nameTypeAccess.get(2));
 
 		this.attributes = new ArrayList<>();
 		this.setStyle("-fx-background-color: transparent;\n" +
@@ -58,6 +58,30 @@ public class UMLMethodGui extends TextField {
 				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
 					  "-fx-background-radius: 0;\n" +
 					  "-fx-border-color: transparent;");
+
+		// event listener
+		this.textProperty().addListener(((observableValue, s, t1) ->
+				this.umlMethod.setNameTypeAccess(this.getNameTypeAccess())
+		));
+	}
+
+	/**
+	 * Method converts the access string to the character.
+	 * public    ->  +
+	 * private   ->  -
+	 * protected ->  #
+	 *
+	 * @param access access type
+	 * @return string +, -, # or " " if invalid
+	 */
+	private String convertAccess(String access) {
+		if (Objects.equals(access, "public"))
+			return "+";
+		if (Objects.equals(access, "private"))
+			return "-";
+		if (Objects.equals(access, "protected"))
+			return "#";
+		return " ";
 	}
 
 	/**

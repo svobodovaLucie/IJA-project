@@ -114,8 +114,7 @@ public class UMLClassGui extends VBox {
         // event listener
         this.nameLabel.textProperty().addListener(((observableValue, s, t1) ->
                     this.umlClass.setName(t1)
-                    //update()
-                ));
+        ));
 
     }
 
