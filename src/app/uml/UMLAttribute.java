@@ -62,7 +62,7 @@ public class UMLAttribute {
 	 * @return type of the UML attribute as UMLClassifier
 	 */
 	public String getType() {
-		return this.type.toString();
+		return this.type.getName();
 	}
 
 	/**
