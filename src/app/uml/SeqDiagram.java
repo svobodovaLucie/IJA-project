@@ -7,6 +7,9 @@ import app.backend.Diagrams;
 import app.umlGui.DiagramLoader;
 
 
+// todo komentare
+// todo popis souboru
+
 /**
  * Class used for storing sequence diagram.
  */
@@ -18,12 +21,11 @@ public class SeqDiagram {
 
     // actors - every actor has booleans on different list but same index
     List <UMLClass> actors;
-    List <Boolean> actorConsistent;
+    List <String> actorsName;
     List <Boolean> actorsCreatedByMessage;
 
     // messages - every message has booleans on different list but same index
     List <UMLMessage> messages;
-    List <Boolean> messageConsistent;
 
 
     public SeqDiagram(String name) {
@@ -31,10 +33,8 @@ public class SeqDiagram {
         this.actors                  = new ArrayList<UMLClass>();
         this.messages                = new ArrayList<UMLMessage>();
         this.actorsCreatedByMessage  = new ArrayList<Boolean>();
-        this.actorConsistent         = new ArrayList<Boolean>();
-        this.messageConsistent       = new ArrayList<Boolean>();
+        this.actorsName              = new ArrayList<String>();
     }
-
 
     /**
      * actorList = ActorName -> class2 -> true -> ActorName
@@ -44,51 +44,19 @@ public class SeqDiagram {
      * @param actorsList
      */
     public void addAllActors(List<String> actorsList, Diagrams diagrams){
-
-        System.out.println("ADD ALL ACTORS");
-
         Boolean creByMess;
-        Boolean consistent;
         String actName;
         String className;
-
-        //boolean b1=Boolean.parseBoolean(s1);
+        UMLClass tempClass;
 
         for (int i = 0; i < actorsList.size();){
             actName = actorsList.get(i++);
             className = actorsList.get(i++);
             creByMess = Boolean.parseBoolean(actorsList.get(i++));
+            tempClass = diagrams.getClassDiagram().findClass(className);
 
-            System.out.println("actN " + actName);
-            System.out.println("claN " + className);
-            System.out.println("CreBM " + creByMess);
-
-            consistent = this.classExist(className, diagrams);
-            
-        }
-
-        System.out.println("####");
-        System.out.println(actorsList);
-        System.out.println("####");
-    }
-
-    /**
-     * if class exist returns true
-     * @param className
-     * @return
-     */
-    private Boolean classExist(String className, Diagrams diagrams){
-        UMLClass tempClass = diagrams.getClassDiagram().findClass(className);
-        if (tempClass == null) {
-            // TODO poresit
-            System.out.println("NEKONZISTENCE!!!");
-            System.out.println(className);
-            return false;
-        } else {
-            System.out.println("KONZISTENCE!!!");
-            System.out.println(className);
-            return true;
-            //seqDiagram.addActor(umlClass);
+            addActor(tempClass, creByMess, actName);
+            //consistent = this.classExist(className, diagrams);
         }
     }
 
@@ -100,26 +68,56 @@ public class SeqDiagram {
      *
      * @param messageList
      */
-    public void addAllMessages(List<String> messageList, Diagrams diagram){
+    public void addAllMessages(List<String> messageList, Diagrams diagrams){
         System.out.println("ADD ALL MESSAGES");
-        // todo check if actor exist
 
-        System.out.println("####");
-        System.out.println(messageList);
-        System.out.println("####");
+        String from;
+        String to;
+        String type;
+        String metName;
+
+        UMLClass classFrom;
+        UMLClass classTo;
+        UMLMethod oMethodName;
+
+        for (int i = 0; i < messageList.size();){
+            from = messageList.get(i++);
+            to = messageList.get(i++);
+            type = messageList.get(i++);
+            metName = messageList.get(i++);
+
+
+            classFrom = diagrams.getClassDiagram().findClass(from);
+            classTo = diagrams.getClassDiagram().findClass(to);
+            if (classFrom != null){
+                oMethodName = classFrom.findMethod(metName);
+            }
+            else {
+                oMethodName = null;
+            }
+
+            UMLMessage message = new UMLMessage(classFrom, classTo, type, oMethodName);
+            addMessage(message);
+        }
     }
 
-    public void addMessage(UMLMessage mess, Boolean consistent){
+    public void addMessage(UMLMessage mess){
         this.messages.add(mess);
-        this.messageConsistent.add(consistent);
     }
 
+    public void removeMessage(){
+        //todo
+        return;
+    }
+    public void removeActor(){
+        //todo
+        return;
+    }
 
-    public void addActor(UMLClass actor, Boolean createdByMessage,
-                            Boolean consistent) {
+    public void addActor(UMLClass actor, Boolean createdByMessage, String name) {
         this.actors.add(actor);
+        this.actorsName.add(name);
         this.actorsCreatedByMessage.add(createdByMessage);
-        this.actorConsistent.add(consistent);
     }
 
     public Boolean getNActorCreatedByMessage(int n){
@@ -153,4 +151,24 @@ public class SeqDiagram {
         // not found
         return null;
     }
+
+    /*
+     * if class exist returns true
+     * @param className
+     * @return
+    private Boolean classExist(String className, Diagrams diagrams){
+        UMLClass tempClass = diagrams.getClassDiagram().findClass(className);
+        if (tempClass == null) {
+            // TODO poresit
+            System.out.println("NEKONZISTENCE!!!");
+            System.out.println(className);
+            return false;
+        } else {
+            System.out.println("KONZISTENCE!!!");
+            System.out.println(className);
+            return true;
+            //seqDiagram.addActor(umlClass);
+        }
+    }
+    */
 }

@@ -1,5 +1,9 @@
 package app.uml;
 
+
+// todo komentare
+// todo popis souboru
+
 /**
  * Class that represent sequence diagram method
  */

@@ -60,7 +60,9 @@ public class GuiMain extends Application {
         // load seq diagram from BE
         // both are roots because they will be in different Scene
         // there will be scene for each seq diagram
+
         List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
+
         System.out.println(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene

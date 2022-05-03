@@ -76,6 +76,11 @@ public class UMLMethod extends UMLAttribute {
 		return true;
 	}
 
+	public String getName(){
+		return super.name;
+	}
+
+
 	/**
 	 * Method returns a unmodifiable list of the UML method's arguments.
 	 *

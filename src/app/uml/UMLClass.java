@@ -23,7 +23,6 @@ public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
 
-
     private boolean isAbstract;
 
     /**
@@ -135,6 +134,18 @@ public class UMLClass extends UMLClassifier {
         return 0;
     }
 
+    public UMLMethod findMethod(String name){
+        // find class
+        for (UMLMethod mtd : this.getMethods()) {
+            if (mtd.getName().equals(name)) {
+                return mtd;
+            }
+        }
+
+        // not found -> null
+        return null;
+    }
+
     /**
      * Method returns unmodifiable list of UML class' arguments.
      *
@@ -152,6 +163,7 @@ public class UMLClass extends UMLClassifier {
     public List<UMLMethod> getMethods() {
         return Collections.unmodifiableList(this.methods);
     }
+
 
     // method change the name
     public void setName(String newName) {
