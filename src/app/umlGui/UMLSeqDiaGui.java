@@ -5,7 +5,7 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation od UMLClass sequence diagram 
+ * File contains implementation of sequence diagram gui
  */
 package app.umlGui;
 
@@ -25,17 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * Class that represent Sequence diagram in GUI. It is connected with it Backed
+ * representation via SeqDiagram class.
+ */
 public class UMLSeqDiaGui extends AnchorPane {
 
     // SeqDiagram to be represented
     private SeqDiagram seqDiagram;
 
-    // NO GUI data
-    // name_met1 -> class1 -> name_met2 -> class2 -> name_met2 -> class2 ....
-    private List<String> actorsList;
-    // from1 -> to1 -> type1 -> from2 -> to2 -> type2 ....
-    private List<String> messageList;
-    private String       name;
+    // counters
     private int messageCounter;
     private int actorsCounter;
 
@@ -45,114 +45,97 @@ public class UMLSeqDiaGui extends AnchorPane {
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
      * When constructor is called everything is painted
-     *
-     * todo convert to graphics nodes
-     *
-     * @param actorsList
-     * @param messageList
-     * @param name
+     * @param seqDiagram BE diagram that ll be represented graphically
      */
     public UMLSeqDiaGui(SeqDiagram seqDiagram){
         this.seqDiagram = seqDiagram;
-
-        //this.actorsList  = seqDiagram.getActors();
-        //this.messageList = seqDiagram.getMessages();
-
-        //this.ActorsGui
-        this.name        = seqDiagram.getName();
 
         this.messageCounter = 0;
         this.actorsCounter  = 0;
 
         this.ActorsGui = new ArrayList<>();
+
         loadActorsFromBE(seqDiagram);
-
-        // set transparent border for easier dragging
-        /*
-        BorderStroke borderStroke = new BorderStroke(Color.TRANSPARENT,
-                BorderStrokeStyle.SOLID, null, new BorderWidths(5));
-        this.setBorder(new Border(borderStroke));
-
-         */
-
+        loadMessagesFromBE(seqDiagram);
     }
 
+    /**
+     * Load all the actors from backend class
+     *
+     * @param seqDiagram BE sequence diagram implementation that hold all the data
+     */
     private void loadActorsFromBE(SeqDiagram seqDiagram) {
-        int n = 0;
-        for (UMLClass actor : seqDiagram.getActors()) {
-            UMLActorGui actorGui = new UMLActorGui(actor, n++);
-            this.ActorsGui.add(actorGui);
+
+        // three information about actors they are interconnected by index.
+        List<UMLClass> actors          = seqDiagram.getActors();
+        List<String> actorsName        = seqDiagram.getActorsName();
+        List<Boolean> createdByMessage = seqDiagram.getActorsCreatedByMessage();
+
+        UMLClass oneActorClass   = null;
+        String oneActorName      = null;
+        Boolean oneCreated;
+
+        System.out.println("LOADING ACTORS");
+        for (int i = 0; i < actors.size(); i++) {
+
+            oneActorName = actorsName.get(i);
+            oneActorClass = actors.get(i);
+            oneCreated = createdByMessage.get(i);
+
+            // if Actor is created by message we will paint him later
+            if (oneCreated == Boolean.FALSE){
+                this.paintActor(oneActorName, oneActorClass);
+            }
         }
     }
 
     /**
-     * Paint all the actors that are stored in actorList
-     * Put then on static places base on actorsCounter
-     *
-     * Call only on empty !! (in Constructor)
-     *
+     * Paint actor
+     * @param actorName actor name
+     * @param actorClass class where is actor instanced from (could be null)
      */
-    public void addAllActorsGUI(){
-
-        setActorsCounter(0);
-
-        //for (int i = 0; i < getActorsList() )
-
-        this.addActorGUI();
-        this.addActorGUI();
-
-        // add name label
-
-    }
-    public void addActorGUI(){
-        // Find out actor order
+    public void paintActor(String actorName, UMLClass actorClass){
         int n = getActorsCounter();
 
-        // TODO musime najit danou tridu v diagramu trid jestli existuje (az budeme pridavat dynamicky dalsi actory v GUI)
-        // prozatim to je ok - jen nacitani z uz nacteneho SeqDiagramu z JSONu
-        UMLActorGui newActor = new UMLActorGui(seqDiagram.getActor(getNActorActorName(n)), n);
+        String name = actorName;
+        if (actorClass == null){
+            name = name + ":(null)";
+        }
+        else{
+            name = name + ":(" + actorClass.getName() + ")";
+        }
+
+        UMLActorGui newActor = new UMLActorGui(name ,n);
         this.ActorsGui.add(newActor);
 
-        System.out.println("tu");
         this.getChildren().add(newActor.getTextField());
-        System.out.println( this.getChildren().get(0));
-
 
         setActorsCounter(n+1);
-
     }
 
-    public void addAllMessagesGUI(){
+    /**
+     *
+     * @param seqDiagram
+     */
+    private void loadMessagesFromBE(SeqDiagram seqDiagram){
         return;
     }
 
-    public void addMessageGUI(){
-        return;
-    }
 
     // getrs
-    public String getNActorActorName(int n){ return getActorsList().get((n*2)); }
-    public String getNActorClass(int n){ return getActorsList().get((n*2)+1); }
-    public String getNMessageFrom(int n){ return getActorsList().get((n*3)); }
-    public String getNMessageTo(int n){ return getActorsList().get((n*3) + 1); }
-    public String getNMessageType(int n){ return getActorsList().get((n*3) + 2); }
-    public List<String> getActorsList(){ return this.actorsList; }
-    public List<String> getMessageList(){ return this.messageList; }
-    public String getName() { return this.name; }
-    public int getMessageCounter() { return this.messageCounter; }
-    public int getActorsCounter() { return this.actorsCounter; }
-
-    // setrs or (adds to list)
-    public void setActorsCounter(int i) { this.actorsCounter = i;}
-    public void setMessageCounter(int i) { this.messageCounter = i;}
-    public void addActorToList(String ActorName, String Class){
-        this.actorsList.add(ActorName);
-        this.actorsList.add(Class);
+    public int getMessageCounter() {
+        return this.messageCounter;
     }
-    public void addMessageToList(String from, String to, String type){
-        this.messageList.add(from);
-        this.messageList.add(to);
-        this.messageList.add(type);
+    public int getActorsCounter() {
+        return this.actorsCounter;
+    }
+
+    // setrs
+    public void setActorsCounter(int i) {
+        this.actorsCounter = i;
+    }
+    public void setMessageCounter(int i) {
+        this.messageCounter = i;
     }
 }
 

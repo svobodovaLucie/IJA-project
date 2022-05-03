@@ -11,26 +11,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class UMLActorGui extends Label {
-    // UMLClass that is represented in Seq GUI
-    private UMLClass umlClass;
 
     private Label actorNameGui;
 
     /**
      * Paint Actor Constructor
      *
-     * @param name Actor name
      * @param n Actor order
      */
-    public UMLActorGui(UMLClass umlClass, int n){
-        this.umlClass = umlClass;
+    public UMLActorGui(String name, int n){
 
         int x_space = 150;
         int x_borders = 200;
         int y_borders = 75;
 
         // todo restyle
-        this.actorNameGui = new Label(umlClass.getName());
+        this.actorNameGui = new Label(name);
         this.actorNameGui.setAlignment(Pos.CENTER);
         this.actorNameGui.setContentDisplay(ContentDisplay.CENTER);
         this.actorNameGui.prefHeight(100);

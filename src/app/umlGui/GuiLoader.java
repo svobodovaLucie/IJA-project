@@ -37,14 +37,12 @@ public class GuiLoader {
             Group rootSeq = new Group();
 
             //TODO TADY FIX
-            /*
             // load the diagram
             UMLSeqDiaGui seqDiaGui = new UMLSeqDiaGui(seqDig);
             rootSeq.getChildren().add(seqDiaGui);
 
             // add to list of Groups
             root.add(rootSeq);
-            */
         }
 
         return root;

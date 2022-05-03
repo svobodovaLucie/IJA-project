@@ -1,5 +1,16 @@
 package app.uml;
 
+/*
+ * File:         SeqDiagram.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
+ * File contains implementation Sequence diagram class that represents
+ * one sequence diagram.
+ */
+
 import javax.swing.text.StyledEditorKit;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +18,10 @@ import app.backend.Diagrams;
 import app.umlGui.DiagramLoader;
 
 
-// todo komentare
-// todo popis souboru
-
 /**
- * Class used for storing sequence diagram.
+ * Class represents one sequence diagram. This is Backend data representation.
  */
 public class SeqDiagram {
-    // TODO add necessary elements
 
     // name
     String name;
@@ -27,7 +34,10 @@ public class SeqDiagram {
     // messages - every message has booleans on different list but same index
     List <UMLMessage> messages;
 
-
+    /**
+     * Sequence diagram constructor.
+     * @param name name of diagram
+     */
     public SeqDiagram(String name) {
         this.name                    = name;
         this.actors                  = new ArrayList<UMLClass>();
@@ -37,18 +47,21 @@ public class SeqDiagram {
     }
 
     /**
-     * actorList = ActorName -> class2 -> true -> ActorName
-     *    -> class2 -> false ...
-     *
-     * add all actors
-     * @param actorsList
+     * Method store all Actors from actorsList to this Class.
+     * @param actorsList List that contains information based on JSON format
+     *      actorList = ActorName -> class2 -> true -> ActorName
+     *           -> class2 -> false ...
+     * @param diagrams Backend where are all the sequences diagrams are stored
      */
     public void addAllActors(List<String> actorsList, Diagrams diagrams){
+
+        // temp variables' information that are extracted from list
         Boolean creByMess;
         String actName;
         String className;
         UMLClass tempClass;
 
+        // go through list and store elements to this class
         for (int i = 0; i < actorsList.size();){
             actName = actorsList.get(i++);
             className = actorsList.get(i++);
@@ -61,21 +74,22 @@ public class SeqDiagram {
     }
 
     /**
-     * messageList = from1 -> to1 -> type1 -> methodName1 ->
-     *   -> from2 -> to2 -> type2 -> methodName2
      *
      * add all messages and set their consistency
      *
-     * @param messageList
+     * @param messageList List that contains information based on JSON format
+     *      messageList = from1 -> to1 -> type1 -> methodName1 ->
+     *           -> from2 -> to2 -> type2 -> methodName2
+     *
+     * @param diagrams Backend where are all the sequences diagrams are stored
      */
     public void addAllMessages(List<String> messageList, Diagrams diagrams){
-        System.out.println("ADD ALL MESSAGES");
 
+        // temp variables' information that are extracted from list
         String from;
         String to;
         String type;
         String metName;
-
         UMLClass classFrom;
         UMLClass classTo;
         UMLMethod oMethodName;
@@ -101,24 +115,45 @@ public class SeqDiagram {
         }
     }
 
+    /**
+     * Add message to sequence diagram class
+     * @param mess message
+     */
     public void addMessage(UMLMessage mess){
         this.messages.add(mess);
     }
 
-    public void removeMessage(){
-        //todo
-        return;
-    }
-    public void removeActor(){
-        //todo
-        return;
-    }
-
+    /**
+     * Add actor to sequence diagram class
+     * @param actor Class that actor is instance of.
+     * @param createdByMessage Is actor crated by message <<create>> message?
+     * @param name name of actor
+     */
     public void addActor(UMLClass actor, Boolean createdByMessage, String name) {
         this.actors.add(actor);
         this.actorsName.add(name);
         this.actorsCreatedByMessage.add(createdByMessage);
     }
+
+
+
+    public void removeMessage(){
+        //todo
+        return;
+    }
+
+    public void removeActor(){
+        //todo
+        return;
+    }
+
+
+    /*
+    List <UMLClass> actors;
+    List <String> actorsName;
+    List <Boolean> actorsCreatedByMessage;
+    */
+
 
     public Boolean getNActorCreatedByMessage(int n){
         return  this.actorsCreatedByMessage.get(n);
@@ -132,7 +167,9 @@ public class SeqDiagram {
         return this.messages.get(n);
     }
 
-    public List<Boolean> getActorCreatedByMessage(){ return this.actorsCreatedByMessage; }
+    public List<Boolean> getActorCreatedByMessage() {
+        return this.actorsCreatedByMessage;
+    }
 
     public String getName() {
         return this.name;
@@ -142,33 +179,13 @@ public class SeqDiagram {
         return this.actors;
     }
 
-    public UMLClass getActor(String name) {
-        for (UMLClass actor : this.getActors()) {
-            if (actor.getName().equals(name)) {
-                return actor;
-            }
-        }
-        // not found
-        return null;
+    public List <String> getActorsName(){
+        return this.actorsName;
     }
 
-    /*
-     * if class exist returns true
-     * @param className
-     * @return
-    private Boolean classExist(String className, Diagrams diagrams){
-        UMLClass tempClass = diagrams.getClassDiagram().findClass(className);
-        if (tempClass == null) {
-            // TODO poresit
-            System.out.println("NEKONZISTENCE!!!");
-            System.out.println(className);
-            return false;
-        } else {
-            System.out.println("KONZISTENCE!!!");
-            System.out.println(className);
-            return true;
-            //seqDiagram.addActor(umlClass);
-        }
+    public List <Boolean> getActorsCreatedByMessage(){
+        return this.actorsCreatedByMessage;
     }
-    */
+
+
 }
