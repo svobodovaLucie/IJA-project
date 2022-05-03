@@ -10,6 +10,8 @@
  */
 package app.uml;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +25,12 @@ public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
 
+    // TODO udelat z tohoto list
+
+
     private boolean isAbstract;
+
+    private PropertyChangeSupport support;
 
     /**
      * UMLClass constructor. The UML class is not abstract.
@@ -35,6 +42,16 @@ public class UMLClass extends UMLClassifier {
         this.isAbstract = false;
         this.attributes = new ArrayList<>();
         this.methods = new ArrayList<>();
+
+        this.support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
     }
 
     /**
@@ -154,6 +171,7 @@ public class UMLClass extends UMLClassifier {
 
     // method change the name
     public void setName(String newName) {
+        this.support.firePropertyChange("name", this.name, newName);
         this.name = newName;
     }
 }

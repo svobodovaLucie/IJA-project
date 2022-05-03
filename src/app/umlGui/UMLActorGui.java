@@ -10,7 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class UMLActorGui extends Label {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeListenerProxy;
+import java.beans.PropertyChangeSupport;
+
+public class UMLActorGui extends Label implements PropertyChangeListener {
     // UMLClass that is represented in Seq GUI
     private UMLClass umlClass;
 
@@ -19,7 +24,7 @@ public class UMLActorGui extends Label {
     /**
      * Paint Actor Constructor
      *
-     * @param name Actor name
+     * @param umlClass UMLClass
      * @param n Actor order
      */
     public UMLActorGui(UMLClass umlClass, int n){
@@ -43,6 +48,10 @@ public class UMLActorGui extends Label {
         this.actorNameGui.setLayoutX(x_borders+(x_space*n));
         this.actorNameGui.setLayoutY(y_borders);
 
+    }
+
+    public void propertyChange(PropertyChangeEvent e) {
+        this.actorNameGui.setText((String) e.getNewValue());
     }
 
     public Label getTextField(){ return this.actorNameGui;}

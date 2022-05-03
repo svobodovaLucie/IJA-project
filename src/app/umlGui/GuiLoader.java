@@ -57,10 +57,16 @@ public class GuiLoader {
         // create a Group
         Group root = new Group();
 
-        // load classes from classDiagram
-        saveClassesGui(classDiagram.getClasses(), root);
+        // create ClassDiagramGui
+        UMLClassDiagramGui umlClassDiagramGui = new UMLClassDiagramGui(classDiagram);
 
-        // return the Group
+        // load classes from classDiagram
+        saveClassesGui(classDiagram.getClasses(), umlClassDiagramGui);
+
+        // add umlClassDiagramGui to root
+        root.getChildren().add(umlClassDiagramGui);
+
+        // return the root Group
         return root;
     }
 
@@ -68,13 +74,13 @@ public class GuiLoader {
      * Method loads the UML classes from the UML class diagram file.
      *
      * @param classes array of UML classes in JSON
-     * @param root root element that contains the GUI objects
+     * @param umlClassDiagramGui root element that contains the GUI objects
      */
-    private void saveClassesGui(List<UMLClass> classes, Group root) {
+    private void saveClassesGui(List<UMLClass> classes, UMLClassDiagramGui umlClassDiagramGui) {
         for (UMLClass umlClass : classes) {
             // create GUI element for the class
-            UMLClassGui umlClassGui = new UMLClassGui(umlClass);
-            root.getChildren().add(umlClassGui);
+            UMLClassGui umlClassGui = new UMLClassGui(umlClass, umlClassDiagramGui);
+            umlClassDiagramGui.getChildren().add(umlClassGui);
 
             // load attributes and methods
             saveAttributesGui(umlClass.getAttributes(), umlClassGui);

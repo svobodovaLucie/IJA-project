@@ -22,7 +22,6 @@ import java.io.IOException;
  * Main class for the application run.
  */
 public class Main {
-    // public // TODO static?
     public static Diagrams diagrams;
 
     /**
@@ -32,7 +31,6 @@ public class Main {
      * @throws IOException
      * @throws ParseException
      */
-    // TODO static method?
     public static void main(String[] args) throws IOException, ParseException {
         // load JSON to BE
         DiagramLoaderNoGui jsonLoader = new DiagramLoaderNoGui();

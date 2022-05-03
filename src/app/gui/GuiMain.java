@@ -86,6 +86,12 @@ public class GuiMain extends Application {
 
         // add undo button - TODO, fix releasing the button
         Button undoButton = this.createButton("Undo", 0);
+        undoButton.setOnAction(e -> {
+            System.out.println("undoButton.onAction()");
+            UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
+            umlClassDiagramGui.undo();
+        });
+    //(UMLClassDiagramGui)rootClass.getChildren().get(0).undo()));
         Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
@@ -96,7 +102,7 @@ public class GuiMain extends Application {
 
         // addClass button
         Button addClass = createButton("Add Class", 1);
-        addClass.setOnAction(e -> rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"))));
+        addClass.setOnAction(e -> rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"), (UMLClassDiagramGui) rootClass.getChildren().get(0))));
         addClass.setLayoutY(50);
         addClass.setLayoutX(500);
         rootClass.getChildren().add(addClass);

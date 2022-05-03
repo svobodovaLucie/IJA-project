@@ -10,6 +10,7 @@
  */
 package app.umlGui;
 
+import app.backend.CommandBuilder;
 import app.gui.DraggableObject;
 import app.uml.UMLClass;
 import javafx.application.Platform;
@@ -20,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +32,9 @@ import java.util.Objects;
  * methods. The UML class may be abstract.
  */
 public class UMLClassGui extends VBox {
+
+    // owner
+    private final UMLClassDiagramGui owner;
 
     // class that is represented in GUI
     private UMLClass umlClass;
@@ -58,15 +63,38 @@ public class UMLClassGui extends VBox {
      *
      * @param umlClass BE UMLClass to be represented
      */
-    public UMLClassGui(UMLClass umlClass) {
+    public UMLClassGui(UMLClass umlClass, UMLClassDiagramGui umlClassDiagramGui) {
         // add BE class
         this.umlClass = umlClass;
+
 
         // set margin
         HBox.setMargin(this, new Insets(15, 15, 15, 15));
 
         // make the UMLClassGui object dragable
         draggableObject.makeDraggable(this);
+
+        // add owner
+        this.owner = umlClassDiagramGui;
+
+        this.setOnDragDetected(ev -> {
+            System.out.println("onDragDetected");
+            owner.executeCommand(new CommandBuilder.Command() {
+                //List <Double> oldPosition;
+                @Override
+                public void execute() {
+                    System.out.println("execute()");
+                    //oldPosition = draggableObject.getPosition();
+                }
+                @Override
+                public void undo() {
+                    System.out.println("undo()");
+                    draggableObject.setOldPosition();
+                    //update();
+
+                }
+            });
+        });
 
         // set transparent border for easier dragging
         BorderStroke borderStroke = new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null,

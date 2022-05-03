@@ -82,6 +82,7 @@ public class UMLSeqDiaGui extends AnchorPane {
         for (UMLClass actor : seqDiagram.getActors()) {
             UMLActorGui actorGui = new UMLActorGui(actor, n++);
             this.ActorsGui.add(actorGui);
+            actor.addPropertyChangeListener(this.ActorsGui.get(this.ActorsGui.size() - 1));
         }
     }
 
