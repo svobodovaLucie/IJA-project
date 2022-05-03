@@ -17,13 +17,131 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Class that loads the diagram from its JSON representation.
  */
 public class DiagramLoader {
+
+    /**
+     * where seq1 is one seq diagram
+     *
+     *
+     *              sequence_diagram_name
+     *              |                    |
+     *            ACTORS                Messages
+     *           |      |               |      |
+     *          name1   name2         type1    type2
+     *           |        |             |       |
+     *          class    class        from     from
+     *                                  |        |
+     *                                 to        to
+     *
+     * @param filename name of the file that contains the diagram in JSON format
+     * @throws IOException
+     * @throws ParseException
+     * @return List of Group - each node is one seq diagram
+     *
+     */
+    public List<Group> loadSeqDiagramsGui(String filename) throws IOException, ParseException{
+        // create array of groups
+        List<Group> root_list = new ArrayList<Group>();
+
+        // load the JSON file
+        JSONParser jsonParser = new JSONParser();
+
+        // load everything to diagram object
+        Object input = jsonParser.parse(new FileReader(filename));
+        JSONObject diagram = (JSONObject)input;
+
+        JSONArray seqDigs = (JSONArray) diagram.get("Sequence_diagrams");
+
+        int i = 0; // indexing groups
+        for (Object seqDig : seqDigs) {
+            JSONObject oneDiag = (JSONObject) seqDig;
+
+            String diagName    = (String) oneDiag.get("name_seq");
+            // Actors array (name, class)
+            List<String> actorsList = this.getSeqActors((JSONArray) oneDiag.get("Actors"));
+            List<String> messageList = this.getSeqMethods((JSONArray) oneDiag.get("Messages"));
+
+            // Strings are converted to group data type here
+            Group root = seqDiagramGroup(diagName, actorsList, messageList);
+
+            System.out.println("......");
+            System.out.println(root.getChildren());
+            System.out.println(actorsList);
+            System.out.println(messageList);
+            System.out.println("......");
+
+            // add group to list //store one seq diagram
+            root_list.add(root);
+        }
+        return root_list;
+    }
+
+    /**
+     * Method converse strings to Group that represent one sequence diagram
+     *
+     * @param diagName Diagram name
+     * @param actorsList Actors list can be obtained by getSeqActors()
+     * @param messageList Messages list can be obtained by getSeqMethods()
+     * @return group that represent one sequence diagram
+     */
+    private Group seqDiagramGroup(String diagName, List<String> actorsList,
+                                                   List<String> messageList){
+        Group root = new Group();
+
+        UMLSeqDiaGui seqDia = new UMLSeqDiaGui(actorsList, messageList, diagName);
+        root.getChildren().add(seqDia);
+
+        return root;
+    }
+
+    /**
+     * actorList = name_met1 -> class2 -> name_met2 -> class2 ...
+     * @param actors JSONArray that has all the sequence diagram actors
+     * @return  List of sequence diagram actors
+     */
+    private List<String> getSeqActors(JSONArray actors){
+        // actorList = name_met1 -> class2 -> name_met2 -> class2
+        List<String> actorsList = new ArrayList<String>();
+        for (Object ac : actors){
+            JSONObject oneActor = (JSONObject) ac;
+            String nameMet      = (String) oneActor.get("actorName");
+            String nameClass    = (String) oneActor.get("class");
+            actorsList.add(nameMet);
+            actorsList.add(nameClass);
+        }
+        return  actorsList;
+    }
+
+    /**
+     * messageList = name_met1 -> class2 -> name_met2 -> class2 ...
+     * @param messages JSONArray that has all the sequence diagram messages
+     * @return List of sequence diagram messages
+     */
+    private List<String> getSeqMethods(JSONArray messages){
+
+        // messageList = from1 -> to1 -> type1 -> from2 -> to2 -> type2
+        List<String> messageList = new ArrayList<String>();
+        for (Object me : messages){
+            JSONObject oneMessage = (JSONObject) me;
+            String from         = (String) oneMessage.get("from");
+            String to           = (String) oneMessage.get("to");
+            String type         = (String) oneMessage.get("type");
+            messageList.add(from);
+            messageList.add(to);
+            messageList.add(type);
+        }
+        return messageList;
+    }
 
     /**
      * Method loads the UML class diagram from JSON diagram file into the application.

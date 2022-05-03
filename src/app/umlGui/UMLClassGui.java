@@ -41,7 +41,8 @@ public class UMLClassGui extends VBox {
     GridPane attributesGridPane;
     GridPane methodsGridPane;
 
-
+    // draggable property
+    DraggableObject draggableObject = new DraggableObject();
 
     // list of attributes
     private List<UMLAttributeGui> nodeAttributes;
@@ -51,8 +52,6 @@ public class UMLClassGui extends VBox {
     private List<UMLMethodGui> nodeMethods;
     private List<Button> methodButtons;
 
-    // draggable property
-    DraggableObject draggableObject = new DraggableObject();
 
     /**
      * UMLClass constructor. The UML class is not abstract.
