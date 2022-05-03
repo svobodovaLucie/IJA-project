@@ -98,6 +98,7 @@ public class DiagramLoaderNoGui {
                 UMLClass umlClass = diagrams.getClassDiagram().findClass(actor);
                 if (umlClass == null) {
                     // TODO poresit
+                    System.out.println(actor);
                     System.out.println("NEKONZISTENCE!!!");
                 } else {
                     seqDiagram.addActor(umlClass);
@@ -109,11 +110,12 @@ public class DiagramLoaderNoGui {
             seqDiagram.addMessages(messageList);
             // load
             diagrams.addSeqDiagram(seqDiagram);
+
         }
     }
 
     /**
-     * actorList = name_met1 -> class2 -> name_met2 -> class2 ...
+     * actorList = name_met1 -> class2 -> true -> name_met2 -> class2 -> false ...
      * @param actors JSONArray that has all the sequence diagram actors
      * @return  List of sequence diagram actors
      */
@@ -121,11 +123,14 @@ public class DiagramLoaderNoGui {
         // actorList = name_met1 -> class2 -> name_met2 -> class2
         List<String> actorsList = new ArrayList<String>();
         for (Object ac : actors){
-            JSONObject oneActor = (JSONObject) ac;
-            String nameMet      = (String) oneActor.get("name");
-            String nameClass    = (String) oneActor.get("class");
-            actorsList.add(nameMet);
+            JSONObject oneActor         = (JSONObject) ac;
+            String actorName            = (String) oneActor.get("actorName");
+            String nameClass            = (String) oneActor.get("class");
+            String createdByMessage     = (String) oneActor.get("createdByMessage");
+
+            actorsList.add(actorName);
             actorsList.add(nameClass);
+            actorsList.add(createdByMessage);
         }
         return  actorsList;
     }
@@ -137,16 +142,20 @@ public class DiagramLoaderNoGui {
      */
     private List<String> getSeqMethods(JSONArray messages){
 
-        // messageList = from1 -> to1 -> type1 -> from2 -> to2 -> type2
+        // messageList = from1 -> to1 -> type1 -> methodName1 ->
+        // -> from2 -> to2 -> type2 -> methodName2
         List<String> messageList = new ArrayList<String>();
         for (Object me : messages){
             JSONObject oneMessage = (JSONObject) me;
             String from         = (String) oneMessage.get("from");
             String to           = (String) oneMessage.get("to");
             String type         = (String) oneMessage.get("type");
+            String methodName   = (String) oneMessage.get("methodName");
+
             messageList.add(from);
             messageList.add(to);
             messageList.add(type);
+            messageList.add(methodName);
         }
         return messageList;
     }

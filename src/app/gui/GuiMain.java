@@ -29,8 +29,11 @@ import java.util.List;
  * Class represents the main part of the GUI.
  */
 public class GuiMain extends Application {
+
     // BE diagrams
     static Diagrams BEdiagrams;
+
+
     /**
      * Main method for the GUI.
      *
@@ -58,6 +61,7 @@ public class GuiMain extends Application {
         // both are roots because they will be in different Scene
         // there will be scene for each seq diagram
         List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
+        System.out.println(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
         createClassDiagScene(rootClass, primaryStage);

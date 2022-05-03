@@ -21,7 +21,9 @@ import java.util.List;
  * ad a part of UML classifier class or interface.
  */
 public class UMLMethod extends UMLAttribute {
+
 	private List<UMLAttribute> attributes;
+
 
 	/**
 	 * UMLMethod constructor.
