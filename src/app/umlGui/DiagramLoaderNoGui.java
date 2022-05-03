@@ -93,7 +93,13 @@ public class DiagramLoaderNoGui {
             // create new diagram
             SeqDiagram seqDiagram = new SeqDiagram(diagName);
 
+            // add all actors and messages set consistency flags
+            seqDiagram.addAllActors(actorsList, diagrams);
+            seqDiagram.addAllMessages(messageList, diagrams);
+
+
             // for each actor find its UMLClass (TODO vyresit nekonzistenci - pokud vrati null, zabarvi se napr. cervene)
+            /*
             for (String actor : actorsList) {
                 UMLClass umlClass = diagrams.getClassDiagram().findClass(actor);
                 if (umlClass == null) {
@@ -101,13 +107,15 @@ public class DiagramLoaderNoGui {
                     System.out.println(actor);
                     System.out.println("NEKONZISTENCE!!!");
                 } else {
-                    seqDiagram.addActor(umlClass);
+                    continue;
+                    //seqDiagram.addActor(umlClass);
                 }
             }
+            */
             //seqDiagram.addActors(actorsList);
 
             // for each message find its UMLMethod (TODO krome free, create atd.)
-            seqDiagram.addMessages(messageList);
+            //seqDiagram.addMessages(messageList);
             // load
             diagrams.addSeqDiagram(seqDiagram);
 
@@ -136,14 +144,15 @@ public class DiagramLoaderNoGui {
     }
 
     /**
-     * messageList = name_met1 -> class2 -> name_met2 -> class2 ...
+     *  messageList = from1 -> to1 -> type1 -> methodName1 ->
+     *     -> from2 -> to2 -> type2 -> methodName2
      * @param messages JSONArray that has all the sequence diagram messages
      * @return List of sequence diagram messages
      */
     private List<String> getSeqMethods(JSONArray messages){
 
         // messageList = from1 -> to1 -> type1 -> methodName1 ->
-        // -> from2 -> to2 -> type2 -> methodName2
+        //    -> from2 -> to2 -> type2 -> methodName2
         List<String> messageList = new ArrayList<String>();
         for (Object me : messages){
             JSONObject oneMessage = (JSONObject) me;

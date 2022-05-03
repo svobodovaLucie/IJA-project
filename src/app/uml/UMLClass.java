@@ -23,9 +23,6 @@ public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
 
-    // instance name used for sequence diagram
-    private String ActorName;
-    private Boolean createdByMessage;
 
     private boolean isAbstract;
 
@@ -159,23 +156,6 @@ public class UMLClass extends UMLClassifier {
     // method change the name
     public void setName(String newName) {
         this.name = newName;
-    }
-
-
-    public Boolean getCreatedByMessage(){
-        return this.createdByMessage;
-    }
-
-    public void setCreatedByMessage(Boolean val){
-        this.createdByMessage = val;
-    }
-
-    public void setActorName(String newName){
-        this.ActorName = newName;
-    }
-
-    public String getActorName(){
-        return this.ActorName;
     }
 
 }
