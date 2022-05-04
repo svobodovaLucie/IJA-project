@@ -12,14 +12,17 @@ package app.umlGui;
 
 import app.backend.CommandBuilder;
 import app.gui.DraggableObject;
+import app.uml.UMLAttribute;
 import app.uml.UMLClass;
-import javafx.application.Platform;
+import app.uml.UMLClassifier;
+import app.uml.UMLMethod;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -43,7 +46,7 @@ public class UMLClassGui extends VBox {
     // name
     TextField nameLabel;
 
-    // grid pane
+    // grid panes for attributes and methods
     GridPane attributesGridPane;
     GridPane methodsGridPane;
 
@@ -71,7 +74,6 @@ public class UMLClassGui extends VBox {
 
         // observable
         support = new PropertyChangeSupport(this);
-
 
         // set margin
         HBox.setMargin(this, new Insets(15, 15, 15, 15));
@@ -105,24 +107,86 @@ public class UMLClassGui extends VBox {
         this.attributeButtons = new ArrayList<>();
         // create GridPane for attributes
         this.attributesGridPane = new GridPane();
-        this.attributesGridPane.setPadding(insets);
+        this.attributesGridPane.setPadding(new Insets(5, 5, 0, 5));
+        //this.attributesGridPane.setPadding(insets);
         this.attributesGridPane.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-style: solid;\n" +
-                "-fx-border-width: 1 2 1 2;\n" +
+                "-fx-border-width: 1 2 0 2;\n" +
                 "-fx-border-color: black;");
         this.getChildren().add(this.attributesGridPane);
+
+        // button for adding new attributes
+        GridPane attributeAddGridPane = new GridPane();
+        attributeAddGridPane.setPadding(new Insets(0, 0, 5, 0));
+        attributeAddGridPane.setHgap(173.71);
+        attributeAddGridPane.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-width: 0 2 1 2;\n" +
+                "-fx-border-color: black;");
+        this.getChildren().add(attributeAddGridPane);
+        Text addAttributeLabel = new Text();
+        GridPane.setConstraints(addAttributeLabel, 0, 0);
+        attributeAddGridPane.getChildren().add(addAttributeLabel);
+        // create a button for adding new attributes
+        Button addAttributeButton = new Button("+");
+        addAttributeButton.setOnAction(e -> {
+            System.out.println("Adding new attribute");
+            // add attribute to BE
+            UMLClassifier umlClassifier = new UMLClassifier("");
+            UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
+            // add attribute to backend
+            this.umlClass.addAttribute(umlAttribute);
+            // add that attribute to GUI
+            UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
+            this.addAttributeGui(umlAttributeGui);
+        });
+        addAttributeButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
+        GridPane.setConstraints(addAttributeButton, 1, 0);
+        attributeAddGridPane.getChildren().add(addAttributeButton);
 
         // create list of methods
         this.nodeMethods = new ArrayList<>();
         this.methodButtons = new ArrayList<>();
         // create GridPane for methods
         this.methodsGridPane = new GridPane();
-        this.methodsGridPane.setPadding(insets);
+        this.methodsGridPane.setPadding(new Insets(5, 5, 0, 5));
         this.methodsGridPane.setStyle("-fx-background-color: transparent;\n" +
                 "-fx-border-style: solid;\n" +
-                "-fx-border-width: 1 2 2 2;\n" +
+                "-fx-border-width: 1 2 0 2;\n" +
                 "-fx-border-color: black;");
         this.getChildren().add(this.methodsGridPane);
+
+        // button for adding new methods
+        GridPane methodAddGridPane = new GridPane();
+        methodAddGridPane.setPadding(new Insets(0, 0, 5, 0));
+        methodAddGridPane.setHgap(173.71);
+        methodAddGridPane.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-width: 0 2 2 2;\n" +
+                "-fx-border-color: black;");
+        this.getChildren().add(methodAddGridPane);
+        Text addMethodLabel = new Text();
+        GridPane.setConstraints(addMethodLabel, 0, 0);
+        methodAddGridPane.getChildren().add(addMethodLabel);
+        // create a button for adding new methods
+        Button addMethodButton = new Button("+");
+        addMethodButton.setOnAction(e -> {
+            System.out.println("Adding new method");
+            // add method to backend
+            UMLClassifier umlClassifier = new UMLClassifier("");
+            UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
+            this.umlClass.addMethod(umlMethod);
+            // add to GUI
+            UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
+            this.addMethodGui(umlMethodGui);
+        });
+        addMethodButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
+        GridPane.setConstraints(addMethodButton, 1, 0);
+        methodAddGridPane.getChildren().add(addMethodButton);
 
         // event listener
         this.nameLabel.textProperty().addListener(((observableValue, s, t1) ->
@@ -144,8 +208,6 @@ public class UMLClassGui extends VBox {
                     System.out.println("undo()");
                     draggableObject.setOldPosition();
                     support.firePropertyChange(umlClass.getName(), 1, 0);
-                    //update();
-
                 }
             });
         });
@@ -171,9 +233,10 @@ public class UMLClassGui extends VBox {
      */
     public boolean addAttributeGui(UMLAttributeGui attr) {
         // add attr to attribute grid pane
-        if (this.nodeAttributes.contains(attr))
+        if (this.nodeAttributes.contains(attr)) {
             // can't have two attributes with the same name
             return true;
+        }
         try {
             int lastRowNumber = nodeAttributes.size();
             this.nodeAttributes.add(attr);
