@@ -16,9 +16,12 @@ import app.uml.UMLAttribute;
 import app.uml.UMLClass;
 import app.uml.UMLClassifier;
 import app.uml.UMLMethod;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -26,6 +29,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.awt.event.MouseEvent;
+import java.beans.Customizer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -52,8 +57,14 @@ public class UMLClassGui extends VBox {
     GridPane attributesGridPane;
     GridPane methodsGridPane;
 
+    // position
+    private double posX;
+    private double posY;
+    public SimpleDoubleProperty x = new SimpleDoubleProperty(150);
+    public SimpleDoubleProperty y = new SimpleDoubleProperty(150);
+
     // draggable property
-    DraggableObject draggableObject = new DraggableObject();
+    public DraggableObject draggableObject = new DraggableObject();
 
     // list of attributes
     private List<UMLAttributeGui> nodeAttributes;
@@ -65,6 +76,43 @@ public class UMLClassGui extends VBox {
 
     private PropertyChangeSupport support;
 
+
+    public void setDraggable() {
+
+        System.out.println("Setting draggable");
+
+        this.draggableObject.setOnMousePressed(e -> {
+            System.out.println("Mouse pressed");
+            this.draggableObject.setCursor(Cursor.MOVE);
+            posX = e.getX();
+            posY = e.getY();
+        });
+        /*
+        this.draggableObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+            double distanceX = e.getX()
+        });
+         */
+
+        this.draggableObject.setOnMouseDragged(e -> {
+            System.out.println("Mouse dragged");
+            double distX = e.getX() - posX;
+            double distY = e.getY() - posY;
+
+            x.setValue(this.x.getValue() + distX);
+            y.setValue(this.y.getValue() + distY);
+
+            this.draggableObject.relocate(x.doubleValue(), y.doubleValue());
+        });
+
+        //this.draggableObject.setOnMouseEntered(e -> this.draggableObject.setCursor(Customiz));
+        /*
+        this.draggableObject.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            this.draggableObject.setCursor(Cursor.MOVE);
+            posX = event.getX();
+        });
+         */
+    }
+
     /**
      * UMLClass constructor. The UML class is not abstract.
      *
@@ -74,14 +122,22 @@ public class UMLClassGui extends VBox {
         // add BE class
         this.umlClass = umlClass;
 
+        // set initial positions TODO load from JSON
+        this.posX = 100;
+        this.posY = 100;
+
+
+
+        // make the UMLClassGui object dragable
+        //draggableObject.setDraggable();
+        setDraggable();
+        this.draggableObject.setParentEntity(this);
+
         // observable
         support = new PropertyChangeSupport(this);
 
         // set margin
         HBox.setMargin(this, new Insets(15, 15, 15, 15));
-
-        // make the UMLClassGui object dragable
-        draggableObject.makeDraggable(this);
 
         // add owner
         this.owner = umlClassDiagramGui;
@@ -155,12 +211,22 @@ public class UMLClassGui extends VBox {
                 @Override
                 public void undo() {
                     System.out.println("undo()");
-                    draggableObject.setOldPosition();
+                    //draggableObject.setOldPosition();
                     support.firePropertyChange(umlClass.getName(), 1, 0);
                 }
             });
         });
 
+        //this.setAlignment(Pos.CENTER);
+        //this.positionInArea(this, 100, 200);
+    }
+
+    public double getXpos() {
+        return this.posX;
+    }
+
+    public double getYpos() {
+        return this.posY;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -328,12 +394,78 @@ public class UMLClassGui extends VBox {
                     "-fx-border-color: transparent;\n" +
                     "-fx-font-weight: bold;");
             this.attributeButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
+                System.out.println("REMOVING ATTRIBUTE Last row number: " + lastRowNumber);
+                FilteredList<Node> fl;
+                UMLAttributeGui umlAttributeGui = null;
                 // row number 0 may be null
                 if (lastRowNumber == 0) {
+                    //this.attributesGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
+                    fl = this.attributesGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    for (Node node : fl) {
+                        System.out.println("Node: " + node);
+                        try {
+                            // FIXME mela by byt vzdy jen jedna nalezena
+                            umlAttributeGui = (UMLAttributeGui) node;
+                        } catch (Exception exception) {
+                            // button -> simply continue
+                            System.out.println("Exception caught in UMLClassGui addMethodGui()");
+                            continue;
+                        }
+                        System.out.println("YEEES");
+                        UMLAttribute umlAttribute = umlAttributeGui.getAttribute();
+                        this.getUmlClass().removeAttribute(umlAttribute);
+
+                        // TODO remove i ze seznamu atributu UMLClassGui
+                    }
+                    for (Node m : this.attributesGridPane.getChildren()) {
+                        System.out.println("Node before: " + m);
+                    }
+                    for (UMLAttributeGui m: this.getAttributes()) {
+                        System.out.println("Attr before: " + m);
+                    }
                     this.attributesGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
+                    this.getAttributes().remove(umlAttributeGui);
+
+                    for (Node m : this.attributesGridPane.getChildren()) {
+                        System.out.println("Node after: " + m);
+                    }
+                    for (UMLAttributeGui m: this.getAttributes()) {
+                        System.out.println("Attr after: " + m);
+                    }
                 } else {
+                    //this.attributesGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    fl = this.attributesGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    for (Node node : fl) {
+                        System.out.println("Node: " + node);
+                        try {
+                            // FIXME mela by byt vzdy jen jedna nalezena
+                            umlAttributeGui = (UMLAttributeGui) node;
+                        } catch (Exception exception) {
+                            // button -> simply continue
+                            System.out.println("Exception caught in UMLClassGui addMethodGui()");
+                            continue;
+                        }
+                        System.out.println("YEEES");
+                        UMLAttribute umlAttribute = umlAttributeGui.getAttribute();
+                        this.getUmlClass().removeAttribute(umlAttribute);
+                        // TODO remove i ze seznamu metod UMLClassGui
+                    }
+                    for (Node m : this.attributesGridPane.getChildren()) {
+                        System.out.println("Node before: " + m);
+                    }
+                    for (UMLAttributeGui m: this.getAttributes()) {
+                        System.out.println("Attr before: " + m);
+                    }
                     this.attributesGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    this.getAttributes().remove(umlAttributeGui);
+                    for (Node m : this.attributesGridPane.getChildren()) {
+                        System.out.println("Node after: " + m);
+                    }
+                    for (UMLAttributeGui m: this.getAttributes()) {
+                        System.out.println("Attr after: " + m);
+                    }
                 }
+                System.out.println("-----");
             });
             GridPane.setConstraints(this.attributeButtons.get(lastRowNumber), 1, lastRowNumber);
             this.attributesGridPane.getChildren().add(this.attributeButtons.get(lastRowNumber));
@@ -371,9 +503,10 @@ public class UMLClassGui extends VBox {
                     "-fx-font-weight: bold;");
             this.methodButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
                 System.out.println("REMOVING METHOD Last row number: " + lastRowNumber);
+                FilteredList<Node> fl;
+                UMLMethodGui umlMethodGui = null;
                 if (lastRowNumber == 0) {
-                    FilteredList<Node> fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
-                    UMLMethodGui umlMethodGui = null;
+                    fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     for (Node node : fl) {
                         System.out.println("Node: " + node);
                         try {
@@ -395,13 +528,8 @@ public class UMLClassGui extends VBox {
                     for (UMLMethodGui m: this.getMethods()) {
                         System.out.println("Method before: " + m);
                     }
-                    //UMLMethodGui umlMethodGui = (UMLMethodGui) this.methodsGridPane.getChildren().get(0);
-                    //System.out.println(umlMethodGui.toStringMethAttr());
                     this.methodsGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
-                    //System.out.println("REMOVING METHOD IF");
                     this.getMethods().remove(umlMethodGui);
-                    //System.out.println("REMOVING METHOD ELSE");
-                    //System.out.println(this.methodsGridPane);
 
                     for (Node m : this.methodsGridPane.getChildren()) {
                         System.out.println("Node after: " + m);
@@ -409,10 +537,8 @@ public class UMLClassGui extends VBox {
                     for (UMLMethodGui m: this.getMethods()) {
                         System.out.println("Method after: " + m);
                     }
-                    System.out.println("-----");
                 } else {
-                    FilteredList<Node> fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
-                    UMLMethodGui umlMethodGui = null;
+                    fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     for (Node node : fl) {
                         System.out.println("Node: " + node);
                         try {
@@ -447,8 +573,8 @@ public class UMLClassGui extends VBox {
                     for (UMLMethodGui m: this.getMethods()) {
                         System.out.println("Method after: " + m);
                     }
-                    System.out.println("-----");
                 }
+                System.out.println("-----");
             });
             GridPane.setConstraints(this.methodButtons.get(lastRowNumber), 1, lastRowNumber);
             this.methodsGridPane.getChildren().add(this.methodButtons.get(lastRowNumber));

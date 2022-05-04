@@ -130,5 +130,9 @@ public class UMLAttributeGui extends TextField {
 		nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
 		return nameTypeAccess;
 	}
+
+	public UMLAttribute getAttribute() {
+		return this.umlAttribute;
+	}
 }
 
