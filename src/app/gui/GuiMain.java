@@ -14,9 +14,7 @@ import app.backend.Diagrams;
 import app.umlGui.*;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -78,6 +76,37 @@ public class GuiMain extends Application {
         Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
 
+        Menu options = new Menu("options");
+        options.setStyle("-fx-font-size: 15;");
+        MenuItem addClass = new MenuItem("Add class");
+        /*
+        option1.setOnAction(e -> {
+            System.out.println("option1 pressed");
+            rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"), (UMLClassDiagramGui) rootClass.getChildren().get(0)));
+        });
+
+         */
+        addClass.setOnAction(e -> {
+            try {
+                rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Untitled"), (UMLClassDiagramGui) rootClass.getChildren().get(0)));
+            } catch (Exception exception) {
+                System.out.println("Can't create two classes with the same name!");
+                // TODO alert box
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Two classes with the same name.");
+                alert.setContentText("There is already a class with the name Untitled.\n" +
+                                     "Two classes with the same name can't be created.");   // TODO default name
+                alert.show();
+            }
+        });
+        MenuItem option2 = new MenuItem("Add interface");
+        option2.setOnAction(e -> {
+            System.out.println("option2 pressed");
+        });
+        options.getItems().add(addClass);
+        options.getItems().add(option2);
+
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
         saveButton.setOnAction(e -> DiagramSaverNoGui.saveJSON(e, BEdiagrams, "savedDiagram.json"));
@@ -95,17 +124,19 @@ public class GuiMain extends Application {
         Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
-        MenuBar menuBar = new MenuBar(save, undo);
+        MenuBar menuBar = new MenuBar(options, save, undo);
         menuBar.useSystemMenuBarProperty();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         rootClass.getChildren().add(menuBar);
 
         // addClass button
+        /*
         Button addClass = createButton("Add Class", 1);
         addClass.setOnAction(e -> rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"), (UMLClassDiagramGui) rootClass.getChildren().get(0))));
         addClass.setLayoutY(50);
         addClass.setLayoutX(500);
         rootClass.getChildren().add(addClass);
+         */
 
         // set the stage
         primaryStage.setTitle("ija-app: diagrams");
