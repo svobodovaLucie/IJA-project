@@ -58,6 +58,8 @@ public class DiagramLoaderNoGui {
         //saveClassesGui((JSONArray)diagram.get("classes"), root);
         ClassDiagram classDiagram = new ClassDiagram("Class Diagram");
         saveClasses((JSONArray)diagram.get("classes"), classDiagram);
+        saveRelations((JSONArray)diagram.get("relations"), classDiagram);
+        saveInterfaces((JSONArray)diagram.get("interfaces"), classDiagram);
         diagrams.addClassDiagram(classDiagram);
 
         // load seq diagrams
@@ -172,6 +174,46 @@ public class DiagramLoaderNoGui {
             saveMethods(umlClass, (JSONArray)classObj.get("methods"));
 
             classDiagram.addClass(umlClass);
+        }
+    }
+
+    public void saveRelations(JSONArray relations, ClassDiagram classDiagram) {
+        if (relations == null) {
+            return;
+        }
+        for (Object relation : relations) {
+            JSONObject relationObj = (JSONObject) relation;
+
+            // create UMLRelation object
+            // from
+            String classNameFrom = (String)relationObj.get("from");
+
+            // to
+            String classNameTo = (String)relationObj.get("to");
+
+            // type
+            String type = (String)relationObj.get("type");
+
+            System.out.println("----------");
+            System.out.println(classNameFrom);
+            System.out.println(classNameTo);
+            System.out.println(type);
+            System.out.println("----------");
+
+            // create UMLRelation
+            UMLRelation umlRelation = new UMLRelation(classDiagram, classNameFrom, classNameTo, type);
+
+            // add to class diagram (add to class from and class to)
+            classDiagram.addRelation(umlRelation);
+        }
+    }
+
+    public void saveInterfaces(JSONArray interfaces, ClassDiagram classDiagram) {
+        if (interfaces == null) {
+            return;
+        }
+        for (Object interfce : interfaces) {
+
         }
     }
 
