@@ -76,16 +76,11 @@ public class GuiMain extends Application {
         Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
 
-        Menu options = new Menu("options");
+        // options for adding new elements
+        Menu options = new Menu("Add...");
         options.setStyle("-fx-font-size: 15;");
+        // button for adding new class
         MenuItem addClass = new MenuItem("Add class");
-        /*
-        option1.setOnAction(e -> {
-            System.out.println("option1 pressed");
-            rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Your Class"), (UMLClassDiagramGui) rootClass.getChildren().get(0)));
-        });
-
-         */
         addClass.setOnAction(e -> {
             try {
                 rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Untitled"), (UMLClassDiagramGui) rootClass.getChildren().get(0)));
@@ -100,12 +95,18 @@ public class GuiMain extends Application {
                 alert.show();
             }
         });
-        MenuItem option2 = new MenuItem("Add interface");
-        option2.setOnAction(e -> {
-            System.out.println("option2 pressed");
+        // button for adding new interface
+        MenuItem addInterface = new MenuItem("Add interface");
+        addInterface.setOnAction(e -> {
+            System.out.println("Adding new interface (not implemented yet)");
         });
-        options.getItems().add(addClass);
-        options.getItems().add(option2);
+        // button for adding new relation
+        MenuItem addRelation = new MenuItem("Add relation");
+        addRelation.setOnAction(e -> {
+            System.out.println("Adding new relation (not implemented yet)");
+        });
+
+        options.getItems().addAll(addClass, addInterface, addRelation);
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
