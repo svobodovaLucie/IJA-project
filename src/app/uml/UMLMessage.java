@@ -10,8 +10,11 @@ package app.uml;
 public class UMLMessage {
 
     // store method from which is message created
-    private UMLClass from;
-    private UMLClass to;
+    private UMLClass fromClass;
+    private UMLClass toClass;
+
+    private String fromActor;
+    private String toActor;
 
     // synchrounous message     .....    synch
     // asynchrounous message    .....    asynch
@@ -27,37 +30,39 @@ public class UMLMessage {
 
     /**
      * Constructor
-     * @param from
-     * @param to
      * @param type
      * @param method
      */
-    public UMLMessage(UMLClass from, UMLClass to,
+    public UMLMessage(UMLClass fromClass, UMLClass toClass,
+                      String fromActor, String toActor,
                       String type, UMLMethod method){
-        this.from = from;
-        this.to = to;
-        this.type = type;
-        this.method = method;
+
+        this.fromClass  = fromClass;
+        this.toClass    = toClass;
+        this.fromActor  = fromActor;
+        this.toActor    = toActor;
+        this.type       = type;
+        this.method     = method;
     }
 
 
-    public UMLClass getFrom() {
-        return this.from;
+    public UMLClass getFromClass(){
+        return this.fromClass;
     }
-    public UMLClass getTo() {
-        return this.to;
+    public UMLClass getToClass(){
+        return this.toClass;
+    }
+    public String getToActor(){
+        return this.toActor;
+    }
+    public String getFromActor(){
+        return this.fromActor;
     }
     public String getType() {
         return this.type;
     }
     public UMLMethod getMethod() {
         return this.method;
-    }
-    public void setFrom(UMLClass from) {
-        this.from = from;
-    }
-    public void setTo(UMLClass to) {
-        this.to = to;
     }
     public void setMethod(UMLMethod method) {
         this.method = method;

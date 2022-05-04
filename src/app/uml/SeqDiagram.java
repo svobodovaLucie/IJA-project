@@ -87,22 +87,22 @@ public class SeqDiagram {
 
         // temp variables' information that are extracted from list
         String from;
+        String fromClass;
         String to;
         String type;
         String metName;
         UMLClass classFrom;
-        UMLClass classTo;
         UMLMethod oMethodName;
 
         for (int i = 0; i < messageList.size();){
-            from = messageList.get(i++);
-            to = messageList.get(i++);
-            type = messageList.get(i++);
-            metName = messageList.get(i++);
+            fromClass = messageList.get(i++);
+            from      = messageList.get(i++);
+            to        = messageList.get(i++);
+            type      = messageList.get(i++);
+            metName   = messageList.get(i++);
 
 
-            classFrom = diagrams.getClassDiagram().findClass(from);
-            classTo = diagrams.getClassDiagram().findClass(to);
+            classFrom = diagrams.getClassDiagram().findClass(fromClass);
             if (classFrom != null){
                 oMethodName = classFrom.findMethod(metName);
             }
@@ -110,7 +110,7 @@ public class SeqDiagram {
                 oMethodName = null;
             }
 
-            UMLMessage message = new UMLMessage(classFrom, classTo, type, oMethodName);
+            UMLMessage message = new UMLMessage(classFrom, from, to, type, oMethodName);
             addMessage(message);
         }
     }
@@ -169,6 +169,10 @@ public class SeqDiagram {
 
     public List<Boolean> getActorCreatedByMessage() {
         return this.actorsCreatedByMessage;
+    }
+
+    public List<UMLMessage> getMessages(){
+        return this.messages;
     }
 
     public String getName() {

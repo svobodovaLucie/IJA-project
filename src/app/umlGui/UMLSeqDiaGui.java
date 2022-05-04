@@ -12,12 +12,14 @@ package app.umlGui;
 import app.gui.DraggableObject;
 import app.uml.SeqDiagram;
 import app.uml.UMLClass;
+import app.uml.UMLMessage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
 import org.json.simple.JSONArray;
 import org.w3c.dom.Text;
 
@@ -40,7 +42,10 @@ public class UMLSeqDiaGui extends AnchorPane {
     private int actorsCounter;
 
     // Gui data
-    private List<UMLActorGui> ActorsGui;
+    private List<UMLActorGui> actorsGui;
+
+    // holds current line postion
+    int yPos;
 
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
@@ -53,10 +58,24 @@ public class UMLSeqDiaGui extends AnchorPane {
         this.messageCounter = 0;
         this.actorsCounter  = 0;
 
-        this.ActorsGui = new ArrayList<>();
+        this.actorsGui = new ArrayList<>();
 
         loadActorsFromBE(seqDiagram);
         loadMessagesFromBE(seqDiagram);
+    }
+
+    /**
+     * Load all the messages from backend class
+     * @param seqDiagram BE sequence diagram implementation that hold all the data
+     */
+    private void loadMessagesFromBE(SeqDiagram seqDiagram){
+        System.out.println("GET ALL MESSAGES");
+
+        List<UMLMessage> messages = seqDiagram.getMessages();
+
+        for (UMLMessage mes : messages){
+            paintMessage(mes);
+        }
     }
 
     /**
@@ -105,8 +124,8 @@ public class UMLSeqDiaGui extends AnchorPane {
             name = name + ":(" + actorClass.getName() + ")";
         }
 
-        UMLActorGui newActor = new UMLActorGui(name ,n);
-        this.ActorsGui.add(newActor);
+        UMLActorGui newActor = new UMLActorGui(name ,n, 75);
+        this.actorsGui.add(newActor);
 
         this.getChildren().add(newActor.getTextField());
 
@@ -114,13 +133,40 @@ public class UMLSeqDiaGui extends AnchorPane {
     }
 
     /**
+     * Use int Ypos
      *
-     * @param seqDiagram
+     * ... synch
+     * ... asynch
+     * ... response
+     * ... creat
+     * ... free
+     *
+     * message (synch,asynch) is consistent if method is not null
+     * Always paint vertical lines where messages are painted
+     *
+     * @param message one message
      */
-    private void loadMessagesFromBE(SeqDiagram seqDiagram){
-        return;
+    public void paintMessage(UMLMessage message){
+        
+
+        //paintLine()
     }
 
+    /**
+     *
+     * @param y height
+     * @param nFrom Actor from
+     * @param nTo Actor to
+     * @param type message type
+     *             - synch
+     *             - assynch
+     *             - response
+     *             - creat
+     *             - free
+     */
+    public void paintArrow(int y, int nFrom, int nTo, String type){
+        // todo
+    }
 
     // getrs
     public int getMessageCounter() {

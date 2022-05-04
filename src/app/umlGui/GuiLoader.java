@@ -81,22 +81,6 @@ public class GuiLoader {
             saveAttributesGui(umlClass.getAttributes(), umlClassGui);
             saveMethodsGui(umlClass.getMethods(), umlClassGui);
         }
-        /*
-        // load every class from the JSON file
-        for (Object aClass : classes) {
-            JSONObject classObj = (JSONObject) aClass;
-
-            // create UMLClassGui object and add it to the root
-            String className = (String)classObj.get("name");
-            UMLClassGui umlClass = new UMLClassGui(className);
-            root.getChildren().add(umlClass);
-
-            // load attributes and methods
-            saveAttributesGui(umlClass, (JSONArray)classObj.get("attributes"));
-            saveMethodsGui(umlClass, (JSONArray)classObj.get("methods"));
-        }
-
-         */
     }
 
     /**

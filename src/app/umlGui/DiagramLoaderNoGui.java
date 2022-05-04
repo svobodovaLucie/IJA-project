@@ -144,6 +144,7 @@ public class DiagramLoaderNoGui {
     }
 
     /**
+     *  // todo actualize comment
      *  messageList = from1 -> to1 -> type1 -> methodName1 ->
      *     -> from2 -> to2 -> type2 -> methodName2
      * @param messages JSONArray that has all the sequence diagram messages
@@ -156,11 +157,15 @@ public class DiagramLoaderNoGui {
         List<String> messageList = new ArrayList<String>();
         for (Object me : messages){
             JSONObject oneMessage = (JSONObject) me;
-            String from         = (String) oneMessage.get("from");
-            String to           = (String) oneMessage.get("to");
-            String type         = (String) oneMessage.get("type");
-            String methodName   = (String) oneMessage.get("methodName");
+            String classFrom         = (String) oneMessage.get("classFrom");
+            String classTo           = (String) oneMessage.get("classTo");
+            String from              = (String) oneMessage.get("from");
+            String to                = (String) oneMessage.get("to");
+            String type              = (String) oneMessage.get("type");
+            String methodName        = (String) oneMessage.get("methodName");
 
+            messageList.add(classFrom);
+            messageList.add(classTo);
             messageList.add(from);
             messageList.add(to);
             messageList.add(type);
