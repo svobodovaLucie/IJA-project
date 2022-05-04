@@ -12,11 +12,13 @@ public class DraggableObject {
     private double mouseX;
     private double mouseY;
 
-    private double oldX;
+    private double oldXscene;
     private List<Double> oldXs = new ArrayList<>();
     private List<Double> oldYs = new ArrayList<>();
 
-    private double oldY;
+    private List<Double> afterMouseReleased = new ArrayList<>();
+
+    private double oldYscene;
 
     private Node node;
 
@@ -27,38 +29,64 @@ public class DraggableObject {
      */
     public void makeDraggable(Node node) {
         this.node = node;
+        this.afterMouseReleased.add(0, 0.0);
+        this.afterMouseReleased.add(1, 0.0);
 
         node.setOnMousePressed(mouseEvent -> {
-            //oldX = (mouseEvent.getSceneX() - mouseX);
-            //oldY = (mouseEvent.getSceneY() - mouseY);
+            oldXscene = (mouseEvent.getSceneX() - mouseX);
+            oldYscene = (mouseEvent.getSceneY() - mouseY);
             oldXs.add(0, mouseX);
             oldYs.add(0, mouseY);
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
 
-            System.out.println("oldX = " + oldX);
             System.out.println("mouseX = " + mouseX);
+
+            node.setMouseTransparent(true);
         });
 
         node.setOnMouseDragged(mouseEvent -> {
             node.setLayoutX(mouseEvent.getSceneX() - mouseX);
             node.setLayoutY(mouseEvent.getSceneY() - mouseY);
+            oldXscene = (mouseEvent.getSceneX() - mouseX);
+            oldYscene = (mouseEvent.getSceneY() - mouseY);
         });
+
+        node.setOnMouseReleased(mouseEvent -> {
+            afterMouseReleased.set(0, mouseEvent.getSceneX() - mouseX);
+            afterMouseReleased.set(1, mouseEvent.getSceneY() - mouseY);
+
+            System.out.println("after released");
+
+            node.setMouseTransparent(false);
+        });
+        node.setOnDragDetected(e -> {
+            System.out.println("fullDrag()");
+            node.startFullDrag();
+        });
+
+    }
+
+    public List<Double> getAfterMouseReleased() {
+        return this.afterMouseReleased;
     }
 
     public List <Double> getPosition() {
         List<Double> position = new ArrayList<>();
-        position.add(mouseX);
-        position.add(mouseY);
+        position.add(oldXscene);
+        position.add(oldYscene);
         return position;
     }
 
+    /*
     public List <Double> getOldPosition() {
         List<Double> position = new ArrayList<>();
         position.add(oldX);
         position.add(oldY);
         return position;
     }
+
+     */
 
     public void setPosition(List <Double> oldPosition) {
         this.mouseX = oldPosition.get(0);
@@ -67,7 +95,6 @@ public class DraggableObject {
 
     public void setOldPosition() {
         System.out.println("setOldPosition():");
-        System.out.println("oldX = " + oldX);
         System.out.println("mouseX = " + mouseX);
         this.node.setLayoutX(oldXs.get(0));
         this.node.setLayoutY(oldYs.get(0));
