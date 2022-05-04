@@ -63,6 +63,9 @@ public class GuiLoader {
         // load classes from classDiagram
         saveClassesGui(classDiagram.getClasses(), umlClassDiagramGui);
 
+        // load relations from classDiagram
+        saveRelationsGui(classDiagram.getRelations(), umlClassDiagramGui);
+
         // add umlClassDiagramGui to root
         root.getChildren().add(umlClassDiagramGui);
 
@@ -70,6 +73,18 @@ public class GuiLoader {
         return root;
     }
 
+    private void saveRelationsGui(List<UMLRelation> relations, UMLClassDiagramGui umlClassDiagramGui) {
+        int i = 0;
+        for (UMLRelation relation : relations) {
+            // create new relation GUI and add it to the class diagram GUI
+            System.out.println("i: " + i++);
+            UMLRelationGui umlRelationGui = new UMLRelationGui(relation, umlClassDiagramGui);
+            System.out.println("j");
+
+            // add relation to the GUI
+            umlClassDiagramGui.getChildren().add(umlRelationGui);
+        }
+    }
     /**
      * Method loads the UML classes from the UML class diagram file.
      *
@@ -86,22 +101,6 @@ public class GuiLoader {
             saveAttributesGui(umlClass.getAttributes(), umlClassGui);
             saveMethodsGui(umlClass.getMethods(), umlClassGui);
         }
-        /*
-        // load every class from the JSON file
-        for (Object aClass : classes) {
-            JSONObject classObj = (JSONObject) aClass;
-
-            // create UMLClassGui object and add it to the root
-            String className = (String)classObj.get("name");
-            UMLClassGui umlClass = new UMLClassGui(className);
-            root.getChildren().add(umlClass);
-
-            // load attributes and methods
-            saveAttributesGui(umlClass, (JSONArray)classObj.get("attributes"));
-            saveMethodsGui(umlClass, (JSONArray)classObj.get("methods"));
-        }
-
-         */
     }
 
     /**
