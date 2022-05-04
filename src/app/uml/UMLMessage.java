@@ -23,10 +23,8 @@ public class UMLMessage {
     // object deletion          .....    free
     private String type;
 
-
     // method
     private UMLMethod method;
-
 
     /**
      * Constructor

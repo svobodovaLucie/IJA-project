@@ -13,13 +13,18 @@ import app.gui.DraggableObject;
 import app.uml.SeqDiagram;
 import app.uml.UMLClass;
 import app.uml.UMLMessage;
+import app.uml.UMLMethod;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
+import javafx.scene.shape.Polygon;
 import org.json.simple.JSONArray;
 import org.w3c.dom.Text;
 
@@ -43,9 +48,8 @@ public class UMLSeqDiaGui extends AnchorPane {
 
     // Gui data
     private List<UMLActorGui> actorsGui;
+    private List<UMLMessageGui> messageGui;
 
-    // holds current line postion
-    int yPos;
 
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
@@ -58,11 +62,13 @@ public class UMLSeqDiaGui extends AnchorPane {
         this.messageCounter = 0;
         this.actorsCounter  = 0;
 
-        this.actorsGui = new ArrayList<>();
+        this.actorsGui  = new ArrayList<>();
+        this.messageGui = new ArrayList<>();
 
         loadActorsFromBE(seqDiagram);
         loadMessagesFromBE(seqDiagram);
     }
+
 
     /**
      * Load all the messages from backend class
@@ -116,20 +122,37 @@ public class UMLSeqDiaGui extends AnchorPane {
     public void paintActor(String actorName, UMLClass actorClass){
         int n = getActorsCounter();
 
-        String name = actorName;
+        String aClass;
         if (actorClass == null){
-            name = name + ":(null)";
+            aClass = ":(null)";
         }
         else{
-            name = name + ":(" + actorClass.getName() + ")";
+            aClass = ":(" + actorClass.getName() + ")";
         }
 
-        UMLActorGui newActor = new UMLActorGui(name ,n, 75);
+        UMLActorGui newActor = new UMLActorGui(actorName , aClass, n, 75);
         this.actorsGui.add(newActor);
 
         this.getChildren().add(newActor.getTextField());
 
         setActorsCounter(n+1);
+    }
+
+    /**
+     * Finds actor gui class
+     * @param actorName name to look for
+     * @return UMLActorGui or null
+     */
+    public UMLActorGui findActorGui(String actorName){
+
+        // find class
+        for (UMLActorGui act : this.getActorsGui()) {
+            if (act.getActorName().equals(actorName)) {
+                return act;
+            }
+        }
+        // not found -> null
+        return null;
     }
 
     /**
@@ -147,27 +170,64 @@ public class UMLSeqDiaGui extends AnchorPane {
      * @param message one message
      */
     public void paintMessage(UMLMessage message){
-        
 
-        //paintLine()
+        System.out.println(this.getActorsGui());
+        UMLActorGui temp = this.findActorGui(message.getFromActor());
+
+        // Paint vertical line for all the actors
+        for (UMLActorGui act : this.getActorsGui()) {
+            this.getChildren().add(act.paintLine(2));
+        }
+
+        UMLMessageGui umlMessGui = new UMLMessageGui(message, getMessageGui().size(),this);
+        this.addMessageGui(umlMessGui);
+
+        // then paint message
+        if (umlMessGui.getArrow() != null)
+            this.getChildren().add(umlMessGui.getArrow());
+
+
     }
 
     /**
-     *
-     * @param y height
-     * @param nFrom Actor from
-     * @param nTo Actor to
-     * @param type message type
-     *             - synch
-     *             - assynch
-     *             - response
-     *             - creat
-     *             - free
+     * @param actorName
+     * @param actClass
+     * @return index of actor if there is no actor return -1
      */
-    public void paintArrow(int y, int nFrom, int nTo, String type){
-        // todo
+    public int getActorGuiIndex(String actorName, UMLClass actClass){
+        String aClass;
+        if (actClass == null){
+            aClass = ":(null)";
+        }
+        else{
+            aClass = ":(" + actClass.getName() + ")";
+        }
+
+        String searchStr = actorName + aClass;
+
+        // find class
+        int i = 0;
+        for (UMLActorGui act : this.getActorsGui()) {
+            if (act.getDisplayedName().equals(searchStr)) {
+                return i;
+            }
+            i++;
+        }
+        // not found -> -1
+        return -1;
     }
 
+    public void addMessageGui(UMLMessageGui mess){
+        this.messageGui.add(mess);
+    }
+
+    public List<UMLMessageGui> getMessageGui(){
+        return this.messageGui;
+    }
+
+    public List<UMLActorGui> getActorsGui(){
+        return this.actorsGui;
+    }
     // getrs
     public int getMessageCounter() {
         return this.messageCounter;

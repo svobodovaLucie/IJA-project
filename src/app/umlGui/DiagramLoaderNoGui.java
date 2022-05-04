@@ -97,26 +97,6 @@ public class DiagramLoaderNoGui {
             seqDiagram.addAllActors(actorsList, diagrams);
             seqDiagram.addAllMessages(messageList, diagrams);
 
-
-            // for each actor find its UMLClass (TODO vyresit nekonzistenci - pokud vrati null, zabarvi se napr. cervene)
-            /*
-            for (String actor : actorsList) {
-                UMLClass umlClass = diagrams.getClassDiagram().findClass(actor);
-                if (umlClass == null) {
-                    // TODO poresit
-                    System.out.println(actor);
-                    System.out.println("NEKONZISTENCE!!!");
-                } else {
-                    continue;
-                    //seqDiagram.addActor(umlClass);
-                }
-            }
-            */
-            //seqDiagram.addActors(actorsList);
-
-            // for each message find its UMLMethod (TODO krome free, create atd.)
-            //seqDiagram.addMessages(messageList);
-            // load
             diagrams.addSeqDiagram(seqDiagram);
 
         }
