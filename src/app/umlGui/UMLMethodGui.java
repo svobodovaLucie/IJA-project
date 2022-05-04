@@ -207,5 +207,9 @@ public class UMLMethodGui extends TextField {
 		nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
 		return nameTypeAccess;
 	}
+
+	public UMLMethod getMethod() {
+		return this.umlMethod;
+	}
 }
 

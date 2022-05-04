@@ -16,8 +16,10 @@ import app.uml.UMLAttribute;
 import app.uml.UMLClass;
 import app.uml.UMLClassifier;
 import app.uml.UMLMethod;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -116,35 +118,8 @@ public class UMLClassGui extends VBox {
         this.getChildren().add(this.attributesGridPane);
 
         // button for adding new attributes
-        GridPane attributeAddGridPane = new GridPane();
-        attributeAddGridPane.setPadding(new Insets(0, 0, 5, 0));
-        attributeAddGridPane.setHgap(173.71);
-        attributeAddGridPane.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-style: solid;\n" +
-                "-fx-border-width: 0 2 1 2;\n" +
-                "-fx-border-color: black;");
-        this.getChildren().add(attributeAddGridPane);
-        Text addAttributeLabel = new Text();
-        GridPane.setConstraints(addAttributeLabel, 0, 0);
-        attributeAddGridPane.getChildren().add(addAttributeLabel);
-        // create a button for adding new attributes
-        Button addAttributeButton = new Button("+");
-        addAttributeButton.setOnAction(e -> {
-            System.out.println("Adding new attribute");
-            // add attribute to BE
-            UMLClassifier umlClassifier = new UMLClassifier("");
-            UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
-            // add attribute to backend
-            this.umlClass.addAttribute(umlAttribute);
-            // add that attribute to GUI
-            UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
-            this.addAttributeGui(umlAttributeGui);
-        });
-        addAttributeButton.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: transparent;\n" +
-                "-fx-font-weight: bold;");
-        GridPane.setConstraints(addAttributeButton, 1, 0);
-        attributeAddGridPane.getChildren().add(addAttributeButton);
+        //addButtonForAddingAttributes();
+        addButtonForAddingNewElements(0); // 0 means attribute
 
         // create list of methods
         this.nodeMethods = new ArrayList<>();
@@ -159,34 +134,8 @@ public class UMLClassGui extends VBox {
         this.getChildren().add(this.methodsGridPane);
 
         // button for adding new methods
-        GridPane methodAddGridPane = new GridPane();
-        methodAddGridPane.setPadding(new Insets(0, 0, 5, 0));
-        methodAddGridPane.setHgap(173.71);
-        methodAddGridPane.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-style: solid;\n" +
-                "-fx-border-width: 0 2 2 2;\n" +
-                "-fx-border-color: black;");
-        this.getChildren().add(methodAddGridPane);
-        Text addMethodLabel = new Text();
-        GridPane.setConstraints(addMethodLabel, 0, 0);
-        methodAddGridPane.getChildren().add(addMethodLabel);
-        // create a button for adding new methods
-        Button addMethodButton = new Button("+");
-        addMethodButton.setOnAction(e -> {
-            System.out.println("Adding new method");
-            // add method to backend
-            UMLClassifier umlClassifier = new UMLClassifier("");
-            UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
-            this.umlClass.addMethod(umlMethod);
-            // add to GUI
-            UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
-            this.addMethodGui(umlMethodGui);
-        });
-        addMethodButton.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: transparent;\n" +
-                "-fx-font-weight: bold;");
-        GridPane.setConstraints(addMethodButton, 1, 0);
-        methodAddGridPane.getChildren().add(addMethodButton);
+        //addButtonForAddingMethods();
+        addButtonForAddingNewElements(1); // 1 means method
 
         // event listener
         this.nameLabel.textProperty().addListener(((observableValue, s, t1) ->
@@ -220,6 +169,134 @@ public class UMLClassGui extends VBox {
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);
+    }
+
+    private void addButtonForAddingAttributes() {
+        // button for adding new attributes
+        GridPane attributeAddGridPane = new GridPane();
+        attributeAddGridPane.setPadding(new Insets(0, 0, 5, 0));
+        attributeAddGridPane.setHgap(173.71);
+        attributeAddGridPane.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-width: 0 2 1 2;\n" +
+                "-fx-border-color: black;");
+        this.getChildren().add(attributeAddGridPane);
+        Text addAttributeLabel = new Text();
+        GridPane.setConstraints(addAttributeLabel, 0, 0);
+        attributeAddGridPane.getChildren().add(addAttributeLabel);
+        // create a button for adding new attributes
+        Button addAttributeButton = new Button("+");
+        addAttributeButton.setOnAction(e -> {
+            System.out.println("Adding new attribute");
+            // add attribute to BE
+            UMLClassifier umlClassifier = new UMLClassifier("");
+            UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
+            // add attribute to backend
+            this.umlClass.addAttribute(umlAttribute);
+            // add that attribute to GUI
+            UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
+            this.addAttributeGui(umlAttributeGui);
+        });
+        addAttributeButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
+        GridPane.setConstraints(addAttributeButton, 1, 0);
+        attributeAddGridPane.getChildren().add(addAttributeButton);
+    }
+
+    /**
+     *
+     * @param attribute_method 0 for adding an attribute
+     *                         1 for adding a method
+     */
+    private void addButtonForAddingNewElements(int attribute_method) {
+        // button for adding new attributes/methods
+        GridPane addGridPane = new GridPane();
+        addGridPane.setPadding(new Insets(0, 0, 5, 0));
+        addGridPane.setHgap(173.71);
+        // TODO different border style
+        String style = new String("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-color: black;\n");
+        if (attribute_method == 0) {  // attributes
+            style = style + "-fx-border-width: 0 2 1 2;";
+        } else {    // methods
+            style = style + "-fx-border-width: 0 2 2 2;";
+        }
+        addGridPane.setStyle(style);
+        this.getChildren().add(addGridPane);
+        Text addLabel = new Text();
+        GridPane.setConstraints(addLabel, 0, 0);
+        addGridPane.getChildren().add(addLabel);
+        // create a button for adding new methods
+        Button addButton = new Button("+");
+        // TODO different action
+        addButton.setOnAction(e -> {
+            if (attribute_method == 0) {
+                insertNewAttribute();
+            } else {
+                insertNewMethod();
+            }
+        });
+        addButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
+        GridPane.setConstraints(addButton, 1, 0);
+        addGridPane.getChildren().add(addButton);
+    }
+    private void addButtonForAddingMethods() {
+        // button for adding new methods
+        GridPane methodAddGridPane = new GridPane();
+        methodAddGridPane.setPadding(new Insets(0, 0, 5, 0));
+        methodAddGridPane.setHgap(173.71);
+        methodAddGridPane.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-width: 0 2 2 2;\n" +
+                "-fx-border-color: black;");
+        this.getChildren().add(methodAddGridPane);
+        Text addMethodLabel = new Text();
+        GridPane.setConstraints(addMethodLabel, 0, 0);
+        methodAddGridPane.getChildren().add(addMethodLabel);
+        // create a button for adding new methods
+        Button addMethodButton = new Button("+");
+        addMethodButton.setOnAction(e -> {
+            System.out.println("Adding new method");
+            // add method to backend
+            UMLClassifier umlClassifier = new UMLClassifier("");
+            UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
+            this.umlClass.addMethod(umlMethod);
+            // add to GUI
+            UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
+            this.addMethodGui(umlMethodGui);
+        });
+        addMethodButton.setStyle("-fx-background-color: transparent;\n" +
+                "-fx-border-color: transparent;\n" +
+                "-fx-font-weight: bold;");
+        GridPane.setConstraints(addMethodButton, 1, 0);
+        methodAddGridPane.getChildren().add(addMethodButton);
+    }
+
+    private void insertNewAttribute() {
+        System.out.println("Adding new attribute");
+        // add attribute to BE
+        UMLClassifier umlClassifier = new UMLClassifier("");
+        UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
+        // add attribute to backend
+        this.umlClass.addAttribute(umlAttribute);
+        // add that attribute to GUI
+        UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
+        this.addAttributeGui(umlAttributeGui);
+    }
+
+    private void insertNewMethod() {
+        System.out.println("Adding new method");
+        // add method to backend
+        UMLClassifier umlClassifier = new UMLClassifier("");
+        UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
+        this.umlClass.addMethod(umlMethod);
+        // add to GUI
+        UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
+        this.addMethodGui(umlMethodGui);
     }
 
     /**
@@ -293,11 +370,84 @@ public class UMLClassGui extends VBox {
                     "-fx-border-color: transparent;\n" +
                     "-fx-font-weight: bold;");
             this.methodButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
-                // row number 0 may be null
+                System.out.println("REMOVING METHOD Last row number: " + lastRowNumber);
                 if (lastRowNumber == 0) {
+                    FilteredList<Node> fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    UMLMethodGui umlMethodGui = null;
+                    for (Node node : fl) {
+                        System.out.println("Node: " + node);
+                        try {
+                            // FIXME mela by byt vzdy jen jedna nalezena
+                            umlMethodGui = (UMLMethodGui) node;
+                        } catch (Exception exception) {
+                            // button -> simply continue
+                            System.out.println("Exception caught in UMLClassGui addMethodGui()");
+                            continue;
+                        }
+                        System.out.println("YEEES");
+                        UMLMethod umlMethod = umlMethodGui.getMethod();
+                        this.getUmlClass().removeMethod(umlMethod);
+                        // TODO remove i ze seznamu metod UMLClassGui
+                    }
+                    for (Node m : this.methodsGridPane.getChildren()) {
+                        System.out.println("Node before: " + m);
+                    }
+                    for (UMLMethodGui m: this.getMethods()) {
+                        System.out.println("Method before: " + m);
+                    }
+                    //UMLMethodGui umlMethodGui = (UMLMethodGui) this.methodsGridPane.getChildren().get(0);
+                    //System.out.println(umlMethodGui.toStringMethAttr());
                     this.methodsGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
+                    //System.out.println("REMOVING METHOD IF");
+                    this.getMethods().remove(umlMethodGui);
+                    //System.out.println("REMOVING METHOD ELSE");
+                    //System.out.println(this.methodsGridPane);
+
+                    for (Node m : this.methodsGridPane.getChildren()) {
+                        System.out.println("Node after: " + m);
+                    }
+                    for (UMLMethodGui m: this.getMethods()) {
+                        System.out.println("Method after: " + m);
+                    }
+                    System.out.println("-----");
                 } else {
+                    FilteredList<Node> fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    UMLMethodGui umlMethodGui = null;
+                    for (Node node : fl) {
+                        System.out.println("Node: " + node);
+                        try {
+                            // FIXME mela by byt vzdy jen jedna nalezena
+                            umlMethodGui = (UMLMethodGui) node;
+                        } catch (Exception exception) {
+                            // button -> simply continue
+                            System.out.println("Exception caught in UMLClassGui addMethodGui()");
+                            continue;
+                        }
+                        System.out.println("YEEES");
+                        UMLMethod umlMethod = umlMethodGui.getMethod();
+                        this.getUmlClass().removeMethod(umlMethod);
+                        // TODO remove i ze seznamu metod UMLClassGui
+                    }
+                    for (Node m : this.methodsGridPane.getChildren()) {
+                        System.out.println("Node before: " + m);
+                    }
+                    for (UMLMethodGui m: this.getMethods()) {
+                        System.out.println("Method before: " + m);
+                    }
+
+                    //System.out.println(umlMethodGui.toStringMethAttr());
                     this.methodsGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
+                    this.getMethods().remove(umlMethodGui);
+                    //System.out.println("REMOVING METHOD ELSE");
+                    //System.out.println(this.methodsGridPane);
+
+                    for (Node m : this.methodsGridPane.getChildren()) {
+                        System.out.println("Node after: " + m);
+                    }
+                    for (UMLMethodGui m: this.getMethods()) {
+                        System.out.println("Method after: " + m);
+                    }
+                    System.out.println("-----");
                 }
             });
             GridPane.setConstraints(this.methodButtons.get(lastRowNumber), 1, lastRowNumber);

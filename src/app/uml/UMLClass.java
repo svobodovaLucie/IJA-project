@@ -174,5 +174,18 @@ public class UMLClass extends UMLClassifier {
         this.support.firePropertyChange("name", this.name, newName);
         this.name = newName;
     }
+
+    public void removeMethod(UMLMethod umlMethod) {
+        this.methods.removeIf(method -> (umlMethod == method));
+        /*
+        for (UMLMethod method : this.methods) {
+            if (umlMethod == method) {
+                // remove umlMethod
+                this.methods.remove(method);
+            }
+        }
+
+         */
+    }
 }
 
