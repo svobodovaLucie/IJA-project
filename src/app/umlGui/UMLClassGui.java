@@ -21,7 +21,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import javax.swing.text.Position;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +58,7 @@ public class UMLClassGui extends VBox {
     private List<UMLMethodGui> nodeMethods;
     private List<Button> methodButtons;
 
+    private PropertyChangeSupport support;
 
     /**
      * UMLClass constructor. The UML class is not abstract.
@@ -67,6 +69,9 @@ public class UMLClassGui extends VBox {
         // add BE class
         this.umlClass = umlClass;
 
+        // observable
+        support = new PropertyChangeSupport(this);
+
 
         // set margin
         HBox.setMargin(this, new Insets(15, 15, 15, 15));
@@ -76,25 +81,6 @@ public class UMLClassGui extends VBox {
 
         // add owner
         this.owner = umlClassDiagramGui;
-
-        this.setOnDragDetected(ev -> {
-            System.out.println("onDragDetected");
-            owner.executeCommand(new CommandBuilder.Command() {
-                //List <Double> oldPosition;
-                @Override
-                public void execute() {
-                    System.out.println("execute()");
-                    //oldPosition = draggableObject.getPosition();
-                }
-                @Override
-                public void undo() {
-                    System.out.println("undo()");
-                    draggableObject.setOldPosition();
-                    //update();
-
-                }
-            });
-        });
 
         // set transparent border for easier dragging
         BorderStroke borderStroke = new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null,
@@ -143,6 +129,35 @@ public class UMLClassGui extends VBox {
                     this.umlClass.setName(t1)
         ));
 
+        this.setOnDragDetected(ev -> {
+            System.out.println("onDragDetected");
+            owner.executeCommand(new CommandBuilder.Command() {
+                //List <Double> oldPosition;
+                @Override
+                public void execute() {
+                    System.out.println("execute()");
+                    //oldPosition = draggableObject.getPosition();
+                    support.firePropertyChange(umlClass.getName(), 0, 1);
+                }
+                @Override
+                public void undo() {
+                    System.out.println("undo()");
+                    draggableObject.setOldPosition();
+                    support.firePropertyChange(umlClass.getName(), 1, 0);
+                    //update();
+
+                }
+            });
+        });
+
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
     }
 
     /**
@@ -241,6 +256,10 @@ public class UMLClassGui extends VBox {
 
     public String getName() {
         return this.nameLabel.getText();
+    }
+
+    public UMLClass getUmlClass() {
+        return this.umlClass;
     }
 }
 
