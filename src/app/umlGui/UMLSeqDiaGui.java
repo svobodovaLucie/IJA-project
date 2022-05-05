@@ -135,6 +135,7 @@ public class UMLSeqDiaGui extends AnchorPane {
             aClass = ":(" + actorClass.getName() + ")";
         }
 
+        System.out.println("tu");
         UMLActorGui newActor = new UMLActorGui(actorClass, actorName , aClass, n, this.getyPos());
         this.actorsGui.add(newActor);
 

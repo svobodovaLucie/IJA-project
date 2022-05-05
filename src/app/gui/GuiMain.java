@@ -64,7 +64,7 @@ public class GuiMain extends Application {
         System.out.println(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
-        // createClassDiagScene(rootClass, primaryStage);
+        createClassDiagScene(rootClass, primaryStage);
 
         // set the scene for sequence diagram
         // todo button (add Message) (should choose from some types)
@@ -77,10 +77,10 @@ public class GuiMain extends Application {
         this.helpMessage();
     }
 
-    private void createClassDiagScene(Group rootClass, Stage primaryStage){
+    private void createClassDiagScene(Group rootClass, Stage primaryStages){
         // set the scene
-        Scene scene = new Scene(rootClass, primaryStage.getMaxWidth(), primaryStage.getMaxHeight(), Color.WHITE);
-        scene.getStylesheets().add("stylesheet.css");
+        Stage stage = new Stage();
+        Scene scene = new Scene(rootClass, stage.getMaxWidth(), stage.getMaxHeight(), Color.WHITE);
 
         // options for adding new elements
         Menu options = new Menu("Add...");
@@ -97,7 +97,7 @@ public class GuiMain extends Application {
                 alert.setTitle("Warning");
                 alert.setHeaderText("Two classes with the same name.");
                 alert.setContentText("There is already a class with the name Untitled.\n" +
-                                     "Two classes with the same name can't be created.");   // TODO default name
+                        "Two classes with the same name can't be created.");   // TODO default name
                 alert.show();
             }
         });
@@ -127,13 +127,13 @@ public class GuiMain extends Application {
             UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
             umlClassDiagramGui.undo();
         });
-    //(UMLClassDiagramGui)rootClass.getChildren().get(0).undo()));
+        //(UMLClassDiagramGui)rootClass.getChildren().get(0).undo()));
         Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
         MenuBar menuBar = new MenuBar(options, save, undo);
         menuBar.useSystemMenuBarProperty();
-        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+        menuBar.prefWidthProperty().bind(stage.widthProperty());
         rootClass.getChildren().add(menuBar);
 
         // addClass button
@@ -146,28 +146,19 @@ public class GuiMain extends Application {
          */
 
         // set the stage
-        primaryStage.setTitle("ija-app: diagrams");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setTitle("ija-app: diagrams");
+        stage.setScene(scene);
+        stage.show();
     }
 
-    /**
-     * Create scene for sequece diagram
-      * @param n
-     */
     private void createSeqDiagScene(int n, List<Group> rootSeq, Stage primaryStage){
         // uz je vse nactene z JSONu v jednotlivych UMLSeqDiaGui -> staci jen zobrazit
 
         Scene sceneSeqTest = new Scene(rootSeq.get(n), 1000, 750, Color.WHITE);
-        sceneSeqTest.getStylesheets().add("stylesheet.css");
-        Stage sceneSeqStage = new Stage();
-        sceneSeqStage.setScene(sceneSeqTest);
-        sceneSeqStage.setTitle("Sequence Diagram Editor");
-        sceneSeqStage.show();
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
-        saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootSeq.get(n)));
+        //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootSeq.get(n)));
         Menu save = this.createMenu(saveButton);
 
         // add undo button - TODO, fix releasing the button
@@ -193,6 +184,10 @@ public class GuiMain extends Application {
         addMessage.setLayoutY(85);
         addMessage.setLayoutX(10);
         rootSeq.get(n).getChildren().add(addMessage);
+
+        primaryStage.setScene(sceneSeqTest);
+        primaryStage.setTitle("Sequence Diagram Editor");
+        primaryStage.show();
     }
 
     /**
