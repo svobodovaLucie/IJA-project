@@ -80,7 +80,6 @@ public class GuiMain extends Application {
     private void createClassDiagScene(Group rootClass, Stage primaryStage){
         // set the scene
         Scene scene = new Scene(rootClass, primaryStage.getMaxWidth(), primaryStage.getMaxHeight(), Color.WHITE);
-        scene.getStylesheets().add("stylesheet.css");
 
         // options for adding new elements
         Menu options = new Menu("Add...");
@@ -159,7 +158,6 @@ public class GuiMain extends Application {
         // uz je vse nactene z JSONu v jednotlivych UMLSeqDiaGui -> staci jen zobrazit
 
         Scene sceneSeqTest = new Scene(rootSeq.get(n), 1000, 750, Color.WHITE);
-        sceneSeqTest.getStylesheets().add("stylesheet.css");
         Stage sceneSeqStage = new Stage();
         sceneSeqStage.setScene(sceneSeqTest);
         sceneSeqStage.setTitle("Sequence Diagram Editor");

@@ -28,7 +28,7 @@
     <javac srcdir="${src}"
            destdir="${build}"
            encoding="ISO8859-2">
-      <compilerarg line="--module-path lib --add-modules javafx.controls --add-modules javafx.fxml --add-modules json.simple"/>
+      <compilerarg line="--module-path lib --add-modules javafx.controls --add-modules json.simple"/>
     </javac>
   </target>
 
@@ -36,9 +36,6 @@
     <mkdir dir="${dest}"/>
     <jar destfile="${dest}/ija-app.jar">
         <fileset dir="${build}"/>
-        <fileset file="${src}/app/gui/AppGuiMain.fxml"/>
-        <fileset file="${src}/app/gui/Scene1.fxml"/>
-        <fileset file="${src}/app/gui/stylesheet.css"/>
       <manifest>
         <attribute name="Main-Class"
                    value="app.Main"/>
@@ -48,7 +45,6 @@
     <copy todir="${dest}/lib">
       <fileset dir="${lib}"/>
     </copy>
-    <copy file="src/app/gui/AppGuiMain.fxml" todir="${build}/app/gui"/>
   </target>
 
   <target name="doc">
@@ -65,9 +61,6 @@
     <mkdir dir="${dest}"/>
     <jar destfile="${dest}/ija-app.jar">
         <fileset dir="${build}"/>
-        <fileset file="${src}/app/gui/AppGuiMain.fxml"/>
-        <fileset file="${src}/app/gui/Scene1.fxml"/>
-        <fileset file="${src}/app/gui/stylesheet.css"/>
       <manifest>
         <attribute name="Main-Class"
                    value="app.Main"/>
@@ -77,13 +70,12 @@
     <copy todir="${dest}/lib">
       <fileset dir="${lib}"/>
     </copy>
-    <copy file="src/app/gui/AppGuiMain.fxml" todir="${build}/app/gui"/>
   </target>
 
   <target name="run" description="Run the project with a command line argument">
     <java jar="${dest}/ija-app.jar"
           dir="${dest}" fork="true">
-      <jvmarg line="--module-path lib --add-modules javafx.controls --add-modules javafx.fxml --add-modules json.simple"/>
+      <jvmarg line="--module-path lib --add-modules javafx.controls --add-modules json.simple"/>
       <arg value="${arg}"/>
     </java>
   </target>
