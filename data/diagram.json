@@ -1,0 +1,249 @@
+{
+  "classes" : [
+    {
+      "name" : "Tvar",
+      "attributes" : [
+        {
+          "name" : "pocatek",
+          "type" : "Point",
+          "access" : "public"
+        },
+        {
+          "name" : "sirka",
+          "type" : "int",
+          "access" : "public"
+        },
+        {
+          "name" : "vyska",
+          "type" : "int",
+          "access" : "public"
+        }
+      ],
+      "methods" : [
+        {
+          "name" : "kreslit",
+          "type" : "void",
+          "access" : "public",
+          "attributes" : []
+        },
+        {
+          "name" : "obsah",
+          "type" : "void",
+          "access" : "public",
+          "attributes" : []
+        },
+        {
+          "name" : "zmenSirku",
+          "type" : "int",
+          "access" : "public",
+          "attributes" : [
+            {
+              "type" : "int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ctverec",
+      "attributes" : [],
+      "methods" : [
+        {
+          "name" : "kreslit",
+          "type" : "void",
+          "attributes" : [],
+          "access" : "public"
+        },
+        {
+          "name": "obsah",
+          "type": "void",
+          "attributes": [],
+          "access": "public"
+        }
+      ]
+    },
+    {
+      "name" : "Kruh",
+      "attributes" : [
+        {
+          "name" : "polomer",
+          "type" : "int",
+          "access" : "public"
+        }
+      ],
+      "methods" : [
+        {
+          "name" : "kreslit",
+          "type" : "void",
+          "attributes" : [],
+          "access" : "public"
+        },
+        {
+          "name": "obsah",
+          "type": "void",
+          "attributes": [],
+          "access": "public"
+        }
+      ]
+    }
+  ],
+  "interfaces" : [],
+  "relationships" : [
+    {
+      "from" : "Ctverec",
+      "to" : "Tvar",
+      "type" : "generalisation"
+    },
+    {
+      "from" : "Kruh",
+      "to" : "Tvar",
+      "type" : "generalisation"
+    }
+  ],
+  "Sequence_diagrams" : [
+    {
+      "name_seq": "Seq_one",
+      "Actors" : [
+        {
+          "actorName" : "Lucius",
+          "class" : "Tvar",
+          "createdByMessage": "false"
+        },
+        {
+          "actorName" : "Kubogos",
+          "class" : "Tvar",
+          "createdByMessage": "false"
+        },
+        {
+          "actorName" : "Studentos",
+          "class" : "Tvar",
+          "createdByMessage": "false"
+        },
+        {
+          "actorName" : "NepisteOPM",
+          "class" : "Tvar",
+          "createdByMessage": "true"
+        }
+      ],
+      "Messages" : [
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "Studentos",
+          "type" : "synch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Kubogos",
+          "type" : "synch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "NepisteOPM",
+          "type" : "creat",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "Lucius",
+          "type" : "synch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Kubogos",
+          "type" : "synch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "Lucius",
+          "type" : "response",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Kubogos",
+          "type" : "asynch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Studentos",
+          "to" : "Kubogos",
+          "type" : "free",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Studentos",
+          "to" : "Lucius",
+          "type" : "asynch",
+          "methodName" : "kreslit"
+        }
+      ]
+    },{
+      "name_seq": "Seq_two",
+      "Actors" : [
+        {
+          "actorName" : "Ctverec",
+          "class" : "Tvar",
+          "createdByMessage": "false"
+        },
+        {
+          "actorName" : "Ctverec2",
+          "class" : "Tvar",
+          "createdByMessage": "true"
+        },
+        {
+          "actorName" : "Ctverec3",
+          "class" : "Tvar",
+          "createdByMessage": "false"
+        }
+      ],
+      "Messages" : [
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Ctverec",
+          "to" : "Ctverec2",
+          "type" : "creat",
+          "methodName" : "null"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Ctverec",
+          "to" : "Ctverec2",
+          "type" : "asynch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Ctverec",
+          "to" : "Ctverec2",
+          "type" : "free",
+          "methodName" : "null"
+        }
+      ]
+    }
+  ]
+}
