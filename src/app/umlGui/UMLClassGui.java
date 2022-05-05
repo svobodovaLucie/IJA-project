@@ -77,6 +77,7 @@ public class UMLClassGui extends VBox {
     private PropertyChangeSupport support;
 
 
+    /*
     public void setDraggable() {
 
         System.out.println("Setting draggable");
@@ -87,12 +88,14 @@ public class UMLClassGui extends VBox {
             posX = e.getX();
             posY = e.getY();
         });
+
+     */
         /*
         this.draggableObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
             double distanceX = e.getX()
         });
          */
-
+        /*
         this.draggableObject.setOnMouseDragged(e -> {
             System.out.println("Mouse dragged");
             double distX = e.getX() - posX;
@@ -104,6 +107,8 @@ public class UMLClassGui extends VBox {
             this.draggableObject.relocate(x.doubleValue(), y.doubleValue());
         });
 
+         */
+
         //this.draggableObject.setOnMouseEntered(e -> this.draggableObject.setCursor(Customiz));
         /*
         this.draggableObject.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
@@ -111,7 +116,7 @@ public class UMLClassGui extends VBox {
             posX = event.getX();
         });
          */
-    }
+    //}
 
     /**
      * UMLClass constructor. The UML class is not abstract.
@@ -126,12 +131,10 @@ public class UMLClassGui extends VBox {
         this.posX = 100;
         this.posY = 100;
 
-
-
         // make the UMLClassGui object dragable
-        //draggableObject.setDraggable();
-        setDraggable();
-        this.draggableObject.setParentEntity(this);
+        draggableObject.makeDraggable(this);
+        //setDraggable();
+        //this.draggableObject.setParentEntity(this);
 
         // observable
         support = new PropertyChangeSupport(this);

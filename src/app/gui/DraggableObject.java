@@ -16,26 +16,30 @@ public class DraggableObject extends Group {
     private double mouseX;
     private double mouseY;
 
-    //private double oldXscene;
+
     private List<Double> oldXs = new ArrayList<>();
     private List<Double> oldYs = new ArrayList<>();
 
-    //private List<Double> afterMouseReleased = new ArrayList<>();
+    private List<Double> afterMouseReleased = new ArrayList<>();
 
-    //private double oldYscene;
+    private double oldXscene;
+    private double oldYscene;
 
-    //private Node node;
+    private Node node;
 
     public SimpleDoubleProperty posX;
     public SimpleDoubleProperty posY;
 
     public UMLClassGui owner;
 
+    /*
     public void setParentEntity(UMLClassGui owner) {
         this.owner = owner;
         this.posX = new SimpleDoubleProperty(owner.x.getValue());
         this.posY = new SimpleDoubleProperty(owner.y.getValue());
     }
+
+     */
 
 
     /**
@@ -43,7 +47,6 @@ public class DraggableObject extends Group {
      *
      * @param node the object to be made draggable
      */
-    /*
     public void makeDraggable(Node node) {
         this.node = node;
         this.afterMouseReleased.add(0, 0.0);
@@ -84,12 +87,7 @@ public class DraggableObject extends Group {
 
     }
 
-     */
 
-
-
-
-    /*
     public List<Double> getAfterMouseReleased() {
         return this.afterMouseReleased;
     }
@@ -101,8 +99,6 @@ public class DraggableObject extends Group {
         return position;
     }
 
-     */
-
     /*
     public List <Double> getOldPosition() {
         List<Double> position = new ArrayList<>();
@@ -113,7 +109,6 @@ public class DraggableObject extends Group {
 
      */
 
-    /*
     public void setPosition(List <Double> oldPosition) {
         this.mouseX = oldPosition.get(0);
         this.mouseY = oldPosition.get(1);
@@ -127,6 +122,4 @@ public class DraggableObject extends Group {
         this.mouseX = oldXs.remove(0);
         this.mouseY = oldYs.remove(0);
     }
-
-     */
 }
