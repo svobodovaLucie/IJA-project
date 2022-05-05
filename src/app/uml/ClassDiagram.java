@@ -11,6 +11,7 @@ package app.uml;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class represents the UML class diagram. It is inherited from Element
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 public class ClassDiagram extends Element {
     private List<UMLClass> classes;
     private List<UMLClassifier> classifiers;
+    private List<UMLRelation> relations;
+    private List<UMLInterface> interfaces;
 
     /**
      * ClassDiagram constructor.
@@ -30,6 +33,8 @@ public class ClassDiagram extends Element {
         super(name);
         this.classes = new ArrayList<>();
         this.classifiers = new ArrayList<>();
+        this.relations = new ArrayList<>();
+        this.interfaces = new ArrayList<>();
     }
 
     // TODO osetrit, aby se nemohla stejna trida pridat vickrat
@@ -105,7 +110,7 @@ public class ClassDiagram extends Element {
     public UMLClass findClass(String name) {
         // find class
         for (UMLClass cls : this.getClasses()) {
-            if (cls.getName().equals(name)) {
+            if (Objects.equals(cls.getName(), name)) {
                 return cls;
             }
         }
@@ -114,5 +119,20 @@ public class ClassDiagram extends Element {
         return null;
     }
 
+    public void addRelation(UMLRelation umlRelation) {
+        if (umlRelation == null) {
+            System.out.println("Null UMLRelation");
+        } else {
+            System.out.println("NotNull UMLRelation");
+        }
+        this.relations.add(umlRelation);
+    }
 
+    public List<UMLRelation> getRelations() {
+        return this.relations;
+    }
+
+    public void addInterface(UMLInterface umlInterface) {
+        this.interfaces.add(umlInterface);
+    }
 }

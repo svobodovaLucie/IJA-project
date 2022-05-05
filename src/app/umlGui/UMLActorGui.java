@@ -15,7 +15,14 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UMLActorGui extends Label {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeListenerProxy;
+import java.beans.PropertyChangeSupport;
+
+public class UMLActorGui extends Label implements PropertyChangeListener {
+    // UMLClass that is represented in Seq GUI
+    private UMLClass umlClass;
 
     private Label actorNameGui;
     String actorName; //todo maybe rework to backend end but it would be very hard
@@ -33,10 +40,11 @@ public class UMLActorGui extends Label {
     /**
      * Paint Actor Constructor
      *
+     * @param umlClass UMLClass
      * @param n Actor order
      */
-    public UMLActorGui(String name, String ActorClass, int n, int y){
-
+    public UMLActorGui(UMLClass umlClass, String name, String ActorClass, int n, int y){
+        this.umlClass = umlClass;
         this.actorName = name;
         this.displayedName = name + ActorClass;
 
@@ -132,5 +140,7 @@ public class UMLActorGui extends Label {
     public void setFreed(boolean b){
         this.freed = b;
     }
-
+    public void propertyChange(PropertyChangeEvent e) {
+        this.actorNameGui.setText((String) e.getNewValue());
+    }
 }

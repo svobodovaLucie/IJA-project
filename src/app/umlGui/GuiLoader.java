@@ -58,24 +58,45 @@ public class GuiLoader {
         // create a Group
         Group root = new Group();
 
-        // load classes from classDiagram
-        saveClassesGui(classDiagram.getClasses(), root);
+        // create ClassDiagramGui
+        UMLClassDiagramGui umlClassDiagramGui = new UMLClassDiagramGui(classDiagram);
 
-        // return the Group
+        // load classes from classDiagram
+        saveClassesGui(classDiagram.getClasses(), umlClassDiagramGui);
+
+        // load relations from classDiagram
+        saveRelationsGui(classDiagram.getRelations(), umlClassDiagramGui);
+
+        // add umlClassDiagramGui to root
+        root.getChildren().add(umlClassDiagramGui);
+
+        // return the root Group
         return root;
     }
 
+    private void saveRelationsGui(List<UMLRelation> relations, UMLClassDiagramGui umlClassDiagramGui) {
+        int i = 0;
+        for (UMLRelation relation : relations) {
+            // create new relation GUI and add it to the class diagram GUI
+            System.out.println("i: " + i++);
+            UMLRelationGui umlRelationGui = new UMLRelationGui(relation, umlClassDiagramGui);
+            System.out.println("j");
+
+            // add relation to the GUI
+            umlClassDiagramGui.getChildren().add(umlRelationGui);
+        }
+    }
     /**
      * Method loads the UML classes from the UML class diagram file.
      *
      * @param classes array of UML classes in JSON
-     * @param root root element that contains the GUI objects
+     * @param umlClassDiagramGui root element that contains the GUI objects
      */
-    private void saveClassesGui(List<UMLClass> classes, Group root) {
+    private void saveClassesGui(List<UMLClass> classes, UMLClassDiagramGui umlClassDiagramGui) {
         for (UMLClass umlClass : classes) {
             // create GUI element for the class
-            UMLClassGui umlClassGui = new UMLClassGui(umlClass);
-            root.getChildren().add(umlClassGui);
+            UMLClassGui umlClassGui = new UMLClassGui(umlClass, umlClassDiagramGui);
+            umlClassDiagramGui.getChildren().add(umlClassGui);
 
             // load attributes and methods
             saveAttributesGui(umlClass.getAttributes(), umlClassGui);
