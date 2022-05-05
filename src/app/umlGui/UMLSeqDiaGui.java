@@ -135,7 +135,7 @@ public class UMLSeqDiaGui extends AnchorPane {
             aClass = ":(" + actorClass.getName() + ")";
         }
 
-        UMLActorGui newActor = new UMLActorGui(actorName , aClass, n, this.getyPos());
+        UMLActorGui newActor = new UMLActorGui(actorClass, actorName , aClass, n, this.getyPos());
         this.actorsGui.add(newActor);
 
         this.getChildren().add(newActor.getTextField());
@@ -176,7 +176,7 @@ public class UMLSeqDiaGui extends AnchorPane {
      */
     public void paintMessage(UMLMessage message){
 
-        UMLActorGui temp = this.findActorGui(message.getFromActor());
+        //UMLActorGui temp = this.findActorGui(message.getFromActor());
 
         UMLMessageGui umlMessGui = new UMLMessageGui(message, getMessageGui().size(),this);
         this.addMessageGui(umlMessGui);

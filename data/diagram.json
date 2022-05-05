@@ -224,7 +224,7 @@
           "classTo" : "Tvar",
           "from" : "Ctverec",
           "to" : "Ctverec2",
-          "type" : "creat",
+          "type" : "create",
           "methodName" : "null"
         },
         {

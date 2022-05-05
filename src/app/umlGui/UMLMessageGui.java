@@ -69,12 +69,12 @@ public class UMLMessageGui {
         else if (message.getType().equals("response")){
             createDottedArrow(indexActFrom, indexActTo, "response");
         }
-        else if (message.getType().equals("creat")){
+        else if (message.getType().equals("create")){
             seq.paintActor(message.getToActor(), message.getToClass());
             indexActTo   = seq.getActorGuiIndex(message.getToActor(),
                     message.getToClass());
 
-            createDottedArrow(indexActFrom, indexActTo, "<<creat>>");
+            createDottedArrow(indexActFrom, indexActTo, "<<create>>");
         }
         else if (message.getType().equals("free")){
             // i will free the ACTGUI
