@@ -18,10 +18,8 @@ import app.uml.UMLClassifier;
 import app.uml.UMLMethod;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -29,8 +27,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.awt.event.MouseEvent;
-import java.beans.Customizer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -151,15 +147,28 @@ public class UMLClassGui extends VBox {
         this.setBorder(new Border(borderStroke));
         Insets insets = new Insets(5, 5, 5, 5);
 
+        String style = "-fx-font-weight: bold;\n" +
+                "-fx-background-color: transparent;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-background-radius: 0;\n" +
+                "-fx-border-color: black;";
+
         // add name label
         this.nameLabel = new TextField(this.umlClass.getName());
-        this.nameLabel.setPadding(new Insets(5, 5, 5, 5));
-        this.nameLabel.setStyle("-fx-font-weight: bold;\n" +
-		              "-fx-background-color: transparent;\n" +
-					  "-fx-border-style: solid;\n" +
-					  "-fx-background-radius: 0;\n" +
-                      "-fx-border-width: 2 2 1 2;\n" +
-					  "-fx-border-color: black;");
+        this.nameLabel.setPadding(insets);
+        if (this.umlClass.isInterface()) {
+            TextField interfaceLabel = new TextField("<<interface>>");
+            interfaceLabel.setEditable(false);
+            interfaceLabel.setStyle(style +
+                    "-fx-border-width: 2 2 0 2;");
+            interfaceLabel.setAlignment(Pos.CENTER);
+            interfaceLabel.setPadding(new Insets(5, 5, 0, 5));
+            this.getChildren().add(interfaceLabel);
+
+            this.nameLabel.setStyle(style + "-fx-border-width: 0 2 1 2;");
+        } else {
+            this.nameLabel.setStyle(style + "-fx-border-width: 2 2 1 2;");
+        }
         this.nameLabel.setAlignment(Pos.CENTER);
         this.getChildren().add(nameLabel);
 

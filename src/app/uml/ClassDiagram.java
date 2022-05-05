@@ -22,9 +22,8 @@ import java.util.Objects;
  */
 public class ClassDiagram extends Element {
     private List<UMLClass> classes;
-    private List<UMLClassifier> classifiers;
     private List<UMLRelation> relations;
-    private List<UMLInterface> interfaces;
+    private List<UMLClass> interfaces;
 
     private PropertyChangeSupport support;
 
@@ -36,7 +35,6 @@ public class ClassDiagram extends Element {
     public ClassDiagram(String name) {
         super(name);
         this.classes = new ArrayList<>();
-        this.classifiers = new ArrayList<>();
         this.relations = new ArrayList<>();
         this.interfaces = new ArrayList<>();
         this.support = new PropertyChangeSupport(this);
@@ -80,44 +78,20 @@ public class ClassDiagram extends Element {
                 return null;
             }
         }
-        UMLClass newClass = new UMLClass(name);
+        UMLClass newClass = new UMLClass(name, false);
         this.classes.add(newClass);
-        this.classifiers.add(newClass);
         return newClass;
     }
 
-    /**
-     * Method finds the UML classifier by its name. If it doesn't exist
-     * in the diagram, it creates an instance of UMLClassifier that is not
-     * user defined. The classifier is added to the classifiers list.
-     *
-     * @param name name of the UML classifier
-     * @return new UMLClassifier if added to the diagram,
-     *         reference to the UMLClassifier if found in the list
-     */
-    public UMLClassifier classifierForName(String name) {
-        for (UMLClassifier classifier : this.classifiers) {
-            if (classifier.getName().equals(name))
-                return classifier;
+    public UMLClass createInterface(String name) {
+        for (UMLClass cl : this.classes) {
+            if (cl.getName().equals(name)) {
+                return null;
+            }
         }
-        UMLClassifier newClassifier = new UMLClassifier(name);
-        this.classifiers.add(newClassifier);
-        return newClassifier;
-    }
-
-    /**
-     * Method find the UML classifier in the diagram. If not present,
-     * returns null.
-     *
-     * @param name name of the UML classifier to be found
-     * @return UMLClassifier if found, null if not
-     */
-    public UMLClassifier findClassifier(String name) {
-        for (UMLClassifier classifier : this.classifiers) {
-            if (classifier.getName().equals(name))
-                return classifier;
-        }
-        return null;
+        UMLClass newClass = new UMLClass(name, true);
+        this.interfaces.add(newClass);
+        return newClass;
     }
 
     public UMLClass findClass(String name) {
@@ -127,9 +101,23 @@ public class ClassDiagram extends Element {
                 return cls;
             }
         }
-
         // not found -> null
         return null;
+    }
+
+    public UMLClass findInterface(String name) {
+        // find class
+        for (UMLClass cls : this.getInterfaces()) {
+            if (Objects.equals(cls.getName(), name)) {
+                return cls;
+            }
+        }
+        // not found -> null
+        return null;
+    }
+
+    public List<UMLClass> getInterfaces() {
+        return this.interfaces;
     }
 
     public void removeClass(String name) {
@@ -155,7 +143,7 @@ public class ClassDiagram extends Element {
         return this.relations;
     }
 
-    public void addInterface(UMLInterface umlInterface) {
+    public void addInterface(UMLClass umlInterface) {
         this.interfaces.add(umlInterface);
     }
 }

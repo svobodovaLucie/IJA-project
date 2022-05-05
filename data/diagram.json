@@ -87,7 +87,41 @@
       ]
     }
   ],
-  "interfaces" : [],
+  "interfaces" : [
+    {
+    "name" : "Itf",
+    "attributes" : [
+      {
+        "name" : "neco",
+        "type" : "int",
+        "access" : "package"
+      },
+      {
+        "name" : "dalsi",
+        "type" : "void",
+        "access" : "public"
+      }
+    ],
+    "methods" : [
+      {
+        "name" : "exec",
+        "type" : "void",
+        "access" : "public",
+        "attributes" : []
+      },
+      {
+        "name" : "undo",
+        "type" : "void",
+        "access" : "protected",
+        "attributes" : [
+          {
+            "type" : "int",
+            "type" : "void"
+          }
+        ]
+      }
+    ]
+  }],
   "relationships" : [
     {
       "from" : "Ctverec",

@@ -67,6 +67,9 @@ public class GuiLoader {
         // load classes from classDiagram
         saveClassesGui(classDiagram.getClasses(), umlClassDiagramGui);
 
+        // load interfaces from classDiagram
+        saveInterfacesGui(classDiagram.getInterfaces(), umlClassDiagramGui);
+
         // load relations from classDiagram
         saveRelationsGui(classDiagram.getRelations(), umlClassDiagramGui);
 
@@ -104,6 +107,18 @@ public class GuiLoader {
             // load attributes and methods
             saveAttributesGui(umlClass.getAttributes(), umlClassGui);
             saveMethodsGui(umlClass.getMethods(), umlClassGui);
+        }
+    }
+
+    private void saveInterfacesGui(List<UMLClass> interfaces, UMLClassDiagramGui umlClassDiagramGui) {
+        for (UMLClass umlInterface : interfaces) {
+            // create GUI element for the class
+            UMLClassGui umlInterfaceGui = new UMLClassGui(umlInterface, umlClassDiagramGui);
+            umlClassDiagramGui.getChildren().add(umlInterfaceGui);
+
+            // load attributes and methods
+            saveAttributesGui(umlInterface.getAttributes(), umlInterfaceGui);
+            saveMethodsGui(umlInterface.getMethods(), umlInterfaceGui);
         }
     }
 

@@ -25,7 +25,7 @@ public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
 
-    private boolean isAbstract;
+    private boolean isInterface;
 
     private PropertyChangeSupport support;
 
@@ -34,9 +34,9 @@ public class UMLClass extends UMLClassifier {
      *
      * @param name name of the UML class
      */
-    public UMLClass(String name) {
+    public UMLClass(String name, boolean isInterface) {
         super(name);
-        this.isAbstract = false;
+        this.isInterface = isInterface;
         this.attributes = new ArrayList<>();
         this.methods = new ArrayList<>();
 
@@ -56,8 +56,8 @@ public class UMLClass extends UMLClassifier {
      *
      * @return true if the UML class is abstract, false if not
      */
-    public boolean isAbstract() {
-        return this.isAbstract;
+    public boolean isInterface() {
+        return this.isInterface;
     }
 
     /**
@@ -68,7 +68,7 @@ public class UMLClass extends UMLClassifier {
      *                   will be abstract or not
      */
     public void setAbstract(boolean isAbstract) {
-        this.isAbstract = isAbstract;
+        this.isInterface = isAbstract;
     }
 
     /**
