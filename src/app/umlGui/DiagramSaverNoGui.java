@@ -34,9 +34,11 @@ public class DiagramSaverNoGui {
         JSONObject diagram = new JSONObject();
 
         // check null
-        JSONArray classes = saveClassDiagram(diagrams.getClassDiagram());
-
+        JSONArray classes = saveClasses(diagrams.getClassDiagram());
         diagram.put("classes", classes);
+
+        JSONArray interfaces = saveInterfaces(diagrams.getClassDiagram());
+        diagram.put("interfaces", interfaces);
 
         //saveClassDiagram(diagrams.getClassDiagram());
         // Write JSON file
@@ -54,20 +56,31 @@ public class DiagramSaverNoGui {
      *
      * @param classDiagram contains the class diagram
      */
-    public static JSONArray saveClassDiagram(ClassDiagram classDiagram) {
+    public static JSONArray saveClasses(ClassDiagram classDiagram) {
 
         if (classDiagram == null) { // TODO
             System.out.println("Can't save the diagram\n");
             return null; // TODO catch exception
         }
 
-        // save classes, interfaces, relationships
+        // save classes
         JSONArray classes = new JSONArray();
         for (UMLClass cls : classDiagram.getClasses()) {
             classes.add(saveClass(cls));
         }
+        // save relations
 
         return classes;
+    }
+
+    public static JSONArray saveInterfaces(ClassDiagram classDiagram) {
+        // save interfaces
+        JSONArray interfaces = new JSONArray();
+        for (UMLClass intf : classDiagram.getInterfaces()) {
+            interfaces.add(saveClass(intf));
+        }
+
+        return interfaces;
     }
 
     /**

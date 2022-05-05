@@ -78,12 +78,22 @@ public class ClassDiagram extends Element {
                 return null;
             }
         }
+        for (UMLClass cl : this.interfaces) {
+            if (cl.getName().equals(name)) {
+                return null;
+            }
+        }
         UMLClass newClass = new UMLClass(name, false);
         this.classes.add(newClass);
         return newClass;
     }
 
     public UMLClass createInterface(String name) {
+        for (UMLClass cl : this.interfaces) {
+            if (cl.getName().equals(name)) {
+                return null;
+            }
+        }
         for (UMLClass cl : this.classes) {
             if (cl.getName().equals(name)) {
                 return null;
@@ -128,6 +138,16 @@ public class ClassDiagram extends Element {
         }
         // observer
         support.firePropertyChange("removeClass", toRemove, null);
+    }
+
+    public void removeInterface(String name) {
+        UMLClass toRemove = findInterface(name);
+        try {
+            this.interfaces.remove(toRemove);
+        } catch (Exception ignored) {
+        }
+        // observer
+        support.firePropertyChange("removeInterface", toRemove, null);
     }
 
     public void addRelation(UMLRelation umlRelation) {

@@ -127,14 +127,21 @@ public class GuiMain extends Application {
                 UMLClass newClass = BEdiagrams.getClassDiagram().createClass("Untitled");
                 umlClassDiagramGui.getChildren().add(new UMLClassGui(newClass, umlClassDiagramGui));
             } catch (Exception exception) {
-                System.out.println("Can't create two classes with the same name!");
+                System.out.println("Can't create two classes/interfaces with the same name!");
                 customAlertBox();
             }
         });
         // button for adding new interface
         MenuItem addInterface = new MenuItem("Add interface");
         addInterface.setOnAction(e -> {
-            System.out.println("Adding new interface (not implemented yet)");
+            try {
+                UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
+                UMLClass newInterface = BEdiagrams.getClassDiagram().createInterface("Untitled Interface");
+                umlClassDiagramGui.getChildren().add(new UMLClassGui(newInterface, umlClassDiagramGui));
+            } catch (Exception exception) {
+                System.out.println("Can't create two interfaces/classes with the same name!");
+                customAlertBox();
+            }
         });
         // button for adding new relation
         MenuItem addRelation = new MenuItem("Add relation");
@@ -155,8 +162,8 @@ public class GuiMain extends Application {
         helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
         text.setWrappingWidth(350);
         text.setTextAlignment(TextAlignment.JUSTIFY);
-        text.setText("\nThere is already a class with the name Untitled.\n" +
-                     "\"Two classes with the same name can't be created.");
+        text.setText("\nThere is already a class/interface with the name Untitled.\n" +
+                     "\"Two classes/interfaces with the same name can't be created.");
         helpGroup.getChildren().add(text);
         Scene helpScene = new Scene(helpGroup, 400, 400);
         Stage helpStage = new Stage();
@@ -177,6 +184,7 @@ public class GuiMain extends Application {
         MenuItem removeInterface = new MenuItem("Remove interface");
         removeInterface.setOnAction(e -> {
             System.out.println("Removing new interface (not implemented yet)");
+            removeInterfaceMessage();
         });
         // button for adding new relation
         MenuItem removeRelation = new MenuItem("Remove relation");
@@ -204,7 +212,7 @@ public class GuiMain extends Application {
         for (UMLClass cls : BEdiagrams.getClassDiagram().getClasses()) {
             cb.getItems().add(cls.getName());
         }
-        cb.setPromptText("Remove class");
+        cb.setPromptText("Select class");
         cb.setLayoutX(42);
         cb.setLayoutY(42);
         helpGroup.getChildren().add(cb);
@@ -221,6 +229,45 @@ public class GuiMain extends Application {
         confirm.setOnAction(event -> {
             System.out.println("confirming");
             BEdiagrams.getClassDiagram().removeClass(cb.getValue());
+            System.out.println("removed");
+            helpStage.close();
+        });
+        helpGroup.getChildren().add(confirm);
+
+        helpStage.show();
+    }
+
+    private void removeInterfaceMessage(){
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n         Select interface to be removed.");
+        helpGroup.getChildren().add(text);
+
+        ComboBox<String> cb = new ComboBox<>();
+        // get names of all classes
+        for (UMLClass intfc : BEdiagrams.getClassDiagram().getInterfaces()) {
+            cb.getItems().add(intfc.getName());
+        }
+        cb.setPromptText("Select interface");
+        cb.setLayoutX(42);
+        cb.setLayoutY(42);
+        helpGroup.getChildren().add(cb);
+
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Remove interface");
+
+        // confirming button
+        Button confirm = new Button("Confirm");
+        confirm.setLayoutX(70);
+        confirm.setLayoutY(70);
+        confirm.setOnAction(event -> {
+            BEdiagrams.getClassDiagram().removeInterface(cb.getValue());
             System.out.println("removed");
             helpStage.close();
         });

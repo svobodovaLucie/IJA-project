@@ -22,10 +22,18 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
         this.classDiagram.addPropertyChangeListener(this);
     }
     public void propertyChange(PropertyChangeEvent evt) {
-        try {
-            this.getChildren().remove(findClassGui((UMLClass) evt.getOldValue()));
-            System.out.println("ClassDiagramGui - class removed");
-        } catch (Exception ignored) {
+        if (evt.getPropertyName() == "removeClass") {
+            try {
+                this.getChildren().remove(findClassGui((UMLClass) evt.getOldValue()));
+                System.out.println("ClassDiagramGui - class removed");
+            } catch (Exception ignored) {
+            }
+        } else {
+            try {
+                this.getChildren().remove(findInterfaceGui((UMLClass) evt.getOldValue()));
+                System.out.println("ClassDiagramGui - interface removed");
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -45,6 +53,23 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
                 UMLClassGui umlClassGui = (UMLClassGui)node;
                 if (umlClassGui.getUmlClass() == classToFind) {
                     return umlClassGui;
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        // not found
+        return null;
+    }
+
+    public UMLClassGui findInterfaceGui(UMLClass interfaceToFind) {
+        ObservableList<Node> interfacesGui = this.getChildren();
+        for (Node node : interfacesGui) {
+            System.out.println("Node: " + node);
+            try {
+                UMLClassGui umlInterfaceGui = (UMLClassGui)node;
+                if (umlInterfaceGui.getUmlClass() == interfaceToFind) {
+                    return umlInterfaceGui;
                 }
             } catch (Exception e) {
                 continue;
