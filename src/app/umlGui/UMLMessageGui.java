@@ -1,13 +1,19 @@
 package app.umlGui;
 
 import app.uml.UMLMessage;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+
+import java.awt.*;
 
 public class UMLMessageGui {
-
 
     // holds arrow
     private Group arrow;
@@ -20,7 +26,7 @@ public class UMLMessageGui {
     // First actor X pos
     public int baseXPos = 260;
     public int spaceBetweenActors = 150;
-    public int baseYPos = 100;
+    public int baseYPos = 70;
     public int spaceBetweenMessages = 50;
 
 
@@ -33,6 +39,15 @@ public class UMLMessageGui {
         int indexActTo   = seq.getActorGuiIndex(message.getToActor(),
                                                 message.getFromClass());
 
+
+        String messageText;
+        if (message.getMethod() != null){
+            messageText = message.getMethod().getName();
+        }
+        else {
+            messageText = "UNKNOWN";
+        }
+
         if (message.getMethod() == null)
             this.consitent = true;
         else
@@ -41,70 +56,110 @@ public class UMLMessageGui {
         // synch message
         // TODO TADY POKRACOVAT V PRACI
         if (message.getType().equals("synch")){
-            System.out.println("kkkkkkkkkkkk");
-            createSynchArrow(indexActFrom, indexActTo);
+            this.createSynchArrow(indexActFrom, indexActTo, messageText);
         }
         else if (message.getType().equals("asynch")){
-            System.out.println("asynch");
+            this.createAsynchArrow(indexActFrom, indexActTo, messageText);
         }
         else if (message.getType().equals("response")){
-            System.out.println("response");
+            createDottedArrow(indexActFrom, indexActTo, "response");
         }
         else if (message.getType().equals("creat")){
+            // 
+
             System.out.println("creat");
         }
         else if (message.getType().equals("free")){
-            System.out.println("free");
+            // i will free the ACTGUI
+            if(indexActTo > 0){
+                seq.getNthActorGui(indexActTo).setFreed(true);
+            }
+            createDottedArrow(indexActFrom, indexActTo, "<<delete>>");
         }
         else{
             this.arrow = null;
         }
-
-
     }
 
 
-    private int countPosFrom(int indexActorFrom, int indexActorTo){
-        return this.baseXPos + ((indexActorFrom) * this.spaceBetweenActors);
+    private Line createLine(int xFrom, int xTo, int yFrom, int yTo){
+        Line line = new Line();
+        line.setStartX(xFrom);
+        line.setEndX(xTo);
+        line.setStartY(yFrom);
+        line.setEndY(yTo);
+        return line;
     }
 
-    private int countPosTo(int posFrom, int indexActorFrom, int indexActorTo){
-        int res;
-        System.out.println("indexes " + "from " + indexActorFrom + " to " + indexActorTo);
+    private Circle createCircle(int x, int y, int radius){
+        Circle circle = new Circle();
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        circle.setRadius(radius);
+        return circle;
+    }
+
+    private Group createDottedLine(int posFrom, int posTo, int yPos){
+        Group group = new Group();
+        if (posTo < posFrom){
+            int a = posTo;
+            posTo = posFrom;
+            posFrom = a;
+        }
+        for (int i = posFrom; i < posTo;){
+            Line line = this.createLine(i, i+5, yPos, yPos);
+            i+=10;
+            group.getChildren().add(line);
+        }
+        return group;
+    }
+
+
+    private void createDottedArrow(int indexActorFrom, int indexActorTo, String text){
+        int posFrom = this.countPosFrom(indexActorFrom, indexActorTo);
+        int posTo   = this.countPosTo(posFrom, indexActorFrom, indexActorTo);
+        int yPos    = this.countYPos();
+
+        Group group = this.createDottedLine(posFrom, posTo, yPos);
+
+        Line line2;
+        Line line3;
         if (indexActorFrom < indexActorTo){
-            res = posFrom + this.spaceBetweenActors;
+            line2 = this.createLine(posTo-20, posTo, yPos-10, yPos);
+            line3 = this.createLine(posTo-20, posTo, yPos+10, yPos);
         }
         else {
-            res = posFrom - this.spaceBetweenActors;
+            line2 = this.createLine(posTo+20, posTo, yPos-10, yPos);
+            line3 = this.createLine(posTo+20, posTo, yPos+10, yPos);
         }
-        return res;
+
+        Circle circle = createCircle(posFrom, yPos, 5);
+
+        group.getChildren().add(line2);
+        group.getChildren().add(line3);
+        group.getChildren().add(circle);
+
+        int textXpos = (posTo + posFrom) / 2 - 5;
+        int textYpos = yPos - 20;
+
+        if(indexActorFrom > indexActorTo){
+            group.getChildren().add(createArrowText(textXpos-20, textYpos, text));
+        }
+        else {
+            group.getChildren().add(createArrowText(textXpos, textYpos, text));
+        }
+        setArrow(group);
     }
 
-    private int countYPos(){
-        return baseYPos + ((this.getOrder()+1) * this.spaceBetweenMessages);
-    }
-
-    private void createSynchArrow(int indexActorFrom, int indexActorTo){
-        // TODO TADY POKRACUJ
-        if(indexActorTo == -1)
-            indexActorTo = 1;
-        if(indexActorFrom == -1)
-            indexActorFrom = 1;
+    private void createSynchArrow(int indexActorFrom, int indexActorTo, String text){
         int posFrom = this.countPosFrom(indexActorFrom, indexActorTo);
         int posTo   = this.countPosTo(posFrom, indexActorFrom, indexActorTo);
         int yPos    = this.countYPos();
 
         Group group = new Group();
-        Line line  = new Line();
-        line.setStartX(posFrom);
-        line.setStartY(yPos);
-        line.setEndX(posTo);
-        line.setEndY(yPos);
+        Line line  = createLine(posFrom, posTo, yPos, yPos);
 
-        Circle circle = new Circle();
-        circle.setCenterX(posFrom);
-        circle.setCenterY(yPos);
-        circle.setRadius(5);
+        Circle circle = createCircle(posFrom, yPos, 5);
 
         Polygon triangle = new Polygon();
         if (indexActorFrom < indexActorTo){
@@ -121,85 +176,66 @@ public class UMLMessageGui {
                     (posTo+20.0), (yPos+10.0)
             );
         }
+
         group.getChildren().add(line);
         group.getChildren().add(circle);
         group.getChildren().add(triangle);
+
+        int textXpos = (posTo + posFrom) / 2 - 5;
+        int textYpos = yPos - 20;
+
+        group.getChildren().add(createArrowText(textXpos, textYpos, text));
         setArrow(group);
 
     }
 
-    private void createAsynchArrow(){
+    //private void createSynchArrow(int indexActorFrom, int indexActorTo, String text){
+    private void createAsynchArrow(int indexActorFrom, int indexActorTo, String text){
 
-        /*
+        int posFrom = this.countPosFrom(indexActorFrom, indexActorTo);
+        int posTo   = this.countPosTo(posFrom, indexActorFrom, indexActorTo);
+        int yPos    = this.countYPos();
+
         Group group = new Group();
-        Line line  = new Line();
-        line.setStartX(200);
-        line.setStartY(200);
-        line.setEndX(400);
-        line.setEndY(200);
+        Line line = createLine(posFrom, posTo, yPos, yPos);
 
-        Circle circle = new Circle();
-        circle.setCenterX(200);
-        circle.setCenterY(200);
-        circle.setRadius(5);
+        Circle circle = createCircle(posFrom, yPos, 5);
 
-        Line line2 = new Line();
-        line2.setStartY(190);
-        line2.setEndY(200);
-        line2.setStartX(380);
-        line2.setEndX(400);
-
-        Line line3 = new Line();
-        line3.setStartY(210);
-        line3.setEndY(200);
-        line3.setStartX(380);
-        line3.setEndX(400);
+        Line line2;
+        Line line3;
+        if (indexActorFrom < indexActorTo){
+            line2 = this.createLine(posTo-20, posTo, yPos-10, yPos);
+            line3 = this.createLine(posTo-20, posTo, yPos+10, yPos);
+        }
+        else {
+            line2 = this.createLine(posTo+20, posTo, yPos-10, yPos);
+            line3 = this.createLine(posTo+20, posTo, yPos+10, yPos);
+        }
 
         group.getChildren().add(line);
         group.getChildren().add(line2);
         group.getChildren().add(line3);
         group.getChildren().add(circle);
-        this.getChildren().add(group);
-        */
+
+        int textXpos = (posTo + posFrom) / 2 - 5;
+        int textYpos = yPos - 20;
+
+        group.getChildren().add(createArrowText(textXpos, textYpos, text));
+        setArrow(group);
 
     }
 
-    private void createDottedArrow(){
-        //todo
-        /*
-        Group group = new Group();
-        for (int i = 200; i < 400;){
-            Line line = new Line();
-            line.setStartX(i);
-            line.setEndX(i+5);
-            line.setStartY(200);
-            line.setEndY(200);
-            i+=10;
-            group.getChildren().add(line);
-        }
+    private Label createArrowText(int x, int y, String text){
+        Label label = new Label(text);
+        label.prefHeight(40);
+        label.prefWidth(40);
+        label.setStyle("-fx-font-size: 14;");
 
-        Circle circle = new Circle();
-        circle.setCenterX(200);
-        circle.setCenterY(200);
-        circle.setRadius(5);
+        // set position
+        label.setLayoutX(x);
+        label.setLayoutY(y);
 
-        Line line2 = new Line();
-        line2.setStartY(190);
-        line2.setEndY(200);
-        line2.setStartX(380);
-        line2.setEndX(400);
-
-        Line line3 = new Line();
-        line3.setStartY(210);
-        line3.setEndY(200);
-        line3.setStartX(380);
-        line3.setEndX(400);
-
-        group.getChildren().add(line2);
-        group.getChildren().add(line3);
-        group.getChildren().add(circle);
-        this.getChildren().add(group);
-         */
+        return label;
     }
 
     private void setArrow(Group arrow){
@@ -214,6 +250,29 @@ public class UMLMessageGui {
     public Group getArrow(){
         return this.arrow;
     }
+
+    private int countPosFrom(int indexActorFrom, int indexActorTo){
+        return this.baseXPos + ((indexActorFrom) * this.spaceBetweenActors);
+    }
+
+    private int countPosTo(int posFrom, int indexActorFrom, int indexActorTo){
+        int res;
+        int a;
+        if (indexActorFrom < indexActorTo){
+            a = indexActorTo - indexActorFrom;
+            res = posFrom + (this.spaceBetweenActors*a);
+        }
+        else {
+            a = indexActorFrom - indexActorTo;
+            res = posFrom - (this.spaceBetweenActors*a);
+        }
+        return res;
+    }
+
+    private int countYPos(){
+        return baseYPos + ((this.getOrder()+1) * this.spaceBetweenMessages);
+    }
+
 
 
 

@@ -28,6 +28,8 @@ public class UMLActorGui extends Label {
 
     private List<Line> lines;
 
+    private boolean freed;
+
     /**
      * Paint Actor Constructor
      *
@@ -49,15 +51,15 @@ public class UMLActorGui extends Label {
         this.actorNameGui = new Label(displayedName);
         this.actorNameGui.setAlignment(Pos.CENTER);
         this.actorNameGui.setContentDisplay(ContentDisplay.CENTER);
-        this.actorNameGui.prefHeight(100);
-        this.actorNameGui.prefWidth(100);
-        this.actorNameGui.setStyle("-fx-background-color: #d7d0d0;");
-        this.actorNameGui.setStyle("-fx-border-color: black;");
-        this.actorNameGui.setFont(new Font("Arial", 13));
+        this.actorNameGui.prefHeight(80);
+        this.actorNameGui.prefWidth(80);
+        this.actorNameGui.setStyle("-fx-border-color: black; -fx-font-size:15;");
 
         // set position
         this.actorNameGui.setLayoutX(x_borders+(x_space*n));
         this.actorNameGui.setLayoutY(y);
+
+        this.freed = false;
 
     }
 
@@ -79,7 +81,7 @@ public class UMLActorGui extends Label {
 
         // find out how many lines are already drawn
         // and calculate end Y position
-        startPos   = startPos + ((lineCount+1) * 40);
+        startPos   = startPos + ((lineCount+1) * 50);
         int toPos  = startPos + 50;
 
         // set current Y end position of vertical line
@@ -124,4 +126,11 @@ public class UMLActorGui extends Label {
     public String getActorName(){
         return this.actorName;
     }
+    public boolean getFreed(){
+        return this.freed;
+    }
+    public void setFreed(boolean b){
+        this.freed = b;
+    }
+
 }

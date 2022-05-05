@@ -65,6 +65,7 @@ public class UMLSeqDiaGui extends AnchorPane {
         this.actorsGui  = new ArrayList<>();
         this.messageGui = new ArrayList<>();
 
+
         loadActorsFromBE(seqDiagram);
         loadMessagesFromBE(seqDiagram);
     }
@@ -171,13 +172,8 @@ public class UMLSeqDiaGui extends AnchorPane {
      */
     public void paintMessage(UMLMessage message){
 
-        System.out.println(this.getActorsGui());
         UMLActorGui temp = this.findActorGui(message.getFromActor());
 
-        // Paint vertical line for all the actors
-        for (UMLActorGui act : this.getActorsGui()) {
-            this.getChildren().add(act.paintLine(2));
-        }
 
         UMLMessageGui umlMessGui = new UMLMessageGui(message, getMessageGui().size(),this);
         this.addMessageGui(umlMessGui);
@@ -186,6 +182,12 @@ public class UMLSeqDiaGui extends AnchorPane {
         if (umlMessGui.getArrow() != null)
             this.getChildren().add(umlMessGui.getArrow());
 
+        // Paint vertical line for all the actors
+        for (UMLActorGui act : this.getActorsGui()) {
+            if (act.getFreed() == false){
+                this.getChildren().add(act.paintLine(2));
+            }
+        }
 
     }
 
@@ -209,10 +211,12 @@ public class UMLSeqDiaGui extends AnchorPane {
         int i = 0;
         for (UMLActorGui act : this.getActorsGui()) {
             if (act.getDisplayedName().equals(searchStr)) {
+                System.out.println(searchStr + "ANO");
                 return i;
             }
             i++;
         }
+        System.out.println(searchStr + "NE");
         // not found -> -1
         return -1;
     }
@@ -228,6 +232,10 @@ public class UMLSeqDiaGui extends AnchorPane {
     public List<UMLActorGui> getActorsGui(){
         return this.actorsGui;
     }
+    public UMLActorGui getNthActorGui(int n){
+        return this.actorsGui.get(n);
+    }
+
     // getrs
     public int getMessageCounter() {
         return this.messageCounter;
@@ -243,5 +251,6 @@ public class UMLSeqDiaGui extends AnchorPane {
     public void setMessageCounter(int i) {
         this.messageCounter = i;
     }
+
 }
 
