@@ -81,7 +81,7 @@ public class UMLMethodGui extends TextField {
 			return "-";
 		if (Objects.equals(access, "protected"))
 			return "#";
-		if (Objects.equals(access, "default"))
+		if (Objects.equals(access, "package"))
 			return "~";
 		return " ";
 	}
@@ -151,21 +151,25 @@ public class UMLMethodGui extends TextField {
 		String string = this.getText();
 		string = string.split("\\(")[1];
 		while (string.length() > 0) {
-			if (Pattern.matches(".*,.*\\).*", string)) {
+			if (Pattern.matches(".*,.+\\).*", string)) {
+				System.out.println("1");
 				// has more types
 				attr.add(string.split(",")[0]);	// int
 				string = string.split(",")[1];	// void):string
 			} else if (Pattern.matches(".*\\).*", string)) {
 				// check if there is last type
 				if (string.charAt(0) == ')') {
+					System.out.println("2");
 					// ) - no more type
 					attr.add("");
 				} else {
+					System.out.println("3");
 					// type)
 					attr.add(string.split("\\)")[0]);	// void
 				}
 				break;
 			} else {
+				System.out.println("4");
 				// change color to red or sth
 				System.out.println("Invalid type\n");
 				break;
@@ -192,7 +196,7 @@ public class UMLMethodGui extends TextField {
 		if (Objects.equals(access, "#"))
 			return "protected";
 		if (Objects.equals(access, "~"))
-			return "default";
+			return "package";
 		return "";
 	}
 
@@ -237,6 +241,12 @@ public class UMLMethodGui extends TextField {
 					"-fx-border-color: transparent;\n" +
 					"-fx-text-fill: red;");
 		}
+		// TODO check jestli sedi pocet atributu a jejich typy s BE
+		System.out.println("---------------------");
+		for (String s : getMethodAttributesTypes()) {
+			System.out.println(s);
+		}
+		System.out.println("---------------------");
 		return nameTypeAccess;
 	}
 

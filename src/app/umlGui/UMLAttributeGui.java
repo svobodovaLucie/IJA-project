@@ -73,7 +73,7 @@ public class UMLAttributeGui extends TextField {
 			return "-";
 		if (Objects.equals(access, "protected"))
 			return "#";
-		if (Objects.equals(access, "default"))
+		if (Objects.equals(access, "package"))
 			return "~";
 		return " ";
 	}
@@ -117,7 +117,7 @@ public class UMLAttributeGui extends TextField {
 		if (Objects.equals(access, "#"))
 			return "protected";
 		if (Objects.equals(access, "~"))
-			return "default";
+			return "package";
 		return "";
 	}
 
