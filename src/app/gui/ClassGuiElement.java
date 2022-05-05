@@ -39,7 +39,7 @@ public class ClassGuiElement extends VBox {
         attributes = new ArrayList<>();
         methods = new ArrayList<>();
 
-        draggableObject.makeDraggable(this);
+        //draggableObject.makeDraggable(this);
         String cssLayout = "-fx-border-color: black;\n" +
                            "-fx-border-width: 1;\n";
         this.setStyle(cssLayout);

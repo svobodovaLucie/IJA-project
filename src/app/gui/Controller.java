@@ -67,7 +67,7 @@ public class Controller {
      * @param event
      */
     public void makeDraggable(ActionEvent event) {
-        draggableObject.makeDraggable(class_vbox);
+        //draggableObject.makeDraggable(class_vbox);
     }
 
     /**

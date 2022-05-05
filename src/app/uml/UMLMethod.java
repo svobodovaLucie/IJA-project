@@ -23,6 +23,8 @@ import java.util.List;
 public class UMLMethod extends UMLAttribute {
 	private List<UMLAttribute> attributes;
 
+	//private UMLClass owner;
+
 	/**
 	 * UMLMethod constructor.
 	 *
@@ -33,6 +35,7 @@ public class UMLMethod extends UMLAttribute {
 	public UMLMethod(String name, UMLClassifier type, String access) {
 		super(name, type, access);
 		this.attributes = new ArrayList<>();
+		//this.owner = classDiagram;
 	}
 
 	/**

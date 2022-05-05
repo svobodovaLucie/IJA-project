@@ -186,6 +186,11 @@ public class UMLClass extends UMLClassifier {
         }
 
          */
+        // TODO remove method's attributes
+    }
+
+    public void removeAttribute(UMLAttribute umlAttribute) {
+        this.attributes.removeIf(attribute -> (umlAttribute == attribute));
     }
 }
 

@@ -1,5 +1,9 @@
 package app.gui;
 
+import app.uml.UMLClass;
+import app.umlGui.UMLClassGui;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.Group;
 import javafx.scene.Node;
 
 import java.util.ArrayList;
@@ -8,25 +12,38 @@ import java.util.List;
 /**
  * Class used for making objects draggable.
  */
-public class DraggableObject {
+public class DraggableObject extends Group {
     private double mouseX;
     private double mouseY;
 
-    private double oldXscene;
+    //private double oldXscene;
     private List<Double> oldXs = new ArrayList<>();
     private List<Double> oldYs = new ArrayList<>();
 
-    private List<Double> afterMouseReleased = new ArrayList<>();
+    //private List<Double> afterMouseReleased = new ArrayList<>();
 
-    private double oldYscene;
+    //private double oldYscene;
 
-    private Node node;
+    //private Node node;
+
+    public SimpleDoubleProperty posX;
+    public SimpleDoubleProperty posY;
+
+    public UMLClassGui owner;
+
+    public void setParentEntity(UMLClassGui owner) {
+        this.owner = owner;
+        this.posX = new SimpleDoubleProperty(owner.x.getValue());
+        this.posY = new SimpleDoubleProperty(owner.y.getValue());
+    }
+
 
     /**
      * Method makes an object draggable in the GUI.
      *
      * @param node the object to be made draggable
      */
+    /*
     public void makeDraggable(Node node) {
         this.node = node;
         this.afterMouseReleased.add(0, 0.0);
@@ -67,6 +84,12 @@ public class DraggableObject {
 
     }
 
+     */
+
+
+
+
+    /*
     public List<Double> getAfterMouseReleased() {
         return this.afterMouseReleased;
     }
@@ -78,6 +101,8 @@ public class DraggableObject {
         return position;
     }
 
+     */
+
     /*
     public List <Double> getOldPosition() {
         List<Double> position = new ArrayList<>();
@@ -88,6 +113,7 @@ public class DraggableObject {
 
      */
 
+    /*
     public void setPosition(List <Double> oldPosition) {
         this.mouseX = oldPosition.get(0);
         this.mouseY = oldPosition.get(1);
@@ -96,9 +122,11 @@ public class DraggableObject {
     public void setOldPosition() {
         System.out.println("setOldPosition():");
         System.out.println("mouseX = " + mouseX);
-        this.node.setLayoutX(oldXs.get(0));
-        this.node.setLayoutY(oldYs.get(0));
+        //this.node.setLayoutX(oldXs.get(0));
+        //this.node.setLayoutY(oldYs.get(0));
         this.mouseX = oldXs.remove(0);
         this.mouseY = oldYs.remove(0);
     }
+
+     */
 }
