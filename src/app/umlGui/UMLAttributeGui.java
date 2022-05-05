@@ -125,9 +125,21 @@ public class UMLAttributeGui extends TextField {
 	public List<String> getNameTypeAccess() {
 		List<String> nameTypeAccess = new ArrayList<>();
 		String toSplit = this.getText();
-		nameTypeAccess.add(toSplit.split(":")[0].substring(1));
-		nameTypeAccess.add(toSplit.split(":")[1]);
-		nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
+		try {
+			nameTypeAccess.add(toSplit.split(":")[0].substring(1));
+		} catch (Exception exception) {
+			nameTypeAccess.add("");
+		}
+		try {
+			nameTypeAccess.add(toSplit.split(":")[1]);
+		} catch (Exception exception) {
+			nameTypeAccess.add("");
+		}
+		try {
+			nameTypeAccess.add(this.toStringAccess(Character.toString(toSplit.charAt(0))));
+		} catch (Exception exception) {
+			nameTypeAccess.add("");
+		}
 		return nameTypeAccess;
 	}
 
