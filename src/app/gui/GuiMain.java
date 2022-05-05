@@ -73,7 +73,7 @@ public class GuiMain extends Application {
 
     private void createClassDiagScene(Group rootClass, Stage primaryStage){
         // set the scene
-        Scene scene = new Scene(rootClass, 600, 600, Color.WHITE);
+        Scene scene = new Scene(rootClass, primaryStage.getMaxWidth(), primaryStage.getMaxHeight(), Color.WHITE);
         scene.getStylesheets().add("stylesheet.css");
 
         // options for adding new elements
