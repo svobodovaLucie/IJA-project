@@ -276,14 +276,41 @@ public class GuiMain extends Application {
         helpStage.show();
     }
 
-    /**
-     * Create scene for sequece diagram
-      * @param n
-     */
     private void createSeqDiagScene(int n, List<Group> rootSeq, Stage primaryStage){
         // uz je vse nactene z JSONu v jednotlivych UMLSeqDiaGui -> staci jen zobrazit
 
         Scene sceneSeqTest = new Scene(rootSeq.get(n), 1000, 750, Color.WHITE);
+
+        // Creating menu
+        Menu options = new Menu("Add...");
+        options.setStyle("-fx-font-size: 15;");
+        MenuItem addActor = new MenuItem("Add actor");
+        addActor.setOnAction( e -> {
+            ComboBox<String> comboBox1 = new ComboBox<>();
+            comboBox1.getItems().addAll("neco","neco2","sasa");
+            comboBox1.setPromptText("COMBOBOX");
+            comboBox1.setLayoutX(10);
+            comboBox1.setLayoutY(100);
+            rootSeq.get(n).getChildren().add(comboBox1);
+            comboBox1.setOnAction(ev -> {
+                System.out.println(comboBox1.getValue());
+                rootSeq.get(n).getChildren().remove(comboBox1);
+            });
+        });
+        // todo ONaction - create combobox - that will on action add actor
+        MenuItem addMessage = new MenuItem("Add message");
+        // todo ONaction
+        options.getItems().addAll(addActor, addMessage);
+
+        // Creating menu
+        Menu options2 = new Menu("Remove...");
+        options2.setStyle("-fx-font-size: 15;");
+        MenuItem removeActor = new MenuItem("Remove actor");
+        // todo ONaction
+        MenuItem removeMessage = new MenuItem("Remove message");
+        // todo ONaction
+        options2.getItems().addAll(removeActor, removeMessage);
+
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
@@ -295,24 +322,10 @@ public class GuiMain extends Application {
         Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
-        MenuBar menuBar = new MenuBar(save, undo);
+        MenuBar menuBar = new MenuBar(options, options2 ,save, undo);
         //menuBar.useSystemMenuBarProperty();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         rootSeq.get(n).getChildren().add(menuBar);
-
-        // Add Actor button
-        Button addActor = createButton("Add Actor", 1);
-        //addClass.setOnAction(e -> rootSeq.get(n).getChildren().add(new UMLClassGui("YourClass")));
-        addActor.setLayoutY(50);
-        addActor.setLayoutX(10);
-        rootSeq.get(n).getChildren().add(addActor);
-
-        // Add Message button
-        Button addMessage = createButton("Add Message", 1);
-        //addClass.setOnAction(e -> rootSeq.get(n).getChildren().add(new UMLClassGui("YourClass")));
-        addMessage.setLayoutY(85);
-        addMessage.setLayoutX(10);
-        rootSeq.get(n).getChildren().add(addMessage);
 
         primaryStage.setScene(sceneSeqTest);
         primaryStage.setTitle("Sequence Diagram Editor");

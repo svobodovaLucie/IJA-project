@@ -61,7 +61,15 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.actorNameGui.setContentDisplay(ContentDisplay.CENTER);
         this.actorNameGui.prefHeight(80);
         this.actorNameGui.prefWidth(80);
-        this.actorNameGui.setStyle("-fx-border-color: black; -fx-font-size:15;");
+        if(umlClass == null){
+            System.out.println("null");
+            this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15;");
+        }
+        else{
+            System.out.println("notnull");
+            this.actorNameGui.setStyle("-fx-border-color: black; -fx-font-size:15;");
+        }
+
 
         // set position
         this.actorNameGui.setLayoutX(x_borders+(x_space*n));

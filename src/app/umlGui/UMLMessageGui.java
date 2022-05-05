@@ -1,9 +1,13 @@
 package app.umlGui;
 
+import app.uml.UMLClass;
 import app.uml.UMLMessage;
+import app.uml.UMLMethod;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
@@ -14,6 +18,8 @@ import javafx.scene.control.Label;
 import java.awt.*;
 
 public class UMLMessageGui {
+
+    UMLMessage message;
 
     // holds arrow
     private Group arrow;
@@ -31,6 +37,7 @@ public class UMLMessageGui {
 
 
     public UMLMessageGui(UMLMessage message, int order, UMLSeqDiaGui seq){
+        this.message = message;
         this.order = order;
 
 
@@ -87,6 +94,7 @@ public class UMLMessageGui {
         else{
             this.arrow = null;
         }
+
     }
 
 
@@ -237,7 +245,25 @@ public class UMLMessageGui {
         Label label = new Label(text);
         label.prefHeight(40);
         label.prefWidth(40);
-        label.setStyle("-fx-font-size: 14;");
+        if (this.getType().equals("create") ||
+                this.getType().equals("free") ||
+                this.getType().equals("response")){
+
+            label.setStyle("-fx-font-size: 14;");
+
+        }
+        else {
+            if (this.getMethod() == null){
+                System.out.println("....");
+                System.out.println(text);
+                System.out.println(this.getMethod());
+                System.out.println("....");
+                label.setStyle("-fx-border-color: red; -fx-font-size:15;");
+            }
+            else{
+                label.setStyle("-fx-font-size: 14;");
+            }
+        }
 
         // set position
         label.setLayoutX(x);
@@ -281,8 +307,13 @@ public class UMLMessageGui {
         return baseYPos + ((this.getOrder()+1) * this.spaceBetweenMessages);
     }
 
+    private UMLMethod getMethod(){
+        return this.message.getMethod();
+    }
 
-
+    private String getType(){
+        return this.message.getType();
+    }
 
 
 }
