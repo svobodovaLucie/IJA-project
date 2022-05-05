@@ -11,11 +11,9 @@ package app.uml;
  * one sequence diagram.
  */
 
-import javax.swing.text.StyledEditorKit;
 import java.util.ArrayList;
 import java.util.List;
 import app.backend.Diagrams;
-import app.umlGui.DiagramLoader;
 
 
 /**

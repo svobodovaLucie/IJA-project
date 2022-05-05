@@ -11,10 +11,7 @@ package app;
 
 import app.backend.Diagrams;
 import app.gui.GuiMain;
-import app.uml.ClassDiagram;
-import app.umlGui.DiagramLoader;
 import app.umlGui.DiagramLoaderNoGui;
-import javafx.scene.Group;
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
