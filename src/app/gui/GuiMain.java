@@ -11,6 +11,7 @@
 package app.gui;
 
 import app.backend.Diagrams;
+import app.uml.UMLClass;
 import app.umlGui.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -83,36 +84,9 @@ public class GuiMain extends Application {
         Scene scene = new Scene(rootClass, stage.getMaxWidth(), stage.getMaxHeight(), Color.WHITE);
 
         // options for adding new elements
-        Menu options = new Menu("Add...");
-        options.setStyle("-fx-font-size: 15;");
-        // button for adding new class
-        MenuItem addClass = new MenuItem("Add class");
-        addClass.setOnAction(e -> {
-            try {
-                rootClass.getChildren().add(new UMLClassGui(BEdiagrams.getClassDiagram().createClass("Untitled"), (UMLClassDiagramGui) rootClass.getChildren().get(0)));
-            } catch (Exception exception) {
-                System.out.println("Can't create two classes with the same name!");
-                // TODO alert box
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Two classes with the same name.");
-                alert.setContentText("There is already a class with the name Untitled.\n" +
-                                     "Two classes with the same name can't be created.");   // TODO default name
-                alert.show();
-            }
-        });
-        // button for adding new interface
-        MenuItem addInterface = new MenuItem("Add interface");
-        addInterface.setOnAction(e -> {
-            System.out.println("Adding new interface (not implemented yet)");
-        });
-        // button for adding new relation
-        MenuItem addRelation = new MenuItem("Add relation");
-        addRelation.setOnAction(e -> {
-            System.out.println("Adding new relation (not implemented yet)");
-        });
-
-        options.getItems().addAll(addClass, addInterface, addRelation);
+        Menu addOptions = addMenuAdd(rootClass);
+        // options for removing elements
+        Menu removeOptions = addMenuRemove(rootClass);
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
@@ -127,11 +101,11 @@ public class GuiMain extends Application {
             UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
             umlClassDiagramGui.undo();
         });
-    //(UMLClassDiagramGui)rootClass.getChildren().get(0).undo()));
+        //(UMLClassDiagramGui)rootClass.getChildren().get(0).undo()));
         Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
-        MenuBar menuBar = new MenuBar(options, save, undo);
+        MenuBar menuBar = new MenuBar(addOptions, removeOptions, save, undo);
         menuBar.useSystemMenuBarProperty();
         menuBar.prefWidthProperty().bind(stage.widthProperty());
         rootClass.getChildren().add(menuBar);
@@ -140,6 +114,119 @@ public class GuiMain extends Application {
         stage.setTitle("ija-app: diagrams");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private Menu addMenuAdd(Group rootClass) {
+        Menu addOptions = new Menu("Add...");
+        addOptions.setStyle("-fx-font-size: 15;");
+        // button for adding new class
+        MenuItem addClass = new MenuItem("Add class");
+        addClass.setOnAction(e -> {
+            try {
+                UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
+                UMLClass newClass = BEdiagrams.getClassDiagram().createClass("Untitled");
+                umlClassDiagramGui.getChildren().add(new UMLClassGui(newClass, umlClassDiagramGui));
+            } catch (Exception exception) {
+                System.out.println("Can't create two classes with the same name!");
+                customAlertBox();
+            }
+        });
+        // button for adding new interface
+        MenuItem addInterface = new MenuItem("Add interface");
+        addInterface.setOnAction(e -> {
+            System.out.println("Adding new interface (not implemented yet)");
+        });
+        // button for adding new relation
+        MenuItem addRelation = new MenuItem("Add relation");
+        addRelation.setOnAction(e -> {
+            System.out.println("Adding new relation (not implemented yet)");
+        });
+
+        addOptions.getItems().addAll(addClass, addInterface, addRelation);
+
+        return addOptions;
+    }
+
+    private void customAlertBox() {
+        // TODO alert box
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\nThere is already a class with the name Untitled.\n" +
+                     "\"Two classes with the same name can't be created.");
+        helpGroup.getChildren().add(text);
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Warning");
+        helpStage.show();
+    }
+
+    private Menu addMenuRemove(Group rootClass) {
+        Menu removeOptions = new Menu("Remove...");
+        removeOptions.setStyle("-fx-font-size: 15;");
+        // button for adding new class
+        MenuItem removeClass = new MenuItem("Remove class");
+        removeClass.setOnAction(e -> {
+            removeClassMessage();
+        });
+        // button for adding new interface
+        MenuItem removeInterface = new MenuItem("Remove interface");
+        removeInterface.setOnAction(e -> {
+            System.out.println("Removing new interface (not implemented yet)");
+        });
+        // button for adding new relation
+        MenuItem removeRelation = new MenuItem("Remove relation");
+        removeRelation.setOnAction(e -> {
+            System.out.println("Removing new relation (not implemented yet)");
+        });
+
+        removeOptions.getItems().addAll(removeClass, removeInterface, removeRelation);
+
+        return removeOptions;
+    }
+
+    private void removeClassMessage(){
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n         Select class to be removed.");
+        helpGroup.getChildren().add(text);
+
+        ComboBox<String> cb = new ComboBox<>();
+        // get names of all classes
+        for (UMLClass cls : BEdiagrams.getClassDiagram().getClasses()) {
+            cb.getItems().add(cls.getName());
+        }
+        cb.setPromptText("Remove class");
+        cb.setLayoutX(42);
+        cb.setLayoutY(42);
+        helpGroup.getChildren().add(cb);
+
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Remove class");
+
+        // confirming button
+        Button confirm = new Button("Confirm");
+        confirm.setLayoutX(70);
+        confirm.setLayoutY(70);
+        confirm.setOnAction(event -> {
+            System.out.println("confirming");
+            BEdiagrams.getClassDiagram().removeClass(cb.getValue());
+            System.out.println("removed");
+            helpStage.close();
+        });
+        helpGroup.getChildren().add(confirm);
+
+        helpStage.show();
     }
 
     /**

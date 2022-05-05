@@ -9,6 +9,8 @@
  */
 package app.uml;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -24,6 +26,8 @@ public class ClassDiagram extends Element {
     private List<UMLRelation> relations;
     private List<UMLInterface> interfaces;
 
+    private PropertyChangeSupport support;
+
     /**
      * ClassDiagram constructor.
      *
@@ -35,6 +39,15 @@ public class ClassDiagram extends Element {
         this.classifiers = new ArrayList<>();
         this.relations = new ArrayList<>();
         this.interfaces = new ArrayList<>();
+        this.support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
     }
 
     // TODO osetrit, aby se nemohla stejna trida pridat vickrat
@@ -117,6 +130,16 @@ public class ClassDiagram extends Element {
 
         // not found -> null
         return null;
+    }
+
+    public void removeClass(String name) {
+        UMLClass toRemove = findClass(name);
+        try {
+            this.classes.remove(toRemove);
+        } catch (Exception ignored) {
+        }
+        // observer
+        support.firePropertyChange("removeClass", toRemove, null);
     }
 
     public void addRelation(UMLRelation umlRelation) {

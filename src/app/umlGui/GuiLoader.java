@@ -61,6 +61,9 @@ public class GuiLoader {
         // create ClassDiagramGui
         UMLClassDiagramGui umlClassDiagramGui = new UMLClassDiagramGui(classDiagram);
 
+        // observer pattern
+        classDiagram.addPropertyChangeListener(umlClassDiagramGui);
+
         // load classes from classDiagram
         saveClassesGui(classDiagram.getClasses(), umlClassDiagramGui);
 
