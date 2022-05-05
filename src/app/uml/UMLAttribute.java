@@ -82,5 +82,9 @@ public class UMLAttribute {
 		this.type.setName(nameTypeAccess.get(1));
 		this.access = nameTypeAccess.get(2);
 	}
+
+	public void setType(String type) {
+		this.type.setName(type);
+	}
 }
 

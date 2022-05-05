@@ -74,6 +74,19 @@ public class UMLMethod extends UMLAttribute {
 		return true;
 	}
 
+	public void createArgument() {
+		UMLClassifier c = new UMLClassifier("");
+		UMLAttribute atr = new UMLAttribute("", c, "");
+		this.attributes.add(atr);
+	}
+
+	public void removeArgument() {
+		this.attributes.remove(0);
+	}
+	public void removeSpecificArgument(UMLAttribute arg) {
+		this.attributes.removeIf(atr -> (atr == arg));
+	}
+
 	public String getName(){
 		return super.name;
 	}

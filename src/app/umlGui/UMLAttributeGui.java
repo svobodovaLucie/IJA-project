@@ -146,26 +146,27 @@ public class UMLAttributeGui extends TextField {
 			nameTypeAccess.add("");
 		}
 		// check if the text is in right format
-		if (Pattern.matches("^[+\\-~#][^():]*:[^():]+$", this.getText())) {
-			this.setStyle("-fx-background-color: transparent;\n" +
-					"-fx-border-style: none none none none;\n" +
-					"-fx-background-insets: 0, 0 0 1 0 ;\n" +
-					"-fx-background-radius: 0;\n" +
-					"-fx-border-color: transparent;\n" +
-					"-fx-text-fill: black;");
-		} else {
-			this.setStyle("-fx-background-color: transparent;\n" +
-					"-fx-border-style: none none none none;\n" +
-					"-fx-background-insets: 0, 0 0 1 0 ;\n" +
-					"-fx-background-radius: 0;\n" +
-					"-fx-border-color: transparent;\n" +
-					"-fx-text-fill: red;");
-		}
+		checkInputFormat();
 		return nameTypeAccess;
 	}
 
 	public UMLAttribute getAttribute() {
 		return this.umlAttribute;
+	}
+
+	private void checkInputFormat() {
+		String style = "-fx-background-color: transparent;\n" +
+				"-fx-border-style: none none none none;\n" +
+				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
+				"-fx-background-radius: 0;\n" +
+				"-fx-border-color: transparent;\n";
+		if (Pattern.matches("^[+\\-~#][^():]*:[^():]+$", this.getText())) {
+			// format is okay
+			this.setStyle(style + "-fx-text-fill: black;");
+		} else {
+			// format is not okay -> red color
+			this.setStyle(style + "-fx-text-fill: red;");
+		}
 	}
 }
 
