@@ -64,7 +64,7 @@ public class GuiMain extends Application {
         System.out.println(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
-        // createClassDiagScene(rootClass, primaryStage);
+        createClassDiagScene(rootClass, primaryStage);
 
         // set the scene for sequence diagram
         // todo button (add Message) (should choose from some types)
