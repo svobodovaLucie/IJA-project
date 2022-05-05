@@ -50,6 +50,9 @@ public class UMLSeqDiaGui extends AnchorPane {
     private List<UMLActorGui> actorsGui;
     private List<UMLMessageGui> messageGui;
 
+    // current vertical lines postion
+    private int yPos;
+
 
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
@@ -61,6 +64,7 @@ public class UMLSeqDiaGui extends AnchorPane {
 
         this.messageCounter = 0;
         this.actorsCounter  = 0;
+        this.yPos           = 75;
 
         this.actorsGui  = new ArrayList<>();
         this.messageGui = new ArrayList<>();
@@ -131,7 +135,7 @@ public class UMLSeqDiaGui extends AnchorPane {
             aClass = ":(" + actorClass.getName() + ")";
         }
 
-        UMLActorGui newActor = new UMLActorGui(actorName , aClass, n, 75);
+        UMLActorGui newActor = new UMLActorGui(actorName , aClass, n, this.getyPos());
         this.actorsGui.add(newActor);
 
         this.getChildren().add(newActor.getTextField());
@@ -174,7 +178,6 @@ public class UMLSeqDiaGui extends AnchorPane {
 
         UMLActorGui temp = this.findActorGui(message.getFromActor());
 
-
         UMLMessageGui umlMessGui = new UMLMessageGui(message, getMessageGui().size(),this);
         this.addMessageGui(umlMessGui);
 
@@ -188,6 +191,7 @@ public class UMLSeqDiaGui extends AnchorPane {
                 this.getChildren().add(act.paintLine(2));
             }
         }
+        this.incrementYpos();
 
     }
 
@@ -250,6 +254,14 @@ public class UMLSeqDiaGui extends AnchorPane {
     }
     public void setMessageCounter(int i) {
         this.messageCounter = i;
+    }
+
+    public void incrementYpos(){
+        this.yPos = this.yPos + 50;
+    }
+
+    public int getyPos(){
+        return this.yPos;
     }
 
 }

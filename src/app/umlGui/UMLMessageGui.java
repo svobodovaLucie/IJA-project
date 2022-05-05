@@ -37,7 +37,12 @@ public class UMLMessageGui {
         int indexActFrom = seq.getActorGuiIndex(message.getFromActor(),
                                                 message.getFromClass());
         int indexActTo   = seq.getActorGuiIndex(message.getToActor(),
-                                                message.getFromClass());
+                                                message.getToClass());
+        if (indexActFrom < 0 || indexActTo < 0) {
+            System.out.println("ERROR: indexFrom " + indexActFrom + "indexTo " + indexActTo);
+            //System.out.println("       " + seq.getNthActorGui(indexActFrom).getActorName() );
+            //System.out.println("       " + seq.getNthActorGui(indexActTo).getActorName() );
+        }
 
 
         String messageText;
@@ -65,13 +70,16 @@ public class UMLMessageGui {
             createDottedArrow(indexActFrom, indexActTo, "response");
         }
         else if (message.getType().equals("creat")){
-            // 
+            seq.paintActor(message.getToActor(), message.getToClass());
+            indexActTo   = seq.getActorGuiIndex(message.getToActor(),
+                    message.getToClass());
 
-            System.out.println("creat");
+            createDottedArrow(indexActFrom, indexActTo, "<<creat>>");
         }
         else if (message.getType().equals("free")){
             // i will free the ACTGUI
             if(indexActTo > 0){
+
                 seq.getNthActorGui(indexActTo).setFreed(true);
             }
             createDottedArrow(indexActFrom, indexActTo, "<<delete>>");
@@ -133,7 +141,7 @@ public class UMLMessageGui {
             line3 = this.createLine(posTo+20, posTo, yPos+10, yPos);
         }
 
-        Circle circle = createCircle(posFrom, yPos, 5);
+        Circle circle = createCircle(posFrom, yPos, 2);
 
         group.getChildren().add(line2);
         group.getChildren().add(line3);
@@ -159,7 +167,7 @@ public class UMLMessageGui {
         Group group = new Group();
         Line line  = createLine(posFrom, posTo, yPos, yPos);
 
-        Circle circle = createCircle(posFrom, yPos, 5);
+        Circle circle = createCircle(posFrom, yPos, 2);
 
         Polygon triangle = new Polygon();
         if (indexActorFrom < indexActorTo){
@@ -199,7 +207,7 @@ public class UMLMessageGui {
         Group group = new Group();
         Line line = createLine(posFrom, posTo, yPos, yPos);
 
-        Circle circle = createCircle(posFrom, yPos, 5);
+        Circle circle = createCircle(posFrom, yPos, 2);
 
         Line line2;
         Line line3;
