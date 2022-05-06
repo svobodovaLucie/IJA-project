@@ -18,10 +18,8 @@ import app.uml.UMLClassifier;
 import app.uml.UMLMethod;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -29,8 +27,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.awt.event.MouseEvent;
-import java.beans.Customizer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -151,15 +147,28 @@ public class UMLClassGui extends VBox {
         this.setBorder(new Border(borderStroke));
         Insets insets = new Insets(5, 5, 5, 5);
 
+        String style = "-fx-font-weight: bold;\n" +
+                "-fx-background-color: white;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-background-radius: 0;\n" +
+                "-fx-border-color: black;";
+
         // add name label
         this.nameLabel = new TextField(this.umlClass.getName());
-        this.nameLabel.setPadding(new Insets(5, 5, 5, 5));
-        this.nameLabel.setStyle("-fx-font-weight: bold;\n" +
-		              "-fx-background-color: transparent;\n" +
-					  "-fx-border-style: solid;\n" +
-					  "-fx-background-radius: 0;\n" +
-                      "-fx-border-width: 2 2 1 2;\n" +
-					  "-fx-border-color: black;");
+        this.nameLabel.setPadding(insets);
+        if (this.umlClass.isInterface()) {
+            TextField interfaceLabel = new TextField("<<interface>>");
+            interfaceLabel.setEditable(false);
+            interfaceLabel.setStyle(style +
+                    "-fx-border-width: 2 2 0 2;");
+            interfaceLabel.setAlignment(Pos.CENTER);
+            interfaceLabel.setPadding(new Insets(5, 5, 0, 5));
+            this.getChildren().add(interfaceLabel);
+
+            this.nameLabel.setStyle(style + "-fx-border-width: 0 2 1 2;");
+        } else {
+            this.nameLabel.setStyle(style + "-fx-border-width: 2 2 1 2;");
+        }
         this.nameLabel.setAlignment(Pos.CENTER);
         this.getChildren().add(nameLabel);
 
@@ -170,14 +179,13 @@ public class UMLClassGui extends VBox {
         this.attributesGridPane = new GridPane();
         this.attributesGridPane.setPadding(new Insets(5, 5, 0, 5));
         //this.attributesGridPane.setPadding(insets);
-        this.attributesGridPane.setStyle("-fx-background-color: transparent;\n" +
+        this.attributesGridPane.setStyle("-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-width: 1 2 0 2;\n" +
                 "-fx-border-color: black;");
         this.getChildren().add(this.attributesGridPane);
 
         // button for adding new attributes
-        //addButtonForAddingAttributes();
         addButtonForAddingNewElements(0); // 0 means attribute
 
         // create list of methods
@@ -186,20 +194,20 @@ public class UMLClassGui extends VBox {
         // create GridPane for methods
         this.methodsGridPane = new GridPane();
         this.methodsGridPane.setPadding(new Insets(5, 5, 0, 5));
-        this.methodsGridPane.setStyle("-fx-background-color: transparent;\n" +
+        this.methodsGridPane.setStyle("-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-width: 1 2 0 2;\n" +
                 "-fx-border-color: black;");
         this.getChildren().add(this.methodsGridPane);
 
         // button for adding new methods
-        //addButtonForAddingMethods();
         addButtonForAddingNewElements(1); // 1 means method
 
         // event listener
-        this.nameLabel.textProperty().addListener(((observableValue, s, t1) ->
-                    this.umlClass.setName(t1)
-        ));
+        this.nameLabel.textProperty().addListener(((observableValue, s, t1) -> {
+            this.umlClass.setName(t1);
+            checkNames();
+        }));
 
         this.setOnDragDetected(ev -> {
             owner.executeCommand(new CommandBuilder.Command() {
@@ -216,9 +224,43 @@ public class UMLClassGui extends VBox {
                 }
             });
         });
+    }
 
-        //this.setAlignment(Pos.CENTER);
-        //this.positionInArea(this, 100, 200);
+    private void checkNames() {
+        String style = "-fx-font-weight: bold;\n" +
+                "-fx-background-color: white;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-background-radius: 0;\n" +
+                "-fx-border-color: black;\n";
+        if (this.umlClass.isInterface()) {
+            style = style + "-fx-border-width: 0 2 1 2;\n";
+        } else {
+            style = style + "-fx-border-width: 2 2 1 2;\n";
+        }
+
+        for (UMLClass cls : this.owner.getClassDiagram().getClasses()) {
+            if (cls == this.umlClass) {
+                continue;
+            }
+            if (Objects.equals(cls.getName(), this.getName())) {
+                this.nameLabel.setStyle(style + "-fx-text-fill: red");
+                return;
+            } else {
+                this.nameLabel.setStyle(style + "-fx-text-fill: black");
+            }
+        }
+        // interfaces
+        for (UMLClass itf : this.owner.getClassDiagram().getInterfaces()) {
+            if (itf == this.umlClass) {
+                continue;
+            }
+            if (Objects.equals(itf.getName(), this.getName())) {
+                this.nameLabel.setStyle(style + "-fx-text-fill: red");
+                return;
+            } else {
+                this.nameLabel.setStyle(style + "-fx-text-fill: black");
+            }
+        }
     }
 
     public double getXpos() {
@@ -237,38 +279,6 @@ public class UMLClassGui extends VBox {
         support.removePropertyChangeListener(pcl);
     }
 
-    private void addButtonForAddingAttributes() {
-        // button for adding new attributes
-        GridPane attributeAddGridPane = new GridPane();
-        attributeAddGridPane.setPadding(new Insets(0, 0, 5, 0));
-        attributeAddGridPane.setHgap(173.71);
-        attributeAddGridPane.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-style: solid;\n" +
-                "-fx-border-width: 0 2 1 2;\n" +
-                "-fx-border-color: black;");
-        this.getChildren().add(attributeAddGridPane);
-        Text addAttributeLabel = new Text();
-        GridPane.setConstraints(addAttributeLabel, 0, 0);
-        attributeAddGridPane.getChildren().add(addAttributeLabel);
-        // create a button for adding new attributes
-        Button addAttributeButton = new Button("+");
-        addAttributeButton.setOnAction(e -> {
-            // add attribute to BE
-            UMLClassifier umlClassifier = new UMLClassifier("");
-            UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
-            // add attribute to backend
-            this.umlClass.addAttribute(umlAttribute);
-            // add that attribute to GUI
-            UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
-            this.addAttributeGui(umlAttributeGui);
-        });
-        addAttributeButton.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: transparent;\n" +
-                "-fx-font-weight: bold;");
-        GridPane.setConstraints(addAttributeButton, 1, 0);
-        attributeAddGridPane.getChildren().add(addAttributeButton);
-    }
-
     /**
      *
      * @param attribute_method 0 for adding an attribute
@@ -280,7 +290,7 @@ public class UMLClassGui extends VBox {
         addGridPane.setPadding(new Insets(0, 0, 5, 0));
         addGridPane.setHgap(173.71);
         // TODO different border style
-        String style = new String("-fx-background-color: transparent;\n" +
+        String style = new String("-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-color: black;\n");
         if (attribute_method == 0) {  // attributes
@@ -303,41 +313,11 @@ public class UMLClassGui extends VBox {
                 insertNewMethod();
             }
         });
-        addButton.setStyle("-fx-background-color: transparent;\n" +
+        addButton.setStyle("-fx-background-color: white;\n" +
                 "-fx-border-color: transparent;\n" +
                 "-fx-font-weight: bold;");
         GridPane.setConstraints(addButton, 1, 0);
         addGridPane.getChildren().add(addButton);
-    }
-    private void addButtonForAddingMethods() {
-        // button for adding new methods
-        GridPane methodAddGridPane = new GridPane();
-        methodAddGridPane.setPadding(new Insets(0, 0, 5, 0));
-        methodAddGridPane.setHgap(173.71);
-        methodAddGridPane.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-style: solid;\n" +
-                "-fx-border-width: 0 2 2 2;\n" +
-                "-fx-border-color: black;");
-        this.getChildren().add(methodAddGridPane);
-        Text addMethodLabel = new Text();
-        GridPane.setConstraints(addMethodLabel, 0, 0);
-        methodAddGridPane.getChildren().add(addMethodLabel);
-        // create a button for adding new methods
-        Button addMethodButton = new Button("+");
-        addMethodButton.setOnAction(e -> {
-            // add method to backend
-            UMLClassifier umlClassifier = new UMLClassifier("");
-            UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
-            this.umlClass.addMethod(umlMethod);
-            // add to GUI
-            UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
-            this.addMethodGui(umlMethodGui);
-        });
-        addMethodButton.setStyle("-fx-background-color: transparent;\n" +
-                "-fx-border-color: transparent;\n" +
-                "-fx-font-weight: bold;");
-        GridPane.setConstraints(addMethodButton, 1, 0);
-        methodAddGridPane.getChildren().add(addMethodButton);
     }
 
     private void insertNewAttribute() {
@@ -386,7 +366,7 @@ public class UMLClassGui extends VBox {
 
             // add a button that can remove the attribute
             this.attributeButtons.add(new Button("-"));
-            this.attributeButtons.get(lastRowNumber).setStyle("-fx-background-color: transparent;\n" +
+            this.attributeButtons.get(lastRowNumber).setStyle("-fx-background-color: white;\n" +
                     "-fx-border-color: transparent;\n" +
                     "-fx-font-weight: bold;");
             this.attributeButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
@@ -461,7 +441,7 @@ public class UMLClassGui extends VBox {
 
             // add a button that can remove the method
             this.methodButtons.add(new Button("-"));
-            this.methodButtons.get(lastRowNumber).setStyle("-fx-background-color: transparent;\n" +
+            this.methodButtons.get(lastRowNumber).setStyle("-fx-background-color: white;\n" +
                     "-fx-border-color: transparent;\n" +
                     "-fx-font-weight: bold;");
             this.methodButtons.get(lastRowNumber).setOnAction(actionEvent ->  {

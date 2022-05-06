@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Class represents the UML attribute with name and type.
@@ -72,6 +73,8 @@ public class UMLAttributeGui extends TextField {
 			return "-";
 		if (Objects.equals(access, "protected"))
 			return "#";
+		if (Objects.equals(access, "package"))
+			return "~";
 		return " ";
 	}
 
@@ -113,6 +116,8 @@ public class UMLAttributeGui extends TextField {
 			return "private";
 		if (Objects.equals(access, "#"))
 			return "protected";
+		if (Objects.equals(access, "~"))
+			return "package";
 		return "";
 	}
 
@@ -140,11 +145,28 @@ public class UMLAttributeGui extends TextField {
 		} catch (Exception exception) {
 			nameTypeAccess.add("");
 		}
+		// check if the text is in right format
+		checkInputFormat();
 		return nameTypeAccess;
 	}
 
 	public UMLAttribute getAttribute() {
 		return this.umlAttribute;
+	}
+
+	private void checkInputFormat() {
+		String style = "-fx-background-color: transparent;\n" +
+				"-fx-border-style: none none none none;\n" +
+				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
+				"-fx-background-radius: 0;\n" +
+				"-fx-border-color: transparent;\n";
+		if (Pattern.matches("^[+\\-~#][^():]*:[^():]+$", this.getText())) {
+			// format is okay
+			this.setStyle(style + "-fx-text-fill: black;");
+		} else {
+			// format is not okay -> red color
+			this.setStyle(style + "-fx-text-fill: red;");
+		}
 	}
 }
 

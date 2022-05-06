@@ -10,6 +10,8 @@
  */
 package app.uml;
 
+import app.umlGui.UMLClassDiagramGui;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -25,39 +27,32 @@ public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
 
-    private boolean isAbstract;
+    private boolean isInterface;
 
     private PropertyChangeSupport support;
+
+    private ClassDiagram owner;
 
     /**
      * UMLClass constructor. The UML class is not abstract.
      *
      * @param name name of the UML class
      */
-    public UMLClass(String name) {
+    public UMLClass(String name, boolean isInterface, ClassDiagram classDiagram) {
         super(name);
-        this.isAbstract = false;
+        this.isInterface = isInterface;
         this.attributes = new ArrayList<>();
         this.methods = new ArrayList<>();
-
         this.support = new PropertyChangeSupport(this);
+        this.owner = classDiagram;
     }
-
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
-
     /**
      * Method returns true if the class is abstract, false if not.
      *
      * @return true if the UML class is abstract, false if not
      */
-    public boolean isAbstract() {
-        return this.isAbstract;
+    public boolean isInterface() {
+        return this.isInterface;
     }
 
     /**
@@ -68,7 +63,7 @@ public class UMLClass extends UMLClassifier {
      *                   will be abstract or not
      */
     public void setAbstract(boolean isAbstract) {
-        this.isAbstract = isAbstract;
+        this.isInterface = isAbstract;
     }
 
     /**
@@ -180,8 +175,18 @@ public class UMLClass extends UMLClassifier {
 
     // method change the name
     public void setName(String newName) {
-        this.support.firePropertyChange("name", this.name, newName);
+        // TODO bind to SequenceDiagram
+        this.support.firePropertyChange("newClassName", this.name, newName);
         this.name = newName;
+
+        for (UMLClass cls : this.owner.getClasses()) {
+            if (this.name == cls.getName()) {
+                // set red
+            } else {
+                // set black
+            }
+        }
+        //if (this.name == )
     }
 
     public void removeMethod(UMLMethod umlMethod) {

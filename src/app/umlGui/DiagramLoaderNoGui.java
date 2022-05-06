@@ -58,8 +58,8 @@ public class DiagramLoaderNoGui {
         //saveClassesGui((JSONArray)diagram.get("classes"), root);
         ClassDiagram classDiagram = new ClassDiagram("Class Diagram");
         saveClasses((JSONArray)diagram.get("classes"), classDiagram);
-        saveRelations((JSONArray)diagram.get("relations"), classDiagram);
         saveInterfaces((JSONArray)diagram.get("interfaces"), classDiagram);
+        saveRelations((JSONArray)diagram.get("relationships"), classDiagram);
         diagrams.addClassDiagram(classDiagram);
 
         // load seq diagrams
@@ -169,7 +169,7 @@ public class DiagramLoaderNoGui {
 
             // create UMLClassGui object and add it to the root
             String className = (String)classObj.get("name");
-            UMLClass umlClass = new UMLClass(className);
+            UMLClass umlClass = new UMLClass(className, false, classDiagram);
             //root.getChildren().add(umlClass);
 
             // load attributes and methods
@@ -215,8 +215,19 @@ public class DiagramLoaderNoGui {
         if (interfaces == null) {
             return;
         }
-        for (Object interfce : interfaces) {
+        // load each interface from the JSON file
+        for (Object interfc : interfaces) {
+            JSONObject interfaceObj = (JSONObject) interfc;
 
+            // create UMLClassGui object and add it to the root
+            String interfaceName = (String)interfaceObj.get("name");
+            UMLClass umlInterface = new UMLClass(interfaceName, true, classDiagram);
+
+            // load attributes and methods
+            saveAttributes(umlInterface, (JSONArray)interfaceObj.get("attributes"));
+            saveMethods(umlInterface, (JSONArray)interfaceObj.get("methods"));
+
+            classDiagram.addInterface(umlInterface);
         }
     }
 

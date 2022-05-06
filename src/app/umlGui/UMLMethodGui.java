@@ -10,10 +10,10 @@
  */
 package app.umlGui;
 
+import app.uml.UMLAttribute;
 import app.uml.UMLMethod;
 import javafx.scene.control.TextField;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,11 +25,6 @@ import java.util.regex.Pattern;
 public class UMLMethodGui extends TextField {
 	// method to be represented
 	private UMLMethod umlMethod;
-
-	// inherited from super (UMLAttributeGui):
-	// type, name, access
-	// TODO probably not inherited
-
 	// type
 	protected String type;
 	// name
@@ -53,11 +48,7 @@ public class UMLMethodGui extends TextField {
 		this.access = convertAccess(nameTypeAccess.get(2));
 
 		this.attributes = new ArrayList<>();
-		this.setStyle("-fx-background-color: transparent;\n" +
-					  "-fx-border-style: none none none none;\n" +
-				      "-fx-background-insets: 0, 0 0 1 0 ;\n" +
-					  "-fx-background-radius: 0;\n" +
-					  "-fx-border-color: transparent;");
+		checkInputFormat();
 
 		// event listener
 		this.textProperty().addListener(((observableValue, s, t1) ->
@@ -81,6 +72,8 @@ public class UMLMethodGui extends TextField {
 			return "-";
 		if (Objects.equals(access, "protected"))
 			return "#";
+		if (Objects.equals(access, "package"))
+			return "~";
 		return " ";
 	}
 
@@ -149,10 +142,10 @@ public class UMLMethodGui extends TextField {
 		String string = this.getText();
 		string = string.split("\\(")[1];
 		while (string.length() > 0) {
-			if (Pattern.matches(".*,.*\\).*", string)) {
+			if (Pattern.matches(".*,.+\\).*", string)) {
 				// has more types
 				attr.add(string.split(",")[0]);	// int
-				string = string.split(",")[1];	// void):string
+				string = string.split(",", 2)[1];	// void):string
 			} else if (Pattern.matches(".*\\).*", string)) {
 				// check if there is last type
 				if (string.charAt(0) == ')') {
@@ -164,8 +157,7 @@ public class UMLMethodGui extends TextField {
 				}
 				break;
 			} else {
-				// change color to red or sth
-				System.out.println("Invalid type\n");
+				checkInputFormat();
 				break;
 			}
 		}
@@ -189,6 +181,8 @@ public class UMLMethodGui extends TextField {
 			return "private";
 		if (Objects.equals(access, "#"))
 			return "protected";
+		if (Objects.equals(access, "~"))
+			return "package";
 		return "";
 	}
 
@@ -217,7 +211,49 @@ public class UMLMethodGui extends TextField {
 		} catch (Exception exception) {
 			nameTypeAccess.add("");
 		}
+		// check if the text is in right format
+		if (checkInputFormat()) {
+			checkArgumentsTypes();
+		}
 		return nameTypeAccess;
+	}
+
+	// checks input and returns true if okay and false if not okay (red)
+	private boolean checkInputFormat() {
+		String style = "-fx-background-color: transparent;\n" +
+				"-fx-border-style: none none none none;\n" +
+				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
+				"-fx-background-radius: 0;\n" +
+				"-fx-border-color: transparent;\n";
+		if (Pattern.matches("^[+\\-~#][^():]+\\([^():]*\\):[^():]+$", this.getText())) {
+			// format is okay
+			this.setStyle(style + "-fx-text-fill: black;");
+			return true;
+		} else {
+			// format is not okay -> red color
+			this.setStyle(style + "-fx-text-fill: red;");
+			return false;
+		}
+	}
+
+	private void checkArgumentsTypes() {
+		// get UMLMethod attributes and attributes from the text input
+		List<String> attributesGui = getMethodAttributesTypes();
+		List<UMLAttribute> attributes = this.getMethod().getAttributes();
+		// check number of attributes
+		int num = attributesGui.size() - attributes.size();
+		for (int i = 0; i < Math.abs(num); i++) {
+			if (num > 0) {	// add attribute
+				this.getMethod().createArgument();
+			} else {		// remove attribute
+				this.getMethod().removeArgument();
+			}
+		}
+		// check attributes types
+		int n = 0;
+		for (UMLAttribute a : attributes) {
+			a.setType(attributesGui.get(n++));
+		}
 	}
 
 	public UMLMethod getMethod() {
