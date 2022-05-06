@@ -39,18 +39,7 @@ public class UMLClass extends UMLClassifier {
         this.isInterface = isInterface;
         this.attributes = new ArrayList<>();
         this.methods = new ArrayList<>();
-
-        this.support = new PropertyChangeSupport(this);
     }
-
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
-
     /**
      * Method returns true if the class is abstract, false if not.
      *
