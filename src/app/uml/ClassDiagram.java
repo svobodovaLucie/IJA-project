@@ -83,7 +83,7 @@ public class ClassDiagram extends Element {
                 return null;
             }
         }
-        UMLClass newClass = new UMLClass(name, false);
+        UMLClass newClass = new UMLClass(name, false, this);
         this.classes.add(newClass);
         return newClass;
     }
@@ -99,7 +99,7 @@ public class ClassDiagram extends Element {
                 return null;
             }
         }
-        UMLClass newClass = new UMLClass(name, true);
+        UMLClass newClass = new UMLClass(name, true, this);
         this.interfaces.add(newClass);
         return newClass;
     }

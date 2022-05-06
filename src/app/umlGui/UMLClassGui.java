@@ -186,7 +186,6 @@ public class UMLClassGui extends VBox {
         this.getChildren().add(this.attributesGridPane);
 
         // button for adding new attributes
-        //addButtonForAddingAttributes();
         addButtonForAddingNewElements(0); // 0 means attribute
 
         // create list of methods
@@ -202,13 +201,13 @@ public class UMLClassGui extends VBox {
         this.getChildren().add(this.methodsGridPane);
 
         // button for adding new methods
-        //addButtonForAddingMethods();
         addButtonForAddingNewElements(1); // 1 means method
 
         // event listener
-        this.nameLabel.textProperty().addListener(((observableValue, s, t1) ->
-                    this.umlClass.setName(t1)
-        ));
+        this.nameLabel.textProperty().addListener(((observableValue, s, t1) -> {
+            this.umlClass.setName(t1);
+            checkNames();
+        }));
 
         this.setOnDragDetected(ev -> {
             owner.executeCommand(new CommandBuilder.Command() {
@@ -225,9 +224,43 @@ public class UMLClassGui extends VBox {
                 }
             });
         });
+    }
 
-        //this.setAlignment(Pos.CENTER);
-        //this.positionInArea(this, 100, 200);
+    private void checkNames() {
+        String style = "-fx-font-weight: bold;\n" +
+                "-fx-background-color: white;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-background-radius: 0;\n" +
+                "-fx-border-color: black;\n";
+        if (this.umlClass.isInterface()) {
+            style = style + "-fx-border-width: 0 2 1 2;\n";
+        } else {
+            style = style + "-fx-border-width: 2 2 1 2;\n";
+        }
+
+        for (UMLClass cls : this.owner.getClassDiagram().getClasses()) {
+            if (cls == this.umlClass) {
+                continue;
+            }
+            if (Objects.equals(cls.getName(), this.getName())) {
+                this.nameLabel.setStyle(style + "-fx-text-fill: red");
+                return;
+            } else {
+                this.nameLabel.setStyle(style + "-fx-text-fill: black");
+            }
+        }
+        // interfaces
+        for (UMLClass itf : this.owner.getClassDiagram().getInterfaces()) {
+            if (itf == this.umlClass) {
+                continue;
+            }
+            if (Objects.equals(itf.getName(), this.getName())) {
+                this.nameLabel.setStyle(style + "-fx-text-fill: red");
+                return;
+            } else {
+                this.nameLabel.setStyle(style + "-fx-text-fill: black");
+            }
+        }
     }
 
     public double getXpos() {

@@ -78,4 +78,8 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
         // not found
         return null;
     }
+
+    public ClassDiagram getClassDiagram() {
+        return this.classDiagram;
+    }
 }

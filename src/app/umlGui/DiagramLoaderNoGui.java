@@ -169,7 +169,7 @@ public class DiagramLoaderNoGui {
 
             // create UMLClassGui object and add it to the root
             String className = (String)classObj.get("name");
-            UMLClass umlClass = new UMLClass(className, false);
+            UMLClass umlClass = new UMLClass(className, false, classDiagram);
             //root.getChildren().add(umlClass);
 
             // load attributes and methods
@@ -221,7 +221,7 @@ public class DiagramLoaderNoGui {
 
             // create UMLClassGui object and add it to the root
             String interfaceName = (String)interfaceObj.get("name");
-            UMLClass umlInterface = new UMLClass(interfaceName, true);
+            UMLClass umlInterface = new UMLClass(interfaceName, true, classDiagram);
 
             // load attributes and methods
             saveAttributes(umlInterface, (JSONArray)interfaceObj.get("attributes"));
