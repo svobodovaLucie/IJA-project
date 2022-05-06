@@ -48,7 +48,7 @@ public class GuiMain extends Application {
     /**
      * JavaFX Application Thread.
      *
-     * @param primaryStage stage
+     * @param primaryStage Primary stage
      * @throws Exception
      */
     @Override
@@ -59,11 +59,9 @@ public class GuiMain extends Application {
         Group rootClass = guiLoader.loadClassDiagramGui(BEdiagrams.getClassDiagram());
 
         // load seq diagram from BE
-        // both are roots because they will be in different Scene
+        // both are roots because they will be in different Scenes
         // there will be scene for each seq diagram
         List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
-
-        System.out.println(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
         createClassDiagScene(rootClass);
@@ -79,6 +77,10 @@ public class GuiMain extends Application {
         this.helpMessage();
     }
 
+    /**
+     * Create scene for class diagram.
+     * @param rootClass Group for all gui objects.
+     */
     private void createClassDiagScene(Group rootClass){
         // set the scene
         Stage stage = new Stage();
@@ -87,7 +89,7 @@ public class GuiMain extends Application {
         // options for adding new elements
         Menu addOptions = addMenuAdd(rootClass);
         // options for removing elements
-        Menu removeOptions = addMenuRemove(rootClass);
+        Menu removeOptions = addMenuRemove();
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
@@ -117,6 +119,11 @@ public class GuiMain extends Application {
         stage.show();
     }
 
+    /**
+     * Create Menu and add it to given group.
+     * @param rootClass Group where the menu 'll be added.
+     * @return created menu
+     */
     private Menu addMenuAdd(Group rootClass) {
         Menu addOptions = new Menu("Add...");
         addOptions.setStyle("-fx-font-size: 15;");
@@ -155,8 +162,10 @@ public class GuiMain extends Application {
         return addOptions;
     }
 
+    /**
+     * Display warning using alert box
+     */
     private void customAlertBox() {
-        // TODO alert box
         Group helpGroup = new Group();
         Text text = new Text();
         text.setFont(new Font(15));
@@ -173,7 +182,11 @@ public class GuiMain extends Application {
         helpStage.show();
     }
 
-    private Menu addMenuRemove(Group rootClass) {
+    /**
+     * Create Menu
+     * @return Menu
+     */
+    private Menu addMenuRemove() {
         Menu removeOptions = new Menu("Remove...");
         removeOptions.setStyle("-fx-font-size: 15;");
         // button for adding new class
@@ -198,6 +211,9 @@ public class GuiMain extends Application {
         return removeOptions;
     }
 
+    /**
+     * todo
+     */
     private void removeClassMessage(){
         Group helpGroup = new Group();
         Text text = new Text();
@@ -238,6 +254,9 @@ public class GuiMain extends Application {
         helpStage.show();
     }
 
+    /**
+     * todo
+     */
     private void removeInterfaceMessage(){
         Group helpGroup = new Group();
         Text text = new Text();
@@ -277,9 +296,12 @@ public class GuiMain extends Application {
         helpStage.show();
     }
 
+    /**
+     * Create scene for sequence diagram with all the graphics elements.
+     * @param n index of diagram that ll be processed.
+     * @param rootSeq all sequecne diagrams group
+     */
     private void createSeqDiagScene(int n, List<Group> rootSeq){
-            // TODO SMAZAT A VYTVARET VE FE ... V PRIPADE ZMACKNUTI SAVE TLACITKA ULOZIT DO BE
-        // uz je vse nactene z JSONu v jednotlivych UMLSeqDiaGui -> staci jen zobrazit
 
         UMLSeqDiaGui seqDiaGui = (UMLSeqDiaGui) rootSeq.get(n).getChildren().get(0);
         Stage primaryStage = new Stage();
@@ -488,12 +510,6 @@ public class GuiMain extends Application {
                     String[] str = messagesCB.getValue().split("\\s+");
 
                     seqDiaGui.removeMessage(str[1], Integer.parseInt(str[0]));
-                /*
-                seqDiaGui.removeActor(umlActorGui);
-
-                seqDiaGui.paintEVERYTHINGAGAIN();
-
-                */
                     rootSeq.get(n).getChildren().remove(messagesCB);
                     rootSeq.get(n).getChildren().remove(confirm3);
 
@@ -510,7 +526,6 @@ public class GuiMain extends Application {
             rootSeq.get(n).getChildren().add(confirm3);
 
         });
-        // todo ONaction
         options2.getItems().addAll(removeActor, removeMessage);
 
 

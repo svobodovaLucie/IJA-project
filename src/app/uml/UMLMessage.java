@@ -1,11 +1,17 @@
+/*
+ * File:         UMLMessage.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ * File contains backend representation of sequence diagram message.
+ *
+ */
 package app.uml;
 
 
-// todo komentare
-// todo popis souboru
-
 /**
- * Class that represent sequence diagram method
+ * Class that represent sequence diagram message.
  */
 public class UMLMessage {
 
@@ -44,27 +50,60 @@ public class UMLMessage {
     }
 
 
+    /**
+     * @return From UMLClass
+     */
     public UMLClass getFromClass(){
         return this.fromClass;
     }
+
+    /**
+     * @return To UMLCLass
+     */
     public UMLClass getToClass(){
         return this.toClass;
     }
+
+    /**
+     * @return To actor name
+     */
     public String getToActor(){
         return this.toActor;
     }
+
+    /**
+     * @return Return From actor name
+     */
     public String getFromActor(){
         return this.fromActor;
     }
+
+    /**
+     * @return message type.
+     */
     public String getType() {
         return this.type;
     }
+
+    /**
+     * @return method.
+     */
     public UMLMethod getMethod() {
         return this.method;
     }
+
+    /**
+     * Set method that was used in message.
+     * @param method used in message.
+     */
     public void setMethod(UMLMethod method) {
         this.method = method;
     }
+
+    /**
+     * Set message type
+     * @param type of message.
+     */
     public void setType(String type) {
         this.type = type;
     }

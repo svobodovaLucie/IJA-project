@@ -1,5 +1,13 @@
-package app.gui;
+/*
+ * File:         DraggableObject.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ * TODO
+ */
 
+package app.gui;
 import app.uml.UMLClass;
 import app.umlGui.UMLClassGui;
 import javafx.beans.property.SimpleDoubleProperty;

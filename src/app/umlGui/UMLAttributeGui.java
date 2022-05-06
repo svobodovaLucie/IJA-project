@@ -150,10 +150,16 @@ public class UMLAttributeGui extends TextField {
 		return nameTypeAccess;
 	}
 
+	/**
+	 * @return UMLAttribute
+	 */
 	public UMLAttribute getAttribute() {
 		return this.umlAttribute;
 	}
 
+	/**
+	 * Check if input format is ok.
+	 */
 	private void checkInputFormat() {
 		String style = "-fx-background-color: transparent;\n" +
 				"-fx-border-style: none none none none;\n" +

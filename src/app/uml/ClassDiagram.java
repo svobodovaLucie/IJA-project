@@ -88,6 +88,11 @@ public class ClassDiagram extends Element {
         return newClass;
     }
 
+    /**
+     * Create interface.
+     * @param name name of interface
+     * @return new interface
+     */
     public UMLClass createInterface(String name) {
         for (UMLClass cl : this.interfaces) {
             if (cl.getName().equals(name)) {
@@ -104,6 +109,11 @@ public class ClassDiagram extends Element {
         return newClass;
     }
 
+    /**
+     * Finds class in diagram by name.
+     * @param name name of class diagram that we are looking for.
+     * @return class diagram or null
+     */
     public UMLClass findClass(String name) {
         // find class
         for (UMLClass cls : this.getClasses()) {
@@ -115,6 +125,11 @@ public class ClassDiagram extends Element {
         return null;
     }
 
+    /**
+     * Finds interface in diagram by name.
+     * @param name name of interface that we are looking for.
+     * @return interface represented by UMLClass or null
+     */
     public UMLClass findInterface(String name) {
         // find class
         for (UMLClass cls : this.getInterfaces()) {
@@ -126,6 +141,11 @@ public class ClassDiagram extends Element {
         return null;
     }
 
+    /**
+     * Try to find class. if null then try to find interface.
+     * @param name (class, interface) we are looking for
+     * @return class or interface or null
+     */
     public UMLClass findClassInterface(String name) {
         UMLClass result = findClass(name);
         if (result == null) {
@@ -134,10 +154,17 @@ public class ClassDiagram extends Element {
         return result;
     }
 
+    /**
+     * @return List of all classes
+     */
     public List<UMLClass> getInterfaces() {
         return this.interfaces;
     }
 
+    /**
+     * Remove given class from diagram.
+     * @param name class name
+     */
     public void removeClass(String name) {
         UMLClass toRemove = findClass(name);
         try {
@@ -148,6 +175,10 @@ public class ClassDiagram extends Element {
         support.firePropertyChange("removeClass", toRemove, null);
     }
 
+    /**
+     * Remove given interface from diagram.
+     * @param name interface name.
+     */
     public void removeInterface(String name) {
         UMLClass toRemove = findInterface(name);
         try {
@@ -158,6 +189,10 @@ public class ClassDiagram extends Element {
         support.firePropertyChange("removeInterface", toRemove, null);
     }
 
+    /**
+     * Add new relations to diagram.
+     * @param umlRelation relation that 'll be added
+     */
     public void addRelation(UMLRelation umlRelation) {
         if (umlRelation == null) {
             System.out.println("Null UMLRelation");
@@ -167,10 +202,17 @@ public class ClassDiagram extends Element {
         this.relations.add(umlRelation);
     }
 
+    /**
+     * @return List of all the relations
+     */
     public List<UMLRelation> getRelations() {
         return this.relations;
     }
 
+    /**
+     * Add interface to diagram.
+     * @param umlInterface interface that 'll be added.
+     */
     public void addInterface(UMLClass umlInterface) {
         this.interfaces.add(umlInterface);
     }

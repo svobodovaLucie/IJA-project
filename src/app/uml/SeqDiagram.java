@@ -1,5 +1,3 @@
-package app.uml;
-
 /*
  * File:         SeqDiagram.java
  * Institution:  FIT BUT 2021/2022
@@ -11,6 +9,7 @@ package app.uml;
  * one sequence diagram.
  */
 
+package app.uml;
 import java.util.ArrayList;
 import java.util.List;
 import app.backend.Diagrams;
@@ -137,58 +136,69 @@ public class SeqDiagram {
         this.actorsCreatedByMessage.add(createdByMessage);
     }
 
-
-
-    public void removeMessage(){
-        //todo
-        return;
-    }
-
-    public void removeActor(){
-        //todo
-        return;
-    }
-
-
-    /*
-    List <UMLClass> actors;
-    List <String> actorsName;
-    List <Boolean> actorsCreatedByMessage;
-    */
-
-
+    /**
+     * Find out if actor on n index was created by <<create>> message
+     * @param n index of actor
+     * @return true if actor was created by message.
+     */
     public Boolean getNActorCreatedByMessage(int n){
         return  this.actorsCreatedByMessage.get(n);
     }
 
+    /**
+     * @param n actor index in list.
+     * @return nth actor from list of actors.
+     */
     public UMLClass getNActor(int n){
         return  this.actors.get(n);
     }
 
+    /**
+     * @param n message index in list.
+     * @return nth message from list of messages
+     */
     public UMLMessage getNMessage(int n) {
         return this.messages.get(n);
     }
 
+    /**
+     * @return list of booleans, that represents if actor was created by <<create>> message
+     */
     public List<Boolean> getActorCreatedByMessage() {
         return this.actorsCreatedByMessage;
     }
 
+    /**
+     * @return List of all the messages.
+     */
     public List<UMLMessage> getMessages(){
         return this.messages;
     }
 
+    /**
+     * @return Diagram name.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @return List with all the actors in diagram.
+     */
     public List <UMLClass> getActors() {
         return this.actors;
     }
 
+    /**
+     * @return List with all the actors names in diagram.
+     */
     public List <String> getActorsName(){
         return this.actorsName;
     }
 
+    /**
+     * @return List with created by message indicator.
+     */
     public List <Boolean> getActorsCreatedByMessage(){
         return this.actorsCreatedByMessage;
     }

@@ -82,10 +82,17 @@ public class UMLClassifier {
 	}
 	 */
 
+	/**
+	 * Set name of classifier
+	 * @param name name that ll be set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return classifier name
+	 */
 	public String getName() {
 		return this.name;
 	}

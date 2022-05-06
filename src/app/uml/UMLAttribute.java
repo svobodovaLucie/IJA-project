@@ -77,12 +77,20 @@ public class UMLAttribute {
 	}
 	*/
 
+	/**
+	 * Set Name, Type and Access
+	 * @param nameTypeAccess List with strings that represents Name, Type, Access
+	 */
 	public void setNameTypeAccess(List <String> nameTypeAccess) {
 		this.name = nameTypeAccess.get(0);
 		this.type.setName(nameTypeAccess.get(1));
 		this.access = nameTypeAccess.get(2);
 	}
 
+	/**
+	 * Set attribute type
+	 * @param type string that represent attribute type
+	 */
 	public void setType(String type) {
 		this.type.setName(type);
 	}

@@ -9,29 +9,13 @@
  */
 package app.umlGui;
 
-import app.gui.DraggableObject;
 import app.uml.SeqDiagram;
 import app.uml.UMLClass;
 import app.uml.UMLMessage;
-import app.uml.UMLMethod;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.Polygon;
-import org.json.simple.JSONArray;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 
 /**
  * Class that represent Sequence diagram in GUI. It is connected with it Backed
@@ -117,6 +101,11 @@ public class UMLSeqDiaGui extends AnchorPane {
         }
     }
 
+    /**
+     * Paint new actor
+     * @param actorName
+     * @param actorClass
+     */
     public void paintNewActor(String actorName, UMLClass actorClass){
 
         int n = getActorsCounter();
@@ -143,6 +132,10 @@ public class UMLSeqDiaGui extends AnchorPane {
 
     }
 
+    /**
+     * @param umlA
+     * @return index of message in message list.
+     */
     public int getMessageGuiIndex(UMLMessageGui umlA){
         int i = 0;
         for (UMLMessageGui act : this.getMessageGui()){
@@ -154,6 +147,10 @@ public class UMLSeqDiaGui extends AnchorPane {
         return -1;
     }
 
+    /**
+     * @param umlA
+     * @return index of actor in actor list.
+     */
     public int getActorGuiIndex(UMLActorGui umlA){
         int i = 0;
         for (UMLActorGui act : this.getActorsGui()){
@@ -165,6 +162,11 @@ public class UMLSeqDiaGui extends AnchorPane {
         return -1;
     }
 
+    /**
+     * Remove message from message list.
+     * @param type message type
+     * @param order message order
+     */
     public void removeMessage(String type, int order){
         order = order - 1;
         System.out.println(type);
@@ -181,7 +183,9 @@ public class UMLSeqDiaGui extends AnchorPane {
 
     }
 
-    // todo
+    /**
+     * Repaint all the object
+     */
     public void paintEVERYTHINGAGAIN(){
         int i = 0;
         for (UMLActorGui acG : getActorsGui()){
@@ -231,6 +235,10 @@ public class UMLSeqDiaGui extends AnchorPane {
 
     }
 
+    /**
+     * Remove messages that contains to actor given actor
+     * @param umlA
+     */
     public void removeMessagesToActor(UMLActorGui umlA){
         int actIndex = umlA.getActorOrder();
 
@@ -244,6 +252,10 @@ public class UMLSeqDiaGui extends AnchorPane {
         }
     }
 
+    /**
+     * Remove messages that contains from actor given actor
+     * @param umlA
+     */
     public void removeMessagesFromActor(UMLActorGui umlA){
         int actIndex = umlA.getActorOrder();
 
@@ -257,10 +269,11 @@ public class UMLSeqDiaGui extends AnchorPane {
         }
     }
 
+    /**
+     * Remove actor
+     * @param umlA
+     */
     public void removeActor(UMLActorGui umlA){
-        int index = this.getActorGuiIndex(umlA);
-        System.out.println(this.getActorsGui());
-        System.out.println(this.getActorsGui());
 
         for(Line line : umlA.getLines()){
             this.getChildren().remove(line);
@@ -300,6 +313,11 @@ public class UMLSeqDiaGui extends AnchorPane {
     }
 
 
+    /**
+     * Find actor in actor list by gis gui name
+     * @param actorName actor gui name.
+     * @return UMLActorGui if found or null
+     */
     public UMLActorGui findActorGuiByWholeName(String actorName){
 
         // find class
@@ -395,14 +413,24 @@ public class UMLSeqDiaGui extends AnchorPane {
         return -1;
     }
 
+    /**
+     * Add message to message list
+     * @param mess
+     */
     public void addMessageGui(UMLMessageGui mess){
         this.messageGui.add(mess);
     }
 
+    /**
+     * @return list with all the messages
+     */
     public List<UMLMessageGui> getMessageGui(){
         return this.messageGui;
     }
 
+    /**
+     * @return list with all the actors
+     */
     public List<UMLActorGui> getActorsGui(){
         return this.actorsGui;
     }
@@ -410,26 +438,46 @@ public class UMLSeqDiaGui extends AnchorPane {
         return this.actorsGui.get(n);
     }
 
-    // getrs
+    /**
+     * @return message counter
+     */
     public int getMessageCounter() {
         return this.messageCounter;
     }
+
+    /**
+     * @return actor counter
+     */
     public int getActorsCounter() {
         return this.actorsCounter;
     }
 
-    // setrs
+    /**
+     * Set actor counter
+     * @param i
+     */
     public void setActorsCounter(int i) {
         this.actorsCounter = i;
     }
+
+    /**
+     * Set message counter
+     * @param i
+     */
     public void setMessageCounter(int i) {
         this.messageCounter = i;
     }
 
+    /**
+     * Increment y pos by constant
+     */
     public void incrementYpos(){
         this.yPos = this.yPos + 50;
     }
 
+    /**
+     * @return current y position.
+     */
     public int getyPos(){
         return this.yPos;
     }
