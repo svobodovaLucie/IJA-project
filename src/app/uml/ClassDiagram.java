@@ -134,6 +134,28 @@ public class ClassDiagram extends Element {
         return result;
     }
 
+    public void removeRelation(String classFrom, String classTo, String type) {
+        UMLRelation toRemove = findRelation(classFrom, classTo, type);
+        try {
+            this.getRelations().remove(toRemove);
+        } catch (Exception ignored) {
+            System.out.println("EXC removeRelation");
+        }
+        // observer
+        support.firePropertyChange("removeRelation", toRemove, null);
+    }
+
+    private UMLRelation findRelation(String classFrom, String classTo, String type) {
+        for (UMLRelation rel : this.getRelations()) {
+            if (Objects.equals(rel.getClassFrom().getName(), classFrom) &&
+                    Objects.equals(rel.getClassTo().getName(), classTo) &&
+                    Objects.equals(rel.getRelationType(), type)) {
+                return rel;
+            }
+        }
+        return null;
+    }
+
     public List<UMLClass> getInterfaces() {
         return this.interfaces;
     }

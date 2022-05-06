@@ -251,10 +251,9 @@ public class GuiMain extends Application {
                 System.out.println("confirming add");
                 UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
                 UMLRelation newRelation = BEdiagrams.getClassDiagram().createRelation(BEdiagrams.getClassDiagram(), classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
-                umlClassDiagramGui.getChildren().add(new UMLRelationGui(newRelation, umlClassDiagramGui));
-                //BEdiagrams.getClassDiagram().removeClass(cb.getValue());
-                //System.out.println("removed");
-                //helpStage.close();
+                UMLRelationGui newRelationGui = new UMLRelationGui(newRelation, umlClassDiagramGui);
+                umlClassDiagramGui.getChildren().add(newRelationGui.getRelationArrow());
+                helpStage.close();
             });
         } else {
             confirm.setOnAction(event -> {
@@ -265,6 +264,9 @@ public class GuiMain extends Application {
                 //BEdiagrams.getClassDiagram().removeClass(cb.getValue());
                 //System.out.println("removed");
                 //helpStage.close();
+                BEdiagrams.getClassDiagram().removeRelation(classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
+                System.out.println("removed");
+                helpStage.close();
             });
         }
         helpGroup.getChildren().addAll(classFromCB, typeCB, classToCB, confirm);

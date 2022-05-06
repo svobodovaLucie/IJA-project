@@ -84,6 +84,7 @@ public class GuiLoader {
             System.out.println("j");
 
             // add relation to the GUI
+            umlClassDiagramGui.addRelation(umlRelationGui);
             umlClassDiagramGui.getChildren().add(umlRelationGui.getRelationArrow());
         }
     }
