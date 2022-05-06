@@ -126,6 +126,14 @@ public class ClassDiagram extends Element {
         return null;
     }
 
+    public UMLClass findClassInterface(String name) {
+        UMLClass result = findClass(name);
+        if (result == null) {
+            result = findInterface(name);
+        }
+        return result;
+    }
+
     public List<UMLClass> getInterfaces() {
         return this.interfaces;
     }

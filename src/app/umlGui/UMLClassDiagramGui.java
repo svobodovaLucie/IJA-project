@@ -48,7 +48,6 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
     public UMLClassGui findClassGui(UMLClass classToFind) {
         ObservableList<Node> classesGui = this.getChildren();
         for (Node node : classesGui) {
-            System.out.println("Node: " + node);
             try {
                 UMLClassGui umlClassGui = (UMLClassGui)node;
                 if (umlClassGui.getUmlClass() == classToFind) {
@@ -65,7 +64,6 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
     public UMLClassGui findInterfaceGui(UMLClass interfaceToFind) {
         ObservableList<Node> interfacesGui = this.getChildren();
         for (Node node : interfacesGui) {
-            System.out.println("Node: " + node);
             try {
                 UMLClassGui umlInterfaceGui = (UMLClassGui)node;
                 if (umlInterfaceGui.getUmlClass() == interfaceToFind) {
@@ -77,6 +75,14 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
         }
         // not found
         return null;
+    }
+
+    public UMLClassGui findClassInterfaceGui(UMLClass toFind) {
+        UMLClassGui result = findClassGui(toFind);
+        if (result == null) {
+            result = findInterfaceGui(toFind);
+        }
+        return result;
     }
 
     public ClassDiagram getClassDiagram() {

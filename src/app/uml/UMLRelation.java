@@ -8,12 +8,11 @@ public class UMLRelation {
     public UMLRelation(ClassDiagram classDiagram, String classFrom, String classTo, String type) {
         assert classDiagram != null;
         // TODO handle null
-        this.from = classDiagram.findClass(classFrom);
-        this.to = classDiagram.findClass(classTo);
+        this.from = classDiagram.findClassInterface(classFrom);
+        this.to = classDiagram.findClassInterface(classTo);
         assert this.from != null;
         assert this.to != null;
         this.type = type;
-        System.out.println("Relation created");
     }
 
     public UMLClass getClassFrom() {

@@ -14,13 +14,11 @@ public class UMLRelationGui extends Arrow {
         this.umlRelation = umlRelation;
         this.owner = umlClassDiagramGui;
 
-        //draggableObject.makeDraggable(this);
-
         // get GUI class from
-        UMLClassGui classFromGui = umlClassDiagramGui.findClassGui(umlRelation.getClassFrom());
+        UMLClassGui classFromGui = umlClassDiagramGui.findClassInterfaceGui(umlRelation.getClassFrom());
 
         // get GUI class to
-        UMLClassGui classToGui = umlClassDiagramGui.findClassGui(umlRelation.getClassTo());
+        UMLClassGui classToGui = umlClassDiagramGui.findClassInterfaceGui(umlRelation.getClassTo());
 
         // check null and add observers
         assert classFromGui != null;

@@ -58,8 +58,8 @@ public class DiagramLoaderNoGui {
         //saveClassesGui((JSONArray)diagram.get("classes"), root);
         ClassDiagram classDiagram = new ClassDiagram("Class Diagram");
         saveClasses((JSONArray)diagram.get("classes"), classDiagram);
-        saveRelations((JSONArray)diagram.get("relationships"), classDiagram);
         saveInterfaces((JSONArray)diagram.get("interfaces"), classDiagram);
+        saveRelations((JSONArray)diagram.get("relationships"), classDiagram);
         diagrams.addClassDiagram(classDiagram);
 
         // load seq diagrams
