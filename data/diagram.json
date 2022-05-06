@@ -89,7 +89,7 @@
   ],
   "interfaces" : [
     {
-    "name" : "Itf",
+    "name" : "My Interface",
     "attributes" : [
       {
         "name" : "neco",
@@ -132,6 +132,11 @@
       "from" : "Kruh",
       "to" : "Tvar",
       "type" : "generalisation"
+    },
+    {
+      "from" : "My Interface",
+      "to" : "Tvar",
+      "type" : "association"
     }
   ],
   "Sequence_diagrams" : [
