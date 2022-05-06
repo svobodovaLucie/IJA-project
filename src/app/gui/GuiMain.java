@@ -242,11 +242,6 @@ public class GuiMain extends Application {
                 System.out.println(CBactorFrom.getValue());
                 System.out.println(CBactorTo.getValue());
 
-                /*
-                public UMLMessage(UMLClass fromClass, UMLClass toClass,
-                        String fromActor, String toActor,
-                        String type, UMLMethod method){
-                 */
 
                 if (CBactorFrom.getValue() != null){
                    if (CBactorTo.getValue() != null){
@@ -259,20 +254,6 @@ public class GuiMain extends Application {
                         String to                = actorToGui.getActorName();
                         String type              = String.valueOf(typeCB.getValue());
                         UMLMethod method         = classFrom.findMethod(methodCB.getValue());
-
-                        /*
-                        System.out.println("-------type debug" + typeCB.getValue());
-                        System.out.println("..act F G " + actorFromGui);
-                        System.out.println("..act T G " + actorToGui);
-                        System.out.println("..CF " + actorFromGui.getClassName());
-                        System.out.println("..CT " + actorToGui.getClassName());
-                        System.out.println("..Class F " + classFrom);
-                        System.out.println("..Class T " + classTo);
-                        System.out.println("..From A " + fromActor);
-                        System.out.println(".. To   " + to);
-                        System.out.println(".. Type " + type);
-                        System.out.println(".. Method " + method);
-                        */
 
                         if(actorFromGui != actorToGui){
                             UMLMessage mess = new UMLMessage(classFrom, classTo, fromActor, to, type, method);
@@ -327,40 +308,36 @@ public class GuiMain extends Application {
 
         MenuItem removeActor = new MenuItem("Remove actor");
         removeActor.setOnAction( e -> {
-            ComboBox<String> comboBox3 = new ComboBox<>();
+            ComboBox<String> actorsCB = new ComboBox<>();
             Button confirm             = new Button("Confirm");
 
             // fill up combobox
-            /*
-            for ()
-            for (UMLClass cls : BEdiagrams.getClassDiagram().getClasses()){
-                comboBox1.getItems().add(cls.getName());
+            for (UMLActorGui agui : seqDiaGui.getActorsGui()){
+                actorsCB.getItems().add(agui.getDisplayedName());
             }
 
             confirm.setOnAction( ev -> {
-                System.out.println(actorName.getText());
-                System.out.println(comboBox1.getValue());
-                rootSeq.get(n).getChildren().remove(comboBox1);
-                rootSeq.get(n).getChildren().remove(actorName);
-                rootSeq.get(n).getChildren().remove(confirm);
+                System.out.println(confirm.getText());
+                System.out.println(actorsCB.getValue());
+                UMLActorGui umlActorGui = seqDiaGui.findActorGuiByWholeName(actorsCB.getValue());
 
-                // store to BE -> Paint it
+                seqDiaGui.removeActor(umlActorGui);
+
+                rootSeq.get(n).getChildren().remove(actorsCB);
+                rootSeq.get(n).getChildren().remove(confirm);
+                seqDiaGui.paintEVERYTHINGAGAIN();
+
 
             });
-
-            comboBox1.setLayoutX(10);
-            comboBox1.setLayoutY(30);
-            actorName.setLayoutX(10);
-            actorName.setLayoutY(55);
+            actorsCB.setLayoutX(10);
+            actorsCB.setLayoutY(30);
             confirm.setLayoutX(10);
-            confirm.setLayoutY(80);
-            comboBox1.setPromptText("class name");
+            confirm.setLayoutY(60);
+            actorsCB.setPromptText("Actor name");
             // combo box on action
 
-            rootSeq.get(n).getChildren().add(comboBox1);
-            rootSeq.get(n).getChildren().add(actorName);
+            rootSeq.get(n).getChildren().add(actorsCB);
             rootSeq.get(n).getChildren().add(confirm);
-             */
         });
 
 

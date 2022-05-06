@@ -27,7 +27,10 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     private Label actorNameGui;
     String actorName; //todo maybe rework to backend end but it would be very hard
     String displayedName;
+    // Tvar
     String className;
+    // (Tvar)
+    String clasNamespecial;
 
     private int actorX;
     private int actorY;
@@ -37,6 +40,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     private List<Line> lines;
 
     private boolean freed;
+
+    int actorOrder;
 
     /**
      * Paint Actor Constructor
@@ -48,8 +53,9 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.umlClass = umlClass;
         this.actorName = name;
         this.displayedName = name + ActorClass;
-
+        this.clasNamespecial = ActorClass;
         this.className = ActorClass.substring(2,ActorClass.length()-1);
+        this.actorOrder = n;
 
         int x_space = 150;
         int x_borders = 200;
@@ -81,6 +87,19 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.freed = false;
 
     }
+
+    public void reInit(UMLActorGui umlactGui, int n, int y){
+        int x_space = 150;
+        int x_borders = 200;
+
+        this.actorX = (x_borders + (x_space*n));
+        this.actorY = y;
+    }
+
+    public void freeLines(){
+        this.lines = new ArrayList<Line>();
+    }
+
 
     public String getDisplayedName(){
         return this.displayedName;
@@ -123,6 +142,10 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         getLines().add(line);
     }
 
+    public Label getActorNameGui(){
+        return this.actorNameGui;
+    }
+
     public List<Line> getLines(){
         return this.lines;
     }
@@ -156,5 +179,16 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
     public void propertyChange(PropertyChangeEvent e) {
         this.actorNameGui.setText((String) e.getNewValue());
+    }
+
+    public String getClasNamespecial() {
+        return clasNamespecial;
+    }
+
+    public UMLClass getUmlClass() {
+        return umlClass;
+    }
+    public int getActorOrder(){
+        return this.actorOrder;
     }
 }

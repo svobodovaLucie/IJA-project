@@ -47,8 +47,8 @@ public class UMLSeqDiaGui extends AnchorPane {
     private int actorsCounter;
 
     // Gui data
-    private List<UMLActorGui> actorsGui;
-    private List<UMLMessageGui> messageGui;
+    private ArrayList<UMLActorGui> actorsGui;
+    private ArrayList<UMLMessageGui> messageGui;
 
     // current vertical lines postion
     private int yPos;
@@ -140,6 +140,121 @@ public class UMLSeqDiaGui extends AnchorPane {
 
         this.getChildren().add(newActor.getTextField());
         setActorsCounter(n+1);
+
+    }
+
+    public int getMessageGuiIndex(UMLMessageGui umlA){
+        int i = 0;
+        for (UMLMessageGui act : this.getMessageGui()){
+            if(umlA == act){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    public int getActorGuiIndex(UMLActorGui umlA){
+        int i = 0;
+        for (UMLActorGui act : this.getActorsGui()){
+            if(umlA == act){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    // todo
+    public void paintEVERYTHINGAGAIN(){
+        int i = 0;
+        for (UMLActorGui acG : getActorsGui()){
+            this.getChildren().remove(acG.getActorNameGui());
+            for (Line lin : acG.getLines()){
+               this.getChildren().remove(lin);
+            }
+            acG.freeLines();
+            UMLActorGui newAcG = new UMLActorGui(acG.getUmlClass(), acG.getActorName(), acG.getClasNamespecial(), getActorGuiIndex(acG) ,75);
+            getActorsGui().set(i, newAcG);
+            i++;
+        }
+        int k = 0;
+        for(UMLMessageGui meG : getMessageGui()){
+            this.getChildren().remove(meG.getArrow());
+            //public UMLMessageGui(UMLMessage message, int order, UMLSeqDiaGui seq){
+            UMLMessageGui newMess = new UMLMessageGui(meG.getMessage(), k, this);
+            getMessageGui().remove(meG);
+            getMessageGui().add(newMess);
+            k++;
+        }
+        this.yPos = 75;
+        this.messageCounter = 0;
+        this.actorsCounter = 0;
+
+        for (UMLActorGui acG : getActorsGui()){
+            // if Actor is created by message we will paint him later
+            this.getChildren().add(acG.getTextField());
+            this.setActorsCounter(this.getActorsCounter()+1);
+        }
+
+        for (UMLMessageGui meg : getMessageGui()){
+
+            // then paint message
+            if (meg.getArrow() != null)
+                this.getChildren().add(meg.getArrow());
+
+            for (UMLActorGui act : this.getActorsGui()) {
+               if (act.getFreed() == false){
+                   this.getChildren().add(act.paintLine(2));
+               }
+            }
+            this.setMessageCounter(this.messageCounter+1);
+            this.incrementYpos();
+
+        }
+
+    }
+
+    public void removeMessagesToActor(UMLActorGui umlA){
+        int actIndex = umlA.getActorOrder();
+
+        for(UMLMessageGui mesG : getMessageGui()){
+            if(mesG.getIndexActTo() == actIndex){
+                this.getChildren().remove(mesG.getArrow());
+                System.out.println("------- " + this.getMessageGui());
+                System.out.println("------- " + this.getMessageGuiIndex(mesG));
+                this.getMessageGui().remove(mesG);
+            }
+        }
+    }
+
+    public void removeMessagesFromActor(UMLActorGui umlA){
+        int actIndex = umlA.getActorOrder();
+
+        for(UMLMessageGui mesG : getMessageGui()){
+            if(mesG.getIndexActFrom() == actIndex){
+                this.getChildren().remove(mesG.getArrow());
+                System.out.println("------- " + this.getMessageGui());
+                System.out.println("------- " + this.getMessageGuiIndex(mesG));
+                this.getMessageGui().remove(mesG);
+            }
+        }
+    }
+
+    public void removeActor(UMLActorGui umlA){
+        int index = this.getActorGuiIndex(umlA);
+        System.out.println(this.getActorsGui());
+        System.out.println(this.getActorsGui());
+
+        for(Line line : umlA.getLines()){
+            this.getChildren().remove(line);
+        }
+
+        removeMessagesToActor(umlA);
+        removeMessagesFromActor(umlA);
+
+        this.getChildren().remove(umlA.getTextField());
+        this.getActorsGui().remove(umlA);
 
     }
 

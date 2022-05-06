@@ -35,11 +35,13 @@ public class UMLMessageGui {
     public int baseYPos = 70;
     public int spaceBetweenMessages = 50;
 
+    int indexActFrom;
+    int indexActTo;
+
 
     public UMLMessageGui(UMLMessage message, int order, UMLSeqDiaGui seq){
         this.message = message;
         this.order = order;
-
 
         int indexActFrom = seq.getActorGuiIndex(message.getFromActor(),
                                                 message.getFromClass());
@@ -50,6 +52,9 @@ public class UMLMessageGui {
             //System.out.println("       " + seq.getNthActorGui(indexActFrom).getActorName() );
             //System.out.println("       " + seq.getNthActorGui(indexActTo).getActorName() );
         }
+
+        this.indexActFrom = indexActFrom;
+        this.indexActTo = indexActTo;
 
 
         String messageText;
@@ -303,6 +308,10 @@ public class UMLMessageGui {
         return res;
     }
 
+    public UMLMessage getMessage(){
+        return this.message;
+    }
+
     private int countYPos(){
         return baseYPos + ((this.getOrder()+1) * this.spaceBetweenMessages);
     }
@@ -315,5 +324,11 @@ public class UMLMessageGui {
         return this.message.getType();
     }
 
+    public int getIndexActFrom() {
+        return indexActFrom;
+    }
 
+    public int getIndexActTo(){
+        return indexActTo;
+    }
 }
