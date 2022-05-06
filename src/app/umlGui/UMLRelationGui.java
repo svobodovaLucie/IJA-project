@@ -42,8 +42,12 @@ public class UMLRelationGui extends Line implements PropertyChangeListener {
         // check null and add observers
         assert classFromGui != null;
         classFromGui.addPropertyChangeListener(this);
+        // draggable
+        classFromGui.draggableObject.addNodeFrom(this);
         assert classToGui != null;
         classToGui.addPropertyChangeListener(this);
+        // draggable
+        classToGui.draggableObject.addNodeTo(this);
 
         // print type
         String type = umlRelation.getRelationType();

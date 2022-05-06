@@ -148,7 +148,7 @@ public class UMLClassGui extends VBox {
         Insets insets = new Insets(5, 5, 5, 5);
 
         String style = "-fx-font-weight: bold;\n" +
-                "-fx-background-color: transparent;\n" +
+                "-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-background-radius: 0;\n" +
                 "-fx-border-color: black;";
@@ -179,7 +179,7 @@ public class UMLClassGui extends VBox {
         this.attributesGridPane = new GridPane();
         this.attributesGridPane.setPadding(new Insets(5, 5, 0, 5));
         //this.attributesGridPane.setPadding(insets);
-        this.attributesGridPane.setStyle("-fx-background-color: transparent;\n" +
+        this.attributesGridPane.setStyle("-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-width: 1 2 0 2;\n" +
                 "-fx-border-color: black;");
@@ -195,7 +195,7 @@ public class UMLClassGui extends VBox {
         // create GridPane for methods
         this.methodsGridPane = new GridPane();
         this.methodsGridPane.setPadding(new Insets(5, 5, 0, 5));
-        this.methodsGridPane.setStyle("-fx-background-color: transparent;\n" +
+        this.methodsGridPane.setStyle("-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-width: 1 2 0 2;\n" +
                 "-fx-border-color: black;");
@@ -257,7 +257,7 @@ public class UMLClassGui extends VBox {
         addGridPane.setPadding(new Insets(0, 0, 5, 0));
         addGridPane.setHgap(173.71);
         // TODO different border style
-        String style = new String("-fx-background-color: transparent;\n" +
+        String style = new String("-fx-background-color: white;\n" +
                 "-fx-border-style: solid;\n" +
                 "-fx-border-color: black;\n");
         if (attribute_method == 0) {  // attributes
@@ -280,7 +280,7 @@ public class UMLClassGui extends VBox {
                 insertNewMethod();
             }
         });
-        addButton.setStyle("-fx-background-color: transparent;\n" +
+        addButton.setStyle("-fx-background-color: white;\n" +
                 "-fx-border-color: transparent;\n" +
                 "-fx-font-weight: bold;");
         GridPane.setConstraints(addButton, 1, 0);
@@ -333,7 +333,7 @@ public class UMLClassGui extends VBox {
 
             // add a button that can remove the attribute
             this.attributeButtons.add(new Button("-"));
-            this.attributeButtons.get(lastRowNumber).setStyle("-fx-background-color: transparent;\n" +
+            this.attributeButtons.get(lastRowNumber).setStyle("-fx-background-color: white;\n" +
                     "-fx-border-color: transparent;\n" +
                     "-fx-font-weight: bold;");
             this.attributeButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
@@ -408,7 +408,7 @@ public class UMLClassGui extends VBox {
 
             // add a button that can remove the method
             this.methodButtons.add(new Button("-"));
-            this.methodButtons.get(lastRowNumber).setStyle("-fx-background-color: transparent;\n" +
+            this.methodButtons.get(lastRowNumber).setStyle("-fx-background-color: white;\n" +
                     "-fx-border-color: transparent;\n" +
                     "-fx-font-weight: bold;");
             this.methodButtons.get(lastRowNumber).setOnAction(actionEvent ->  {
