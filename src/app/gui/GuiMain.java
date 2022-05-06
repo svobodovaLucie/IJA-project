@@ -210,7 +210,7 @@ public class GuiMain extends Application {
         // add message on action
         MenuItem addMessage = new MenuItem("Add message");
         addMessage.setOnAction( e -> {
-            ComboBox<String> methodCB        = new ComboBox<>();
+            ComboBox<String> methodCB    = new ComboBox<>();
             ComboBox<String> typeCB      = new ComboBox<>();
             ComboBox<String> CBactorFrom = new ComboBox<>();
             ComboBox<String> CBactorTo   = new ComboBox<>();
@@ -271,7 +271,6 @@ public class GuiMain extends Application {
 
             });
 
-
             typeCB.setPromptText("Message type");
             typeCB.setLayoutX(10);
             typeCB.setLayoutY(30);
@@ -290,7 +289,6 @@ public class GuiMain extends Application {
 
             confirm2.setLayoutX(10);
             confirm2.setLayoutY(150);
-
 
             // combo box on action
 
@@ -338,11 +336,56 @@ public class GuiMain extends Application {
 
             rootSeq.get(n).getChildren().add(actorsCB);
             rootSeq.get(n).getChildren().add(confirm);
+
         });
 
 
         // todo ONaction
         MenuItem removeMessage = new MenuItem("Remove message");
+        removeMessage.setOnAction( e -> {
+            ComboBox<String> messagesCB = new ComboBox<>();
+            Button confirm3              = new Button("Confirm");
+
+            // fill up combobox
+            int indexI = 1;
+            for (UMLMessageGui agui : seqDiaGui.getMessageGui()){
+                System.out.println("~~~~~ " + agui.getMessage());
+                messagesCB.getItems().add(indexI++ + " " + agui.getMessage().getType());
+            }
+
+
+            confirm3.setOnAction( ev -> {
+                if(messagesCB.getValue() == null){
+                    rootSeq.get(n).getChildren().remove(messagesCB);
+                    rootSeq.get(n).getChildren().remove(confirm3);
+
+                }
+                else {
+                    String[] str = messagesCB.getValue().split("\\s+");
+
+                    seqDiaGui.removeMessage(str[1], Integer.parseInt(str[0]));
+                /*
+                seqDiaGui.removeActor(umlActorGui);
+
+                seqDiaGui.paintEVERYTHINGAGAIN();
+
+                */
+                    rootSeq.get(n).getChildren().remove(messagesCB);
+                    rootSeq.get(n).getChildren().remove(confirm3);
+
+                }
+            });
+            messagesCB.setLayoutX(10);
+            messagesCB.setLayoutY(30);
+            confirm3.setLayoutX(10);
+            confirm3.setLayoutY(60);
+            messagesCB.setPromptText("Method");
+            // combo box on action
+
+            rootSeq.get(n).getChildren().add(messagesCB);
+            rootSeq.get(n).getChildren().add(confirm3);
+
+        });
         // todo ONaction
         options2.getItems().addAll(removeActor, removeMessage);
 

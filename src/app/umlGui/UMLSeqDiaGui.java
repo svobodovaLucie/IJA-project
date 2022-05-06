@@ -165,6 +165,22 @@ public class UMLSeqDiaGui extends AnchorPane {
         return -1;
     }
 
+    public void removeMessage(String type, int order){
+        order = order - 1;
+        System.out.println(type);
+        System.out.println(order);
+
+        for( UMLMessageGui mes : this.getMessageGui()){
+            if(mes.getMessage().getType().equals(type)){
+                if(mes.getOrder() == order){
+                    this.getChildren().remove(mes.getArrow());
+                    this.getMessageGui().remove(mes);
+                }
+            }
+        }
+
+    }
+
     // todo
     public void paintEVERYTHINGAGAIN(){
         int i = 0;

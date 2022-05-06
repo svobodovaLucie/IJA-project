@@ -156,7 +156,7 @@
           "from" : "Kubogos",
           "to" : "Lucius",
           "type" : "synch",
-          "methodName" : "kreslit"
+          "methodName" : "krenovat"
         },
         {
           "classFrom" : "Tvar",
@@ -193,8 +193,8 @@
         {
           "classFrom" : "Tvar",
           "classTo" : "Tvar",
-          "from" : "Studentos",
-          "to" : "Lucius",
+          "from" : "Lucius",
+          "to" : "Studentos",
           "type" : "asynch",
           "methodName" : "kreslit"
         }
@@ -204,7 +204,7 @@
       "Actors" : [
         {
           "actorName" : "Ctverec",
-          "class" : "Tvar",
+          "class" : "NELZE",
           "createdByMessage": "false"
         },
         {
