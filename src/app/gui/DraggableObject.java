@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,14 +77,14 @@ public class DraggableObject extends Group {
             node.setLayoutX(mouseEvent.getSceneX() - mouseX);
             node.setLayoutY(mouseEvent.getSceneY() - mouseY);
             for (Node n : this.nodesFrom) {
-                Line l = (Line) n;
-                l.setEndX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
-                l.setEndY((mouseEvent.getSceneY() - mouseY) + 10);
+                Arrow l = (Arrow) n;
+                l.setStartX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
+                l.setStartY((mouseEvent.getSceneY() - mouseY) + 10);
             }
             for (Node n : this.nodesTo) {
-                Line l = (Line) n;
-                l.setStartX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
-                l.setStartY((mouseEvent.getSceneY() - mouseY) + classNode.getHeight() - 10);
+                Arrow l = (Arrow) n;
+                l.setEndX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
+                l.setEndY((mouseEvent.getSceneY() - mouseY) + classNode.getHeight() - 10);
             }
 
             oldXscene = (mouseEvent.getSceneX() - mouseX);
