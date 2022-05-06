@@ -163,6 +163,9 @@ public class DiagramLoaderNoGui {
      * @param classDiagram root element that contains the GUI objects
      */
     private void saveClasses(JSONArray classes, ClassDiagram classDiagram) {
+        if (classes == null) {
+            return;
+        }
         // load every class from the JSON file
         for (Object aClass : classes) {
             JSONObject classObj = (JSONObject) aClass;

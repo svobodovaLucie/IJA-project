@@ -40,6 +40,9 @@ public class DiagramSaverNoGui {
         JSONArray interfaces = saveInterfaces(diagrams.getClassDiagram());
         diagram.put("interfaces", interfaces);
 
+        JSONArray relationships = saveRelationships(diagrams.getClassDiagram());
+        diagram.put("relationships", relationships);
+
         //saveClassDiagram(diagrams.getClassDiagram());
         // Write JSON file
         try (FileWriter file = new FileWriter(filename)) { // saves the file to dest/
@@ -49,6 +52,14 @@ public class DiagramSaverNoGui {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static JSONArray saveRelationships(ClassDiagram classDiagram) {
+        JSONArray relationships = new JSONArray();
+        for (UMLRelation relation : classDiagram.getRelations()) {
+            relationships.add(saveRelation(relation));
+        }
+        return relationships;
     }
 
     /**
@@ -99,6 +110,14 @@ public class DiagramSaverNoGui {
         JSONArray methods = saveMethods(umlClass);
         oneClass.put("methods", methods);
         return oneClass;
+    }
+
+    public static JSONObject saveRelation(UMLRelation umlRelation) {
+        JSONObject oneRelationship = new JSONObject();
+        oneRelationship.put("from", umlRelation.getClassFrom().getName());
+        oneRelationship.put("to", umlRelation.getClassTo().getName());
+        oneRelationship.put("type", umlRelation.getRelationType());
+        return oneRelationship;
     }
 
     /**
