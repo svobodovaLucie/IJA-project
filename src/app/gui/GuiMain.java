@@ -11,6 +11,7 @@
 package app.gui;
 
 import app.uml.UMLMessage;
+import app.uml.UMLRelation;
 import app.umlGui.UMLSeqDiaGui;
 import app.backend.Diagrams;
 import app.uml.UMLClass;
@@ -148,6 +149,7 @@ public class GuiMain extends Application {
         MenuItem addRelation = new MenuItem("Add relation");
         addRelation.setOnAction(e -> {
             System.out.println("Adding new relation (not implemented yet)");
+            editRelationMessage(rootClass, true);      // true == add relationship
         });
 
         addOptions.getItems().addAll(addClass, addInterface, addRelation);
@@ -191,11 +193,83 @@ public class GuiMain extends Application {
         MenuItem removeRelation = new MenuItem("Remove relation");
         removeRelation.setOnAction(e -> {
             System.out.println("Removing new relation (not implemented yet)");
+            editRelationMessage(rootClass, false);     // false == remove relationship
         });
 
         removeOptions.getItems().addAll(removeClass, removeInterface, removeRelation);
 
         return removeOptions;
+    }
+
+    public void editRelationMessage(Group rootClass, boolean add_remove) {   // add - true, remove - false
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n         Select relationship to be edited.");
+        helpGroup.getChildren().add(text);
+
+        // classFrom
+        ComboBox<String> classFromCB = new ComboBox<>();
+        // classTo
+        ComboBox<String> classToCB = new ComboBox<>();
+        // get names of all classes
+        for (UMLClass cls : BEdiagrams.getClassDiagram().getClassesInterfaces()) {
+            classFromCB.getItems().add(cls.getName());
+            classToCB.getItems().add(cls.getName());
+        }
+        classFromCB.setPromptText("Select From");
+        classFromCB.setLayoutX(42);
+        classFromCB.setLayoutY(42);
+
+        // relationship type
+        ComboBox<String> typeCB = new ComboBox<>();
+        // get names of all types (better arrows)
+        typeCB.getItems().addAll("association", "inheritance", "aggregation", "composition");
+        typeCB.setPromptText("Select Type");
+        typeCB.setLayoutX(42);
+        typeCB.setLayoutY(82);
+
+        // classTo continue
+        classToCB.setPromptText("Select To");
+        classToCB.setLayoutX(42);
+        classToCB.setLayoutY(122);
+
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Edit relationship");
+
+        // confirming button
+        Button confirm = new Button("Confirm");
+        confirm.setLayoutX(100);
+        confirm.setLayoutY(162);
+        if (add_remove) {   // add relationship
+            confirm.setOnAction(event -> {
+                System.out.println("confirming add");
+                UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
+                UMLRelation newRelation = BEdiagrams.getClassDiagram().createRelation(BEdiagrams.getClassDiagram(), classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
+                umlClassDiagramGui.getChildren().add(new UMLRelationGui(newRelation, umlClassDiagramGui));
+                //BEdiagrams.getClassDiagram().removeClass(cb.getValue());
+                //System.out.println("removed");
+                //helpStage.close();
+            });
+        } else {
+            confirm.setOnAction(event -> {
+                System.out.println("confirming remove");
+                //UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
+               // UMLRelation newRelation = BEdiagrams.getClassDiagram().createRelation(BEdiagrams.getClassDiagram(), classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
+                //umlClassDiagramGui.getChildren().add(new UMLRelationGui(newRelation, umlClassDiagramGui));
+                //BEdiagrams.getClassDiagram().removeClass(cb.getValue());
+                //System.out.println("removed");
+                //helpStage.close();
+            });
+        }
+        helpGroup.getChildren().addAll(classFromCB, typeCB, classToCB, confirm);
+
+        helpStage.show();
     }
 
     private void removeClassMessage(){
@@ -218,10 +292,7 @@ public class GuiMain extends Application {
         cb.setLayoutY(42);
         helpGroup.getChildren().add(cb);
 
-        Scene helpScene = new Scene(helpGroup, 400, 400);
         Stage helpStage = new Stage();
-        helpStage.setScene(helpScene);
-        helpStage.setTitle("Remove class");
 
         // confirming button
         Button confirm = new Button("Confirm");
@@ -235,6 +306,9 @@ public class GuiMain extends Application {
         });
         helpGroup.getChildren().add(confirm);
 
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Edit relationship");
         helpStage.show();
     }
 

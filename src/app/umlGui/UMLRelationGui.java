@@ -4,12 +4,13 @@ import app.gui.AggregationArrow;
 import app.gui.AssociationArrow;
 import app.gui.InheritanceArrow;
 import app.uml.UMLRelation;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-public class UMLRelationGui {
+public class UMLRelationGui extends Group {
     // UML relation to be represented
     UMLRelation umlRelation;
 
@@ -19,6 +20,8 @@ public class UMLRelationGui {
     AssociationArrow associationArrow;
     InheritanceArrow inheritanceArrow;
     AggregationArrow aggregationArrow;
+
+
 
     public UMLRelationGui(UMLRelation umlRelation, UMLClassDiagramGui umlClassDiagramGui) {
         //super();
@@ -39,6 +42,7 @@ public class UMLRelationGui {
 
         // get relationship type
         String type = umlRelation.getRelationType();
+        System.out.println("Type: " + type);
         // create arrows, add observers
         if (Objects.equals(umlRelation.getRelationType().toLowerCase(), "association")) {
             this.associationArrow = new AssociationArrow();

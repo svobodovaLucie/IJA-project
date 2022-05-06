@@ -167,11 +167,23 @@ public class ClassDiagram extends Element {
         this.relations.add(umlRelation);
     }
 
+    public UMLRelation createRelation(ClassDiagram classDiagram, String classFrom, String classTo, String type) {
+        UMLRelation umlRelation = new UMLRelation(classDiagram, classFrom, classTo, type);
+        this.relations.add(umlRelation);
+        return umlRelation;
+    }
+
     public List<UMLRelation> getRelations() {
         return this.relations;
     }
 
     public void addInterface(UMLClass umlInterface) {
         this.interfaces.add(umlInterface);
+    }
+
+    public List<UMLClass> getClassesInterfaces() {
+        List<UMLClass> result = new ArrayList<>(this.classes);
+        result.addAll(this.interfaces);
+        return result;
     }
 }
