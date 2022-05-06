@@ -69,11 +69,9 @@ public class UMLSeqDiaGui extends AnchorPane {
         this.actorsGui  = new ArrayList<>();
         this.messageGui = new ArrayList<>();
 
-
         loadActorsFromBE(seqDiagram);
         loadMessagesFromBE(seqDiagram);
     }
-
 
     /**
      * Load all the messages from backend class
@@ -119,6 +117,32 @@ public class UMLSeqDiaGui extends AnchorPane {
         }
     }
 
+    public void paintNewActor(String actorName, UMLClass actorClass){
+
+        int n = getActorsCounter();
+        System.out.println("messages " + this.getMessageCounter());
+
+        String aClass;
+        if (actorClass == null){
+            aClass = ":(null)";
+        }
+        else{
+            aClass = ":(" + actorClass.getName() + ")";
+        }
+
+        UMLActorGui newActor = new UMLActorGui(actorClass, actorName , aClass, n, 75);
+        this.actorsGui.add(newActor);
+
+        for (int i = 0; i < this.getMessageCounter(); i++) {
+            this.getChildren().add(newActor.paintLine(2));
+        }
+
+
+        this.getChildren().add(newActor.getTextField());
+        setActorsCounter(n+1);
+
+    }
+
     /**
      * Paint actor
      * @param actorName actor name
@@ -144,12 +168,26 @@ public class UMLSeqDiaGui extends AnchorPane {
         setActorsCounter(n+1);
     }
 
+
+    public UMLActorGui findActorGuiByWholeName(String actorName){
+
+        // find class
+        for (UMLActorGui act : this.getActorsGui()) {
+            if (act.getDisplayedName().equals(actorName)) {
+                return act;
+            }
+        }
+        // not found -> null
+        return null;
+
+    }
+
     /**
      * Finds actor gui class
      * @param actorName name to look for
      * @return UMLActorGui or null
      */
-    public UMLActorGui findActorGui(String actorName){
+    public UMLActorGui findActorGuiByName(String actorName){
 
         // find class
         for (UMLActorGui act : this.getActorsGui()) {
@@ -193,7 +231,7 @@ public class UMLSeqDiaGui extends AnchorPane {
             }
         }
         this.incrementYpos();
-
+        this.setMessageCounter(this.messageCounter+1);
     }
 
     /**

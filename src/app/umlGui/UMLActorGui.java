@@ -27,6 +27,7 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     private Label actorNameGui;
     String actorName; //todo maybe rework to backend end but it would be very hard
     String displayedName;
+    String className;
 
     private int actorX;
     private int actorY;
@@ -47,6 +48,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.umlClass = umlClass;
         this.actorName = name;
         this.displayedName = name + ActorClass;
+
+        this.className = ActorClass.substring(2,ActorClass.length()-1);
 
         int x_space = 150;
         int x_borders = 200;
@@ -139,6 +142,9 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         return currentLineYPos;
     }
 
+    public String getClassName(){
+        return this.className;
+    }
     public String getActorName(){
         return this.actorName;
     }
