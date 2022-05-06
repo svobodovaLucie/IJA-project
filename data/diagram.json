@@ -126,17 +126,27 @@
     {
       "from" : "Ctverec",
       "to" : "Tvar",
-      "type" : "generalisation"
+      "type" : "inheritance"
     },
     {
       "from" : "Kruh",
       "to" : "Tvar",
-      "type" : "generalisation"
+      "type" : "inheritance"
     },
     {
       "from" : "My Interface",
       "to" : "Tvar",
       "type" : "association"
+    },
+    {
+      "from" : "My Interface",
+      "to" : "Ctverec",
+      "type" : "aggregation"
+    },
+    {
+      "from" : "Ctverec",
+      "to" : "Kruh",
+      "type" : "composition"
     }
   ],
   "Sequence_diagrams" : [
