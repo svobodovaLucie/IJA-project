@@ -51,6 +51,8 @@ public class DraggableObject extends Group {
         this.afterMouseReleased.add(0, 0.0);
         this.afterMouseReleased.add(1, 0.0);
 
+        node.setLayoutX(Math.random() * 1300);
+        node.setLayoutY(Math.random() * 500);
         posX = node.getLayoutX();
         posY = node.getLayoutY();
 

@@ -170,8 +170,6 @@ public class UMLClassGui extends VBox {
         }));
 
         this.setOnDragDetected(ev -> {
-        //this.setOnMouseReleased(ev -> {
-            System.out.println("REL");
             owner.executeCommand(new CommandBuilder.Command() {
                 double oldPosX;
                 double oldPosY;
