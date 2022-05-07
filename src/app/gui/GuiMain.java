@@ -98,7 +98,7 @@ public class GuiMain extends Application {
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
-        saveButton.setOnAction(e -> saveMessage());
+        saveButton.setOnAction(e -> saveMessage(getAllSegDia(rootSeq)));
         //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootClass));
         Menu save = this.createMenu(saveButton);
 
@@ -277,7 +277,7 @@ public class GuiMain extends Application {
         helpStage.show();
     }
 
-    private void saveMessage(){
+    private void saveMessage(List <UMLSeqDiaGui> seqDiagrams){
         Group helpGroup = new Group();
         Text text = new Text();
         text.setFont(new Font(15));
@@ -300,7 +300,7 @@ public class GuiMain extends Application {
         confirm.setLayoutY(70);
         confirm.setOnAction(event -> {
             Path path = Paths.get(textInput.getText());
-            DiagramSaverNoGui.saveJSON(BEdiagrams, path.toAbsolutePath().toString());
+            DiagramSaverNoGui.saveJSON(BEdiagrams, seqDiagrams, path.toAbsolutePath().toString());
             System.out.println("Diagram saved to: " + path.toAbsolutePath());
             helpStage.close();
         });
