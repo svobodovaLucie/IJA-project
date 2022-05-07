@@ -1,127 +1,151 @@
 {
   "classes" : [
     {
-      "name" : "Tvar",
+      "name" : "Element",
       "attributes" : [
         {
-          "name" : "pocatek",
-          "type" : "Point",
-          "access" : "public"
-        },
-        {
-          "name" : "sirka",
-          "type" : "int",
-          "access" : "public"
-        },
-        {
-          "name" : "vyska",
-          "type" : "int",
+          "name" : "name",
+          "type" : "String",
           "access" : "public"
         }
       ],
       "methods" : [
         {
-          "name" : "kreslit",
+          "name" : "Element",
           "type" : "void",
-          "access" : "public",
-          "attributes" : []
-        },
-        {
-          "name" : "obsah",
-          "type" : "void",
-          "access" : "public",
-          "attributes" : []
-        },
-        {
-          "name" : "zmenSirku",
-          "type" : "int",
           "access" : "public",
           "attributes" : [
             {
-              "type" : "int"
+              "type" : "String"
+            }
+          ]
+        },
+        {
+          "name" : "getName",
+          "type" : "String",
+          "access" : "public",
+          "attributes" : []
+        },
+        {
+          "name" : "rename",
+          "type" : "void",
+          "access" : "public",
+          "attributes" : [
+            {
+              "type" : "String"
             }
           ]
         }
       ]
     },
     {
-      "name" : "Ctverec",
+      "name" : "UMLClassifier",
       "attributes" : [],
       "methods" : [
         {
-          "name" : "kreslit",
+          "name" : "UMLClassifier",
           "type" : "void",
-          "attributes" : [],
+          "attributes" : [
+            {
+              "type" : "String"
+            }
+          ],
           "access" : "public"
         },
         {
-          "name": "obsah",
-          "type": "void",
+          "name": "isUserDefined",
+          "type": "boolean",
           "attributes": [],
           "access": "public"
         }
       ]
     },
     {
-      "name" : "Kruh",
+      "name" : "ClassDiagram",
       "attributes" : [
         {
-          "name" : "polomer",
-          "type" : "int",
+          "name" : "classes",
+          "type" : "List<UMLCLassifier>",
           "access" : "public"
         }
       ],
       "methods" : [
         {
-          "name" : "kreslit",
-          "type" : "void",
-          "attributes" : [],
+          "name" : "createClass",
+          "type" : "UMLClass",
+          "attributes" : [
+            {
+              "type" : "String"
+            }
+          ],
           "access" : "public"
         },
         {
-          "name": "obsah",
-          "type": "void",
-          "attributes": [],
+          "name": "ClassifierForName",
+          "type": "UMLClassifier",
+          "attributes": [
+            {
+              "type" : "String"
+            }
+          ],
+          "access": "public"
+        }
+
+      ]
+    },
+    {
+      "name" : "UMLAttribute",
+      "attributes" : [
+        {
+          "name" : "type",
+          "type" : "UMLClassifier",
+          "access" : "public"
+        }
+      ],
+      "methods" : [
+        {
+          "name" : "getType",
+          "type" : "UMLClassifier",
+          "attributes" : [
+          ],
+          "access" : "public"
+        }
+      ]
+    },
+    {
+      "name" : "UMLClass",
+      "attributes" : [
+        {
+          "name" : "attributes",
+          "type" : "List<UMLAttributes>",
+          "access" : "public"
+        }
+      ],
+      "methods" : [
+        {
+          "name" : "addAttribute",
+          "type" : "boolean",
+          "attributes" : [
+            {
+              "type" : "UMLAttribute"
+            }
+          ],
+          "access" : "public"
+        },
+        {
+          "name": "getAttrPosition",
+          "type": "int",
+          "attributes": [
+            {
+              "type" : "UMLAttribute"
+            }
+          ],
           "access": "public"
         }
       ]
     }
   ],
-  "interfaces" : [
-    {
-    "name" : "My Interface",
-    "attributes" : [
-      {
-        "name" : "neco",
-        "type" : "int",
-        "access" : "package"
-      },
-      {
-        "name" : "dalsi",
-        "type" : "void",
-        "access" : "public"
-      }
-    ],
-    "methods" : [
-      {
-        "name" : "exec",
-        "type" : "void",
-        "access" : "public",
-        "attributes" : []
-      },
-      {
-        "name" : "undo",
-        "type" : "void",
-        "access" : "protected",
-        "attributes" : [
-          {
-            "type" : "int",
-            "type" : "void"
-          }
-        ]
-      }
-    ]
-  }],
+  "interfaces" : [],
   "relationships" : [
     {
       "from" : "Ctverec",
@@ -132,14 +156,116 @@
       "from" : "Kruh",
       "to" : "Tvar",
       "type" : "generalisation"
-    },
-    {
-      "from" : "My Interface",
-      "to" : "Tvar",
-      "type" : "association"
     }
   ],
   "Sequence_diagrams" : [
+    {
+      "name_seq": "Sequence Diagram",
+      "Actors" : [
+        {
+          "actorName" : "Main",
+          "class" : "ClassDiagram",
+          "createdByMessage": "false"
+        },
+        {
+          "actorName" : "ClassDiagram",
+          "class" : "UMLClass",
+          "createdByMessage": "false"
+        },
+        {
+          "actorName" : "c1",
+          "class" : "UMLClass",
+          "createdByMessage": "true"
+        },
+        {
+          "actorName" : "a1",
+          "class" : "UMLAttribute",
+          "createdByMessage": "true"
+        }
+      ],
+      "Messages" : [
+        {
+          "classFrom" : "ClassDiagram",
+          "classTo" : "UMLClass",
+          "from" : "Main",
+          "to" : "ClassDiagram",
+          "type" : "synch",
+          "methodName" : "createClass"
+        },
+        {
+          "classFrom" : "UMLClass",
+          "classTo" : "ClassDiagram",
+          "from" : "ClassDiagram",
+          "to" : "Main",
+          "type" : "response",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "UMLClass",
+          "classTo" : "UMLClass",
+          "from" : "ClassDiagram",
+          "to" : "c1",
+          "type" : "create",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "ClassDiagram",
+          "classTo" : "UMLClass",
+          "from" : "Main",
+          "to" : "ClassDiagram",
+          "type" : "synch",
+          "methodName": "ClassifierForName"
+        },
+        {
+          "classFrom" : "UMLClass",
+          "classTo" : "ClassDiagram",
+          "from" : "ClassDiagram",
+          "to" : "Main",
+          "type" : "response",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "ClassDiagram",
+          "classTo" : "UMLAttribute",
+          "from" : "Main",
+          "to" : "a1",
+          "type" : "create",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "ClassDiagram",
+          "classTo" : "UMLClass",
+          "from" : "Main",
+          "to" : "c1",
+          "type" : "synch",
+          "methodName" : "addAttribute"
+        },
+        {
+          "classFrom" : "UMLClass",
+          "classTo" : "ClassDiagram",
+          "from" : "c1",
+          "to" : "Main",
+          "type" : "response",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "ClassDiagram",
+          "classTo" : "UMLAttribute",
+          "from" : "Main",
+          "to" : "a1",
+          "type" : "synch",
+          "methodName" : "isAbstract"
+        },
+        {
+          "classFrom" : "UMLAttribute",
+          "classTo" : "ClassDiagram",
+          "from" : "a1",
+          "to" : "Main",
+          "type" : "asynch",
+          "methodName" : "false"
+        }
+      ]
+    },
     {
       "name_seq": "Seq_one",
       "Actors" : [
@@ -238,7 +364,8 @@
           "methodName" : "kreslit"
         }
       ]
-    },{
+    },
+    {
       "name_seq": "Seq_two",
       "Actors" : [
         {
