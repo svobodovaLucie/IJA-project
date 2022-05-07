@@ -25,6 +25,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +67,7 @@ public class GuiMain extends Application {
         List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
-        createClassDiagScene(rootClass);
+        //createClassDiagScene(rootClass);
 
         // set the scene for sequence diagram
         // todo button (add Message) (should choose from some types)
@@ -469,7 +472,7 @@ public class GuiMain extends Application {
 
                 rootSeq.get(n).getChildren().remove(actorsCB);
                 rootSeq.get(n).getChildren().remove(confirm);
-                seqDiaGui.paintEVERYTHINGAGAIN();
+                //seqDiaGui.paintEVERYTHINGAGAIN();
 
 
             });
@@ -533,6 +536,12 @@ public class GuiMain extends Application {
         Button saveButton = this.createButton("Save JSON", 0);
         //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootSeq.get(n)));
         Menu save = this.createMenu(saveButton);
+        saveButton.setOnAction( e -> {
+            //UMLSeqDiaGui seqDiaGui = (UMLSeqDiaGui) rootSeq.get(n).getChildren().get(0);
+            DiagramSaverNoGui.saveSeqDia(getAllSegDia(rootSeq));
+
+        });
+
 
         // add undo button - TODO, fix releasing the button
         Button undoButton = this.createButton("Undo", 0);
@@ -607,5 +616,18 @@ public class GuiMain extends Application {
         Menu menu = new Menu();
         menu.setGraphic(button);
         return menu;
+    }
+
+    /**
+     * Get list of all the sequence diagrams.
+     * @param rootSeq group list with all the diagrams
+     * @return
+     */
+    private List<UMLSeqDiaGui> getAllSegDia(List<Group> rootSeq){
+        List<UMLSeqDiaGui> seqDiags = new ArrayList<>();
+        for (int i = 0; i < rootSeq.size();i++){
+            seqDiags.add((UMLSeqDiaGui) rootSeq.get(i).getChildren().get(0));
+        }
+        return seqDiags;
     }
 }

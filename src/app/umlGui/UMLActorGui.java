@@ -72,7 +72,7 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.className = ActorClass.substring(2,ActorClass.length()-1);
         this.actorOrder = n;
 
-        int x_space = 150;
+        int x_space = 200;
         int x_borders = 200;
 
         this.actorX = (x_borders + (x_space*n));

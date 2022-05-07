@@ -38,7 +38,7 @@ public class UMLMessageGui {
 
     // First actor X pos
     public int baseXPos = 260;
-    public int spaceBetweenActors = 150;
+    public int spaceBetweenActors = 200;
     public int baseYPos = 70;
     public int spaceBetweenMessages = 50;
 

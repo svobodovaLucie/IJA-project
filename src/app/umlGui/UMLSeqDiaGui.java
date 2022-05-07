@@ -242,11 +242,10 @@ public class UMLSeqDiaGui extends AnchorPane {
     public void removeMessagesToActor(UMLActorGui umlA){
         int actIndex = umlA.getActorOrder();
 
+
         for(UMLMessageGui mesG : getMessageGui()){
             if(mesG.getIndexActTo() == actIndex){
                 this.getChildren().remove(mesG.getArrow());
-                System.out.println("------- " + this.getMessageGui());
-                System.out.println("------- " + this.getMessageGuiIndex(mesG));
                 this.getMessageGui().remove(mesG);
             }
         }
@@ -482,5 +481,8 @@ public class UMLSeqDiaGui extends AnchorPane {
         return this.yPos;
     }
 
+    public SeqDiagram getSeqDiagram() {
+        return seqDiagram;
+    }
 }
 

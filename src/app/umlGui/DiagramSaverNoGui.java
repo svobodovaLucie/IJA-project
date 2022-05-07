@@ -37,6 +37,7 @@ public class DiagramSaverNoGui {
         JSONArray classes = saveClasses(diagrams.getClassDiagram());
         diagram.put("classes", classes);
 
+
         JSONArray interfaces = saveInterfaces(diagrams.getClassDiagram());
         diagram.put("interfaces", interfaces);
 
@@ -50,6 +51,102 @@ public class DiagramSaverNoGui {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * Save sequence diagram
+     * @param seq list with all the sequence diagrams
+     */
+    public static void saveSeqDia(List<UMLSeqDiaGui> seq){
+
+        // for each sequence diagram
+        for (UMLSeqDiaGui seqDiaGui : seq){
+            saveActors(seqDiaGui);
+
+            saveMessages(seqDiaGui);
+        }
+    }
+
+    /**
+     *
+     * @param seqDiaGui sequence diagram
+     * @return JSON array
+     */
+    public static JSONArray saveMessages(UMLSeqDiaGui seqDiaGui){
+        for (UMLMessageGui mes : seqDiaGui.getMessageGui()){
+
+            /*
+                    "classFrom" : "ClassDiagram",
+                    "classTo" : "UMLClass",
+                    "from" : "Main",
+                    "to" : "ClassDiagram",
+                    "type" : "synch",
+                    "methodName" : "createClass"
+
+             */
+            String classFrom = mes.getMessage().getFromClass().getName();
+            String classTo = mes.getMessage().getToClass().getName();
+            String from = mes.getMessage().getFromActor();
+            String to = mes.getMessage().getToActor();
+            String type = mes.getMessage().getType();
+            // methodName
+            String methodName;
+            if (mes.getMessage().getMethod() == null){
+                methodName = "";
+                System.out.println(".. " + "");
+            }
+            else {
+                methodName = mes.getMessage().getMethod().getName();
+                System.out.println(".... " + mes.getMessage().getMethod().getName());
+            }
+
+            System.out.println(".. " + mes.getMessage().getFromClass().getName());
+            System.out.println(".. " + mes.getMessage().getToClass().getName());
+            System.out.println(".. " + mes.getMessage().getFromActor());
+            System.out.println(".. " + mes.getMessage().getToActor());
+            System.out.println(".. " + mes.getMessage().getType());
+        }
+        return null;
+    }
+
+
+    /**
+     * Method saves the actors from one sequence diagram.
+     * @param seqDiaGui sequence diagram
+     * @return JSON array
+     */
+    public static JSONArray saveActors(UMLSeqDiaGui seqDiaGui){
+
+        int i = 0;
+
+        List<Boolean> createdByMessage =  seqDiaGui.getSeqDiagram().getActorsCreatedByMessage();
+        for (UMLActorGui act : seqDiaGui.getActorsGui()){
+            boolean oneCreated;
+            if (createdByMessage.size() < i)
+                oneCreated = createdByMessage.get(i);
+            else
+                oneCreated = false;
+
+            /*
+            {
+              "actorName" : "c1",
+              "class" : "UMLClass",
+              "createdByMessage": "true"
+            }
+             */
+            String actorName = act.getActorName();
+            String actClass = act.getClassName();
+            // oneCreated
+
+            System.out.println(".. " + act.getActorName());
+            System.out.println(".. " + act.getClassName());
+            System.out.println(".. " + oneCreated);
+            i++;
+        }
+        return null;
+    }
+
+
 
     /**
      * Method saves the UML class diagram in a JSON format to a file.
