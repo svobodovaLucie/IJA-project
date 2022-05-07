@@ -14,6 +14,8 @@ import app.uml.UMLClass;
 import app.uml.UMLMessage;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ import java.util.List;
  * Class that represent Sequence diagram in GUI. It is connected with it Backed
  * representation via SeqDiagram class.
  */
-public class UMLSeqDiaGui extends AnchorPane {
+public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
 
     // SeqDiagram to be represented
     private SeqDiagram seqDiagram;
@@ -37,7 +39,14 @@ public class UMLSeqDiaGui extends AnchorPane {
     // current vertical lines postion
     private int yPos;
 
-
+    public void propertyChange(PropertyChangeEvent ev) {
+        for (UMLActorGui actor : this.getActorsGui()) {
+            if (actor.getUmlClass() == ev.getOldValue()) {
+                actor.setUmlClass(null);
+                actor.setRed();
+            }
+        }
+    }
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
      * When constructor is called everything is painted

@@ -86,11 +86,11 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.actorNameGui.prefWidth(80);
         if(umlClass == null){
             System.out.println("null");
-            this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15;");
+            this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15; -fx-padding: 3 5 3 5;");
         }
         else{
             System.out.println("notnull");
-            this.actorNameGui.setStyle("-fx-border-color: black; -fx-font-size:15;");
+            this.actorNameGui.setStyle("-fx-border-color: black; -fx-font-size:15; -fx-padding: 3 5 3 5;");
         }
 
 
@@ -104,6 +104,14 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         umlClass.addPropertyChangeListener(this);
     }
 
+    public void setUmlClass(UMLClass umlClass) {
+        this.umlClass = umlClass;
+    }
+
+    public void setRed() {
+        this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15; -fx-padding: 3 5 3 5; -fx-text-fill: red;");
+
+    }
     /**
      * Create new lines arraylist
      */

@@ -398,8 +398,9 @@ public class GuiMain extends Application {
      * @param rootSeq all sequecne diagrams group
      */
     private void createSeqDiagScene(int n, List<Group> rootSeq){
-
         UMLSeqDiaGui seqDiaGui = (UMLSeqDiaGui) rootSeq.get(n).getChildren().get(0);
+        BEdiagrams.getClassDiagram().addPropertyChangeListener(seqDiaGui);
+
         Stage primaryStage = new Stage();
         Scene sceneSeqTest = new Scene(rootSeq.get(n), 1000, 750, Color.WHITE);
         String newActorName;
