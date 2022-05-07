@@ -1,2 +1,2 @@
-xsvobo1x: 
-xkuzni04: 
+xsvobo1x: 100
+xkuzni04: 100

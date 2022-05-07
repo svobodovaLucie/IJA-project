@@ -31,7 +31,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException {
         // load JSON to BE
         DiagramLoaderNoGui jsonLoader = new DiagramLoaderNoGui();
-        diagrams = jsonLoader.loadDiagrams(args[0]);   // TODO fix if we don't want to load a diagram from a file
+        diagrams = jsonLoader.loadDiagrams(args[0]);
 
         // load GUI from BE
         GuiMain.main(args, diagrams);

@@ -5,13 +5,12 @@ Institution:  FIT BUT 2021/2022
 Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz 
               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
 
-Application loads a class diagram from JSON file and displays it in the GUI.
-It can be edited and saved back to JSON format. Default path where the diagram
-will be saved is `dest/savedDiagram.json`.
+Application loads a class diagram and sequence diagrams from JSON file and
+displays them in GUI. The diagrams can be edited and saved back to JSON file.
 
 ### Build
 Compiles the application and generates the documentation. Jar file will be 
-generated inside the dest/ directory.
+generated inside the `dest/` directory.
 `ant build`
 
 ### Generate documentation
