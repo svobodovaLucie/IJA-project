@@ -236,6 +236,15 @@ public class UMLMethodGui extends TextField {
 		}
 	}
 
+	public void setOverriden() {
+		String style = "-fx-background-color: transparent;\n" +
+				"-fx-border-style: none none none none;\n" +
+				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
+				"-fx-background-radius: 0;\n" +
+				"-fx-border-color: transparent; -fx-text-fill: green;\n";
+		this.setStyle(style);
+	}
+
 	private void checkArgumentsTypes() {
 		// get UMLMethod attributes and attributes from the text input
 		List<String> attributesGui = getMethodAttributesTypes();

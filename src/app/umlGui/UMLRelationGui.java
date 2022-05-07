@@ -3,6 +3,7 @@ package app.umlGui;
 import app.gui.AggregationArrow;
 import app.gui.AssociationArrow;
 import app.gui.InheritanceArrow;
+import app.uml.UMLMethod;
 import app.uml.UMLRelation;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -50,6 +51,7 @@ public class UMLRelationGui {
             this.inheritanceArrow = new InheritanceArrow();
             classFromGui.draggableObject.addNodeFrom(this.inheritanceArrow);
             classToGui.draggableObject.addNodeTo(this.inheritanceArrow);
+            checkOverridenMethods();
         } else if (Objects.equals(umlRelation.getRelationType().toLowerCase(), "aggregation")) {
             this.aggregationArrow = new AggregationArrow(Color.WHITE);
             classFromGui.draggableObject.addNodeFrom(this.aggregationArrow);
@@ -72,6 +74,18 @@ public class UMLRelationGui {
             return this.aggregationArrow;
         }
         return null;
+    }
+
+    public void checkOverridenMethods() {
+        // check all methods in classFrom and classTO
+        for (UMLMethod methodFrom : this.umlRelation.getClassFrom().getMethods())
+            for (UMLMethod methodTo : this.umlRelation.getClassTo().getMethods())
+                // if the names are equal, find the method in methodsGui
+                if (Objects.equals(methodFrom.getName(), methodTo.getName()))
+                    for (UMLMethodGui methodGui : this.owner.findClassGui(this.umlRelation.getClassFrom()).getMethods())
+                        // and change the color of the text
+                        if (methodGui.getMethod() == methodFrom)
+                            methodGui.setOverriden();
     }
 
     public String getClassFromName() {
