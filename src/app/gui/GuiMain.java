@@ -588,23 +588,25 @@ public class GuiMain extends Application {
         options2.getItems().addAll(removeActor, removeMessage);
 
 
+        /*
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
         //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootSeq.get(n)));
+
         Menu save = this.createMenu(saveButton);
         saveButton.setOnAction( e -> {
             //UMLSeqDiaGui seqDiaGui = (UMLSeqDiaGui) rootSeq.get(n).getChildren().get(0);
             DiagramSaverNoGui.saveSeqDia(getAllSegDia(rootSeq));
 
         });
-
+        */
 
         // add undo button - TODO, fix releasing the button
         Button undoButton = this.createButton("Undo", 0);
         Menu undo = this.createMenu(undoButton);
 
         // add MenuBar
-        MenuBar menuBar = new MenuBar(options, options2 ,save, undo);
+        MenuBar menuBar = new MenuBar(options, options2 ,undo);
         //menuBar.useSystemMenuBarProperty();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         rootSeq.get(n).getChildren().add(menuBar);

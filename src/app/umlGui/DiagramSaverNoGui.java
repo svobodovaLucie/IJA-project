@@ -147,11 +147,15 @@ public class DiagramSaverNoGui {
 
             // TODO check!!!
             boolean oneCreated;
-            String oneCreatedStr = "";
-            if (createdByMessage.size() < i)
+            String oneCreatedStr;
+            if (createdByMessage.size() > i){
                 oneCreated = createdByMessage.get(i);
-            else
+                oneCreatedStr = String.valueOf(oneCreated);
+
+            }
+            else{
                 oneCreatedStr = "false";
+            }
 
             /*
             {
