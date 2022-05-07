@@ -267,147 +267,45 @@
       ]
     },
     {
-      "name_seq": "Seq_one",
+      "name_seq": "Sequence Diagram",
       "Actors" : [
         {
-          "actorName" : "Lucius",
-          "class" : "Tvar",
+          "actorName" : "Main",
+          "class" : "ClassDiagram",
           "createdByMessage": "false"
         },
         {
-          "actorName" : "Kubogos",
-          "class" : "Tvar",
+          "actorName" : "ClassDiagram",
+          "class" : "UMLClass",
           "createdByMessage": "false"
         },
         {
-          "actorName" : "Studentos",
-          "class" : "Tvar",
-          "createdByMessage": "false"
+          "actorName" : "c1",
+          "class" : "UMLClass",
+          "createdByMessage": "true"
         },
         {
-          "actorName" : "NepisteOPM",
-          "class" : "Tvar",
+          "actorName" : "a1",
+          "class" : "UMLAttribute",
           "createdByMessage": "true"
         }
       ],
       "Messages" : [
         {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Kubogos",
-          "to" : "Studentos",
+          "classFrom" : "ClassDiagram",
+          "classTo" : "UMLClass",
+          "from" : "Main",
+          "to" : "ClassDiagram",
           "type" : "synch",
-          "methodName" : "kreslit"
+          "methodName" : "createClass"
         },
         {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Lucius",
-          "to" : "Kubogos",
-          "type" : "synch",
-          "methodName" : "kreslit"
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Kubogos",
-          "to" : "NepisteOPM",
-          "type" : "creat",
-          "methodName" : ""
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Kubogos",
-          "to" : "Lucius",
-          "type" : "synch",
-          "methodName" : "krenovat"
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Lucius",
-          "to" : "Kubogos",
-          "type" : "synch",
-          "methodName" : "kreslit"
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Kubogos",
-          "to" : "Lucius",
+          "classFrom" : "UMLClass",
+          "classTo" : "ClassDiagram",
+          "from" : "ClassDiagram",
+          "to" : "Main",
           "type" : "response",
           "methodName" : ""
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Lucius",
-          "to" : "Kubogos",
-          "type" : "asynch",
-          "methodName" : "kreslit"
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Studentos",
-          "to" : "Kubogos",
-          "type" : "free",
-          "methodName" : ""
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Lucius",
-          "to" : "Studentos",
-          "type" : "asynch",
-          "methodName" : "kreslit"
-        }
-      ]
-    },
-    {
-      "name_seq": "Seq_two",
-      "Actors" : [
-        {
-          "actorName" : "Ctverec",
-          "class" : "NELZE",
-          "createdByMessage": "false"
-        },
-        {
-          "actorName" : "Ctverec2",
-          "class" : "Tvar",
-          "createdByMessage": "true"
-        },
-        {
-          "actorName" : "Ctverec3",
-          "class" : "Tvar",
-          "createdByMessage": "false"
-        }
-      ],
-      "Messages" : [
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Ctverec",
-          "to" : "Ctverec2",
-          "type" : "create",
-          "methodName" : "null"
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Ctverec",
-          "to" : "Ctverec2",
-          "type" : "asynch",
-          "methodName" : "kreslit"
-        },
-        {
-          "classFrom" : "Tvar",
-          "classTo" : "Tvar",
-          "from" : "Ctverec",
-          "to" : "Ctverec2",
-          "type" : "free",
-          "methodName" : "null"
         }
       ]
     }
