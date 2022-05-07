@@ -206,5 +206,14 @@ public class UMLClass extends UMLClassifier {
     public void removeAttribute(UMLAttribute umlAttribute) {
         this.attributes.removeIf(attribute -> (umlAttribute == attribute));
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
+    }
+
 }
 

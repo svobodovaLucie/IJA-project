@@ -64,7 +64,7 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
      * @param umlClass UMLClass
      * @param n Actor order
      */
-    public UMLActorGui(UMLClass umlClass, String name, String ActorClass, int n, int y){
+    public UMLActorGui(UMLClass umlClass, String name, String ActorClass, int n, int y) {
         this.umlClass = umlClass;
         this.actorName = name;
         this.displayedName = name + ActorClass;
@@ -99,6 +99,9 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.actorNameGui.setLayoutY(y);
 
         this.freed = false;
+
+        // add observer
+        umlClass.addPropertyChangeListener(this);
     }
 
     /**
@@ -236,7 +239,7 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
      *          and the property that has changed.
      */
     public void propertyChange(PropertyChangeEvent e) {
-        this.actorNameGui.setText((String) e.getNewValue());
+        this.actorNameGui.setText(this.actorName + "(" + (String) e.getNewValue() + ")");
     }
 
     /**
