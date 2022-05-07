@@ -1,10 +1,10 @@
 
-package app.umlGui;
+package app.gui.umlGui;
 
-import app.helpers.CommandBuilder;
-import app.uml.ClassDiagram;
-import app.uml.UMLClass;
-import app.uml.UMLRelation;
+import app.backend.CommandBuilder;
+import app.backend.uml.ClassDiagram;
+import app.backend.uml.UMLClass;
+import app.backend.uml.UMLRelation;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;

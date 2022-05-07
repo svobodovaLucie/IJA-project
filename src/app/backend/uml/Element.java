@@ -7,7 +7,7 @@
  *
  * File contains implementation of the UML element.
  */
-package app.uml;
+package app.backend.uml;
 
 /**
  * Class represents an UML element present in the diagram.

@@ -8,9 +8,7 @@
  * File contains implementation od UMLClass class that represents
  * the UML class.
  */
-package app.uml;
-
-import app.umlGui.UMLClassDiagramGui;
+package app.backend.uml;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

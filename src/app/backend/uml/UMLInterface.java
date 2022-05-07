@@ -1,4 +1,4 @@
-package app.uml;
+package app.backend.uml;
 
 import java.util.ArrayList;
 import java.util.List;

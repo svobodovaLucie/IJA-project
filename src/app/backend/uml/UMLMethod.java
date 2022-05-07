@@ -8,7 +8,7 @@
  * File contains implementation od UMLMethod class that represents
  * the UML method.
  */
-package app.uml;
+package app.backend.uml;
 
 import java.util.ArrayList;
 import java.util.List;

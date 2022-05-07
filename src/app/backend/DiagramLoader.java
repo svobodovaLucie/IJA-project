@@ -10,8 +10,7 @@
  */
 package app.backend;
 
-import app.backend.Diagrams;
-import app.uml.*;
+import app.backend.uml.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

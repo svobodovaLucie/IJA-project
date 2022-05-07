@@ -7,11 +7,11 @@
  *
  * File contains implementation of sequence diagram gui
  */
-package app.umlGui;
+package app.gui.umlGui;
 
-import app.uml.SeqDiagram;
-import app.uml.UMLClass;
-import app.uml.UMLMessage;
+import app.backend.uml.SeqDiagram;
+import app.backend.uml.UMLClass;
+import app.backend.uml.UMLMessage;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import java.beans.PropertyChangeEvent;

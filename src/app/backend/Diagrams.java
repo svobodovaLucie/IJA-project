@@ -9,8 +9,8 @@
  */
 package app.backend;
 
-import app.uml.ClassDiagram;
-import app.uml.SeqDiagram;
+import app.backend.uml.ClassDiagram;
+import app.backend.uml.SeqDiagram;
 
 import java.util.ArrayList;
 import java.util.List;

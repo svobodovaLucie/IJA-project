@@ -7,9 +7,9 @@
  * TODO
  */
 
-package app.helpers;
+package app.gui.helpers;
 
-import app.umlGui.UMLClassGui;
+import app.gui.umlGui.UMLClassGui;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;

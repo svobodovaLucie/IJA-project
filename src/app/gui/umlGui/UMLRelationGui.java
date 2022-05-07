@@ -1,10 +1,10 @@
-package app.umlGui;
+package app.gui.umlGui;
 
-import app.helpers.AggregationArrow;
-import app.helpers.AssociationArrow;
-import app.helpers.InheritanceArrow;
-import app.uml.UMLMethod;
-import app.uml.UMLRelation;
+import app.gui.helpers.AggregationArrow;
+import app.gui.helpers.AssociationArrow;
+import app.gui.helpers.InheritanceArrow;
+import app.backend.uml.UMLMethod;
+import app.backend.uml.UMLRelation;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import java.util.Objects;

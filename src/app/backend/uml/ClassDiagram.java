@@ -7,7 +7,7 @@
  *
  * File contains implementation of the UML class diagram.
  */
-package app.uml;
+package app.backend.uml;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

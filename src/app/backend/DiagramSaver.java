@@ -9,11 +9,10 @@
  */
 package app.backend;
 
-import app.backend.Diagrams;
-import app.uml.*;
-import app.umlGui.UMLActorGui;
-import app.umlGui.UMLMessageGui;
-import app.umlGui.UMLSeqDiaGui;
+import app.backend.uml.*;
+import app.gui.umlGui.UMLActorGui;
+import app.gui.umlGui.UMLMessageGui;
+import app.gui.umlGui.UMLSeqDiaGui;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

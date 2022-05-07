@@ -7,8 +7,8 @@
  * File represent Actor as gui object.
  */
 
-package app.umlGui;
-import app.uml.UMLClass;
+package app.gui.umlGui;
+import app.backend.uml.UMLClass;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;

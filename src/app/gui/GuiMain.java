@@ -8,11 +8,12 @@
  * File contains implementation od GuiMain class that represents
  * the main part of the application.
  */
-package app.umlGui;
+package app.gui;
 
 import app.backend.DiagramSaver;
-import app.uml.*;
+import app.backend.uml.*;
 import app.backend.Diagrams;
+import app.gui.umlGui.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.control.*;

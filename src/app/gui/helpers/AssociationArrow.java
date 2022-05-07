@@ -1,4 +1,4 @@
-package app.helpers;
+package app.gui.helpers;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;

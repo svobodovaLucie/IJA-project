@@ -1,4 +1,4 @@
-package app.uml;
+package app.backend.uml;
 
 public class UMLRelation {
     UMLClass from;

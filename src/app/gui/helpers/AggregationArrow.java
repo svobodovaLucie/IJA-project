@@ -1,49 +1,35 @@
-package app.helpers;
+package app.gui.helpers;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 
 // https://stackoverflow.com/questions/41353685/how-to-draw-arrow-javafx-pane
-public class InheritanceArrow extends Group implements Arrow {
+public class AggregationArrow extends Group implements Arrow{
 
     private final Line line;
 
-    public InheritanceArrow(double sX, double sY, double eX, double eY) {
-        this(new Line(sX, sY, eX, eY), new Polygon(), sX, sY);
+    public AggregationArrow(Color color) {
+        this(new Line(), new Rectangle(15, 15, color));
     }
 
-    private InheritanceArrow(Line line, Polygon triangle, double sX, double sY) {
-        super(line, triangle);
+    private AggregationArrow(Line line, Rectangle rec) {
+        super(line, rec);
         this.line = line;
-        triangle.setStroke(Color.BLACK);
-        triangle.setFill(Color.WHITE);
-        triangle.setStrokeWidth(2);
 
-        sX = getStartX() + 27;
-        sY = getStartY() - 27;
-
-        triangle.getPoints().setAll(
-                (sX-20.0), (sY-10.0),
-                (sX+0.0), (sY+0.0),
-                (sX-20.0), (sY+10.0)
-        );
-
-        triangle.setRotate(90);
+        rec.setRotate(45);
+        rec.setStroke(Color.BLACK);
+        rec.setStrokeWidth(2);
 
         InvalidationListener updater = o -> {
-            double posX = getEndX();
-            double posY = getEndY();
+            double ex = getEndX();
+            double ey = getEndY();
 
-            triangle.getPoints().setAll(
-                    (posX - 20.0), (posY + 0.0),
-                    (posX + 0.0), (posY - 10.0),
-                    (posX + 0.0), (posY + 10.0)
-            );
-            triangle.setRotate(90);
+            rec.setX(ex - 7);
+            rec.setY(ey - 7);
         };
 
         // add updater to properties
@@ -59,11 +45,6 @@ public class InheritanceArrow extends Group implements Arrow {
     public final void setStartX(double value) {
         line.setStartX(value);
     }
-
-    public final double getStartX() {
-        return line.getStartX();
-    }
-
     public final DoubleProperty startXProperty() {
         return line.startXProperty();
     }
@@ -71,11 +52,6 @@ public class InheritanceArrow extends Group implements Arrow {
     public final void setStartY(double value) {
         line.setStartY(value);
     }
-
-    public final double getStartY() {
-        return line.getStartY();
-    }
-
     public final DoubleProperty startYProperty() {
         return line.startYProperty();
     }
@@ -93,7 +69,7 @@ public class InheritanceArrow extends Group implements Arrow {
     }
 
     public void setEndY(double value) {
-        line.setEndY(value);
+        line.setEndY(value + 15);
     }
 
     public final double getEndY() {

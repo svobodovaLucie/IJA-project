@@ -8,10 +8,10 @@
  * File contains implementation od UMLMethodGui class that represents
  * the UML method displayed in the GUI.
  */
-package app.umlGui;
+package app.gui.umlGui;
 
-import app.uml.UMLAttribute;
-import app.uml.UMLMethod;
+import app.backend.uml.UMLAttribute;
+import app.backend.uml.UMLMethod;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;

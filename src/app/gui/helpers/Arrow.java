@@ -1,4 +1,4 @@
-package app.helpers;
+package app.gui.helpers;
 
 public interface Arrow {
     void setStartX(double value);

@@ -7,7 +7,7 @@
  *
  * File contains implementation of the UML attribute.
  */
-package app.uml;
+package app.backend.uml;
 
 import java.util.ArrayList;
 import java.util.List;

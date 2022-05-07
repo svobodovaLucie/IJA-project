@@ -7,7 +7,7 @@
  * File contains backend representation of sequence diagram message.
  *
  */
-package app.uml;
+package app.backend.uml;
 
 
 /**

@@ -9,9 +9,9 @@
  */
 
 
-package app.umlGui;
-import app.uml.UMLMessage;
-import app.uml.UMLMethod;
+package app.gui.umlGui;
+import app.backend.uml.UMLMessage;
+import app.backend.uml.UMLMethod;
 import javafx.scene.Group;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;

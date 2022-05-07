@@ -8,14 +8,14 @@
  * File contains implementation od UMLClass class that represents
  * the UML class.
  */
-package app.umlGui;
+package app.gui.umlGui;
 
-import app.helpers.CommandBuilder;
-import app.helpers.DraggableObject;
-import app.uml.UMLAttribute;
-import app.uml.UMLClass;
-import app.uml.UMLClassifier;
-import app.uml.UMLMethod;
+import app.backend.CommandBuilder;
+import app.gui.helpers.DraggableObject;
+import app.backend.uml.UMLAttribute;
+import app.backend.uml.UMLClass;
+import app.backend.uml.UMLClassifier;
+import app.backend.uml.UMLMethod;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;

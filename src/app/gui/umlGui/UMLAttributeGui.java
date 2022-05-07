@@ -7,9 +7,9 @@
  *
  * File contains implementation of the UML attribute displayed in GUI.
  */
-package app.umlGui;
+package app.gui.umlGui;
 
-import app.uml.UMLAttribute;
+import app.backend.uml.UMLAttribute;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;

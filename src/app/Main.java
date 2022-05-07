@@ -10,7 +10,7 @@
 package app;
 
 import app.backend.Diagrams;
-import app.umlGui.GuiMain;
+import app.gui.GuiMain;
 import app.backend.DiagramLoader;
 import org.json.simple.parser.ParseException;
 import java.io.IOException;

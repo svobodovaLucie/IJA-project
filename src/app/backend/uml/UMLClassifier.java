@@ -8,7 +8,7 @@
  * File contains implementation od UMLClassifier class that represents
  * the UML classifier.
  */
-package app.uml;
+package app.backend.uml;
 
 /**
  * Class represents a diagram classifier. Classes that are inherited

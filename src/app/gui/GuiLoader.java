@@ -8,10 +8,10 @@
  * Main backend file that is used for loading the diagram file to the application
  * and doing all the things.
  */
-package app.umlGui;
+package app.gui;
 
-import app.uml.*;
-import app.umlGui.*;
+import app.backend.uml.*;
+import app.gui.umlGui.*;
 import javafx.scene.Group;
 import org.json.simple.parser.ParseException;
 
