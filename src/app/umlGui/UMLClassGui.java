@@ -128,6 +128,9 @@ public class UMLClassGui extends VBox {
         this.nameLabel.setAlignment(Pos.CENTER);
         this.getChildren().add(nameLabel);
 
+        // check if there is only one class with this name
+        checkNames();
+
         // create lists of attributes
         this.nodeAttributes = new ArrayList<>();
         this.attributeButtons = new ArrayList<>();
