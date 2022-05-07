@@ -148,20 +148,45 @@
   "interfaces" : [],
   "relationships" : [
     {
-      "from" : "Ctverec",
-      "to" : "Tvar",
-      "type" : "generalisation"
+      "from" : "UMLClassifier",
+      "to" : "Element",
+      "type" : "inheritance"
     },
     {
-      "from" : "Kruh",
-      "to" : "Tvar",
-      "type" : "generalisation"
+      "from" : "UMLAttribute",
+      "to" : "Element",
+      "type" : "inheritance"
+    },
+    {
+      "from" : "ClassDiagram",
+      "to" : "Element",
+      "type" : "inheritance"
+    },
+    {
+      "from" : "ClassDiagram",
+      "to" : "UMLClassifier",
+      "type" : "association"
+    },
+    {
+      "from" : "UMLAttribute",
+      "to" : "UMLClassifier",
+      "type" : "association"
+    },
+    {
+      "from" : "UMLClass",
+      "to" : "UMLAttribute",
+      "type" : "association"
+    },
+    {
+      "from" : "UMLClass",
+      "to" : "UMLClassifier",
+      "type" : "inheritance"
     }
   ],
-  "Sequence_diagrams" : [
+  "sequenceDiagrams" : [
     {
-      "name_seq": "Sequence Diagram",
-      "Actors" : [
+      "name": "Sequence Diagram",
+      "actors" : [
         {
           "actorName" : "Main",
           "class" : "ClassDiagram",
@@ -183,7 +208,7 @@
           "createdByMessage": "true"
         }
       ],
-      "Messages" : [
+      "messages" : [
         {
           "classFrom" : "ClassDiagram",
           "classTo" : "UMLClass",
@@ -267,8 +292,8 @@
       ]
     },
     {
-      "name_seq": "Sequence Diagram",
-      "Actors" : [
+      "name": "Sequence Diagram",
+      "actors" : [
         {
           "actorName" : "Main",
           "class" : "ClassDiagram",
@@ -290,7 +315,7 @@
           "createdByMessage": "true"
         }
       ],
-      "Messages" : [
+      "messages" : [
         {
           "classFrom" : "ClassDiagram",
           "classTo" : "UMLClass",

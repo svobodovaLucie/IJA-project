@@ -149,10 +149,10 @@
       "type" : "composition"
     }
   ],
-  "Sequence_diagrams" : [
+  "sequenceDiagrams" : [
     {
-      "name_seq": "Seq_one",
-      "Actors" : [
+      "name": "Seq_one",
+      "actors" : [
         {
           "actorName" : "Lucius",
           "class" : "Tvar",
@@ -174,7 +174,7 @@
           "createdByMessage": "true"
         }
       ],
-      "Messages" : [
+      "messages" : [
         {
           "classFrom" : "Tvar",
           "classTo" : "Tvar",
@@ -249,8 +249,8 @@
         }
       ]
     },{
-      "name_seq": "Seq_two",
-      "Actors" : [
+      "name": "Seq_two",
+      "actors" : [
         {
           "actorName" : "Ctverec",
           "class" : "NELZE",
@@ -267,7 +267,7 @@
           "createdByMessage": "false"
         }
       ],
-      "Messages" : [
+      "messages" : [
         {
           "classFrom" : "Tvar",
           "classTo" : "Tvar",
