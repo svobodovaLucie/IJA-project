@@ -186,13 +186,11 @@ public class GuiMain extends Application {
         // button for adding new interface
         MenuItem removeInterface = new MenuItem("Remove interface");
         removeInterface.setOnAction(e -> {
-            System.out.println("Removing new interface (not implemented yet)");
             removeInterfaceMessage();
         });
         // button for adding new relation
-        MenuItem removeRelation = new MenuItem("Remove relation");
+        MenuItem removeRelation = new MenuItem("Remove relationship");
         removeRelation.setOnAction(e -> {
-            System.out.println("Removing new relation (not implemented yet)");
             editRelationMessage(rootClass, false);     // false == remove relationship
         });
 
@@ -248,7 +246,6 @@ public class GuiMain extends Application {
         confirm.setLayoutY(162);
         if (add_remove) {   // add relationship
             confirm.setOnAction(event -> {
-                System.out.println("confirming add");
                 UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
                 UMLRelation newRelation = BEdiagrams.getClassDiagram().createRelation(BEdiagrams.getClassDiagram(), classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
                 UMLRelationGui newRelationGui = new UMLRelationGui(newRelation, umlClassDiagramGui);
@@ -257,15 +254,7 @@ public class GuiMain extends Application {
             });
         } else {
             confirm.setOnAction(event -> {
-                System.out.println("confirming remove");
-                //UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
-               // UMLRelation newRelation = BEdiagrams.getClassDiagram().createRelation(BEdiagrams.getClassDiagram(), classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
-                //umlClassDiagramGui.getChildren().add(new UMLRelationGui(newRelation, umlClassDiagramGui));
-                //BEdiagrams.getClassDiagram().removeClass(cb.getValue());
-                //System.out.println("removed");
-                //helpStage.close();
                 BEdiagrams.getClassDiagram().removeRelation(classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
-                System.out.println("removed");
                 helpStage.close();
             });
         }

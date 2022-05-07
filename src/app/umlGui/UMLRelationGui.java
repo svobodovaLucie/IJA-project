@@ -6,7 +6,6 @@ import app.gui.InheritanceArrow;
 import app.uml.UMLRelation;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-
 import java.util.Objects;
 
 public class UMLRelationGui {
@@ -42,11 +41,9 @@ public class UMLRelationGui {
         System.out.println("Type: " + type);
         // create arrows, add observers
         if (Objects.equals(umlRelation.getRelationType().toLowerCase(), "association")) {
-            this.associationArrow = new AssociationArrow();
-            this.associationArrow.setStartX(classFromGui.getXpos());
-            this.associationArrow.setStartY(classFromGui.getYpos());
-            this.associationArrow.setEndX(classToGui.getXpos());
-            this.associationArrow.setEndY(classToGui.getYpos());
+            this.associationArrow = new AssociationArrow(classFromGui.getXpos(), classFromGui.getYpos(),
+                    classToGui.getXpos(), classToGui.getYpos());
+
             classFromGui.draggableObject.addNodeFrom(this.associationArrow);
             classToGui.draggableObject.addNodeTo(this.associationArrow);
         } else if (Objects.equals(umlRelation.getRelationType().toLowerCase(), "inheritance")) {

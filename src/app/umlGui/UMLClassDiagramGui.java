@@ -1,7 +1,6 @@
 package app.umlGui;
 
 import app.backend.CommandBuilder;
-import app.gui.Arrow;
 import app.uml.ClassDiagram;
 import app.uml.UMLClass;
 import app.uml.UMLRelation;
@@ -37,19 +36,17 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
         if (Objects.equals(evt.getPropertyName(), "removeClass")) {
             try {
                 this.getChildren().remove(findClassGui((UMLClass) evt.getOldValue()));
-                System.out.println("ClassDiagramGui - class removed");
             } catch (Exception ignored) {
             }
         } else if (Objects.equals(evt.getPropertyName(), "removeInterface")) {
             try {
                 this.getChildren().remove(findInterfaceGui((UMLClass) evt.getOldValue()));
-                System.out.println("ClassDiagramGui - interface removed");
             } catch (Exception ignored) {
             }
         } else if (Objects.equals(evt.getPropertyName(), "removeRelationship")) {
             try {
-                findRelationGui((UMLRelation) evt.getOldValue());
-                System.out.println("ClassDiagramGui - relationship removed");
+                Node relationGui = findRelationGui((UMLRelation) evt.getOldValue());
+                this.getChildren().removeIf(rel -> (rel == relationGui));
             } catch (Exception ignored) {
             }
         }
@@ -95,11 +92,11 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
         return null;
     }
 
-    public Arrow findRelationGui(UMLRelation toFind) {
+    public Node findRelationGui(UMLRelation toFind) {
         // prochazime vsechny RelationsGui
         for (UMLRelationGui relationGui : this.relationships) {
             if (relationGui.umlRelation == toFind) {
-                this.getChildren().removeIf(node -> node == relationGui.getRelationArrow());
+                return relationGui.getRelationArrow();
             }
         }
         // not found

@@ -136,13 +136,13 @@ public class ClassDiagram extends Element {
 
     public void removeRelation(String classFrom, String classTo, String type) {
         UMLRelation toRemove = findRelation(classFrom, classTo, type);
+        // observer
+        support.firePropertyChange("removeRelationship", toRemove, null);
         try {
             this.getRelations().remove(toRemove);
         } catch (Exception ignored) {
             System.out.println("EXC removeRelation");
         }
-        // observer
-        support.firePropertyChange("removeRelation", toRemove, null);
     }
 
     private UMLRelation findRelation(String classFrom, String classTo, String type) {

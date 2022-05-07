@@ -10,8 +10,8 @@ public class AssociationArrow extends Group implements Arrow {
 
     private final Line line;
 
-    public AssociationArrow() {
-        this(new Line(), new Line(), new Line());
+    public AssociationArrow(double sX, double sY, double eX, double eY) {
+        this(new Line(sX, sY, eX, eY), new Line(), new Line());
     }
 
     private static final double arrowLength = 20;
