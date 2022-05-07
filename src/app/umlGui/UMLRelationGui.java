@@ -1,8 +1,8 @@
 package app.umlGui;
 
-import app.gui.AggregationArrow;
-import app.gui.AssociationArrow;
-import app.gui.InheritanceArrow;
+import app.helpers.AggregationArrow;
+import app.helpers.AssociationArrow;
+import app.helpers.InheritanceArrow;
 import app.uml.UMLMethod;
 import app.uml.UMLRelation;
 import javafx.scene.Node;

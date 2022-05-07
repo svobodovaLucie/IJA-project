@@ -10,8 +10,8 @@
  */
 package app.umlGui;
 
-import app.backend.CommandBuilder;
-import app.gui.DraggableObject;
+import app.helpers.CommandBuilder;
+import app.helpers.DraggableObject;
 import app.uml.UMLAttribute;
 import app.uml.UMLClass;
 import app.uml.UMLClassifier;
@@ -27,7 +27,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import javax.swing.text.Position;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;

@@ -8,10 +8,9 @@
  * Main backend file that is used for loading the diagram file to the application
  * and doing all the things.
  */
-package app.umlGui;
+package app.backend;
 
 import app.backend.Diagrams;
-import app.gui.GuiMain;
 import app.uml.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * Class that loads the diagram from its JSON representation.
  */
-public class DiagramLoaderNoGui {
+public class DiagramLoader {
 
     // TODO loads all diagrams
     /**

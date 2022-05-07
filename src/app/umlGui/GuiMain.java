@@ -8,12 +8,11 @@
  * File contains implementation od GuiMain class that represents
  * the main part of the application.
  */
-package app.gui;
+package app.umlGui;
 
+import app.backend.DiagramSaver;
 import app.uml.*;
-import app.umlGui.UMLSeqDiaGui;
 import app.backend.Diagrams;
-import app.umlGui.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.control.*;
@@ -25,7 +24,6 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -303,7 +301,7 @@ public class GuiMain extends Application {
         confirm.setLayoutY(70);
         confirm.setOnAction(event -> {
             Path path = Paths.get(textInput.getText());
-            DiagramSaverNoGui.saveJSON(BEdiagrams, seqDiagrams, path.toAbsolutePath().toString());
+            DiagramSaver.saveJSON(BEdiagrams, seqDiagrams, path.toAbsolutePath().toString());
             System.out.println("Diagram saved to: " + path.toAbsolutePath());
             helpStage.close();
         });
@@ -637,7 +635,7 @@ public class GuiMain extends Application {
         Menu save = this.createMenu(saveButton);
         saveButton.setOnAction( e -> {
             //UMLSeqDiaGui seqDiaGui = (UMLSeqDiaGui) rootSeq.get(n).getChildren().get(0);
-            DiagramSaverNoGui.saveSeqDia(getAllSegDia(rootSeq));
+            DiagramSaver.saveSeqDia(getAllSegDia(rootSeq));
 
         });
         */
@@ -898,7 +896,7 @@ public class GuiMain extends Application {
         Menu save = this.createMenu(saveButton);
         saveButton.setOnAction( e -> {
             //UMLSeqDiaGui seqDiaGui = (UMLSeqDiaGui) rootSeq.get(n).getChildren().get(0);
-            DiagramSaverNoGui.saveSeqDia(getAllSegDia(rootSeq));
+            DiagramSaver.saveSeqDia(getAllSegDia(rootSeq));
 
         });
         */

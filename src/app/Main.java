@@ -10,8 +10,8 @@
 package app;
 
 import app.backend.Diagrams;
-import app.gui.GuiMain;
-import app.umlGui.DiagramLoaderNoGui;
+import app.umlGui.GuiMain;
+import app.backend.DiagramLoader;
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ public class Main {
      */
     public static void main(String[] args) throws IOException, ParseException {
         // load JSON to BE
-        DiagramLoaderNoGui jsonLoader = new DiagramLoaderNoGui();
+        DiagramLoader jsonLoader = new DiagramLoader();
         diagrams = jsonLoader.loadDiagrams(args[0]);
 
         // load GUI from BE

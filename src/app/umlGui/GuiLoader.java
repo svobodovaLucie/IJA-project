@@ -11,6 +11,7 @@
 package app.umlGui;
 
 import app.uml.*;
+import app.umlGui.*;
 import javafx.scene.Group;
 import org.json.simple.parser.ParseException;
 

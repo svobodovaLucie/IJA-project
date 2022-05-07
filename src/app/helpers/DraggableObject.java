@@ -7,7 +7,7 @@
  * TODO
  */
 
-package app.gui;
+package app.helpers;
 
 import app.umlGui.UMLClassGui;
 import javafx.scene.Group;

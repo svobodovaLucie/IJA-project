@@ -7,11 +7,13 @@
  *
  * Main backend file that is used for saving the diagram to the JSON file.
  */
-package app.umlGui;
+package app.backend;
 
 import app.backend.Diagrams;
 import app.uml.*;
-import javafx.event.ActionEvent;
+import app.umlGui.UMLActorGui;
+import app.umlGui.UMLMessageGui;
+import app.umlGui.UMLSeqDiaGui;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * Class saves the diagram to the JSON file.
  */
-public class DiagramSaverNoGui {
+public class DiagramSaver {
 
     /**
      * Method saves the diagrams in a JSON format to a file.
@@ -51,7 +53,7 @@ public class DiagramSaverNoGui {
         try (FileWriter file = new FileWriter(filename)) { // saves the file to dest/
             file.write(diagram.toJSONString());
             file.flush();
-            System.out.println("Diagram saved in DiagramSaverNoGui.\n");
+            System.out.println("Diagram saved in DiagramSaver.\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

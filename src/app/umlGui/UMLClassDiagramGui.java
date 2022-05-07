@@ -1,7 +1,7 @@
 
 package app.umlGui;
 
-import app.backend.CommandBuilder;
+import app.helpers.CommandBuilder;
 import app.uml.ClassDiagram;
 import app.uml.UMLClass;
 import app.uml.UMLRelation;

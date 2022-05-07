@@ -43,4 +43,3 @@ public class Element {
 		this.name = newName;
 	}
 }
-
