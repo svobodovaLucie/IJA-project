@@ -66,7 +66,7 @@ public class GuiLoader {
         saveInterfacesGui(classDiagram.getInterfaces(), umlClassDiagramGui);
 
         // load relations from classDiagram
-        //saveRelationsGui(classDiagram.getRelations(), umlClassDiagramGui);
+        saveRelationsGui(classDiagram.getRelations(), umlClassDiagramGui);
 
         // add umlClassDiagramGui to root
         root.getChildren().add(umlClassDiagramGui);

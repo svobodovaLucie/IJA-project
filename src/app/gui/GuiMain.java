@@ -68,7 +68,7 @@ public class GuiMain extends Application {
         List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
-        createClassDiagScene(rootClass);
+        createClassDiagScene(rootClass, rootSeq);
 
         // set the scene for sequence diagram
         // todo button (add Message) (should choose from some types)
@@ -85,7 +85,7 @@ public class GuiMain extends Application {
      * Create scene for class diagram.
      * @param rootClass Group for all gui objects.
      */
-    private void createClassDiagScene(Group rootClass){
+    private void createClassDiagScene(Group rootClass, List<Group> rootSeq){
         // set the scene
         Stage stage = new Stage();
         Scene scene = new Scene(rootClass, stage.getMaxWidth(), stage.getMaxHeight(), Color.WHITE);
@@ -97,7 +97,7 @@ public class GuiMain extends Application {
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
-        saveButton.setOnAction(e -> DiagramSaverNoGui.saveJSON(e, BEdiagrams, "savedDiagram.json"));
+        saveButton.setOnAction(e -> DiagramSaverNoGui.saveJSON(e, BEdiagrams, getAllSegDia(rootSeq), "savedDiagram.json"));
         //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootClass));
         Menu save = this.createMenu(saveButton);
 

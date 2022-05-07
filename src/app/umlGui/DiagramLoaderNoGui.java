@@ -63,7 +63,7 @@ public class DiagramLoaderNoGui {
         diagrams.addClassDiagram(classDiagram);
 
         // load seq diagrams
-        saveSeqDiagrams((JSONArray)diagram.get("Sequence_diagrams"), diagrams);
+        saveSeqDiagrams((JSONArray)diagram.get("sequenceDiagrams"), diagrams);
 
         // return the Diagrams
         return diagrams;
@@ -83,8 +83,8 @@ public class DiagramLoaderNoGui {
             String diagName = (String) oneDiag.get("name");
 
             // Actors array (name, class)
-            List<String> actorsList = this.getSeqActors((JSONArray) oneDiag.get("Actors"));
-            List<String> messageList = this.getSeqMethods((JSONArray) oneDiag.get("Messages"));
+            List<String> actorsList = this.getSeqActors((JSONArray) oneDiag.get("actors"));
+            List<String> messageList = this.getSeqMethods((JSONArray) oneDiag.get("messages"));
 
             System.out.println("......");
             System.out.println(diagName);
@@ -95,6 +95,8 @@ public class DiagramLoaderNoGui {
             // create new diagram
             SeqDiagram seqDiagram = new SeqDiagram(diagName);
 
+            // add diagram name
+            //seqDiagram.setName(diagName);
             // add all actors and messages set consistency flags
             seqDiagram.addAllActors(actorsList, diagrams);
             seqDiagram.addAllMessages(messageList, diagrams);

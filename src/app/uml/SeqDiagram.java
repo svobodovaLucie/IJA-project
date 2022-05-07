@@ -203,5 +203,12 @@ public class SeqDiagram {
         return this.actorsCreatedByMessage;
     }
 
-
+    /**
+     * Method sets name of the sequence diagram.
+     *
+     * @param name name of the diagram
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -484,5 +484,14 @@ public class UMLSeqDiaGui extends AnchorPane {
     public SeqDiagram getSeqDiagram() {
         return seqDiagram;
     }
+
+    /**
+     * Method returns name of the sequence diagram.
+     *
+     * @return name of the sequence diagram
+     */
+    public String getName() {
+        return this.seqDiagram.getName();
+    }
 }
 

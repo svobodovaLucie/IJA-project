@@ -29,7 +29,7 @@ public class DiagramSaverNoGui {
      * @param event
      * @param diagrams
      */
-    public static void saveJSON(ActionEvent event, Diagrams diagrams, String filename) {
+    public static void saveJSON(ActionEvent event, Diagrams diagrams, List<UMLSeqDiaGui> seqDiagramsGui, String filename) {
         // create JSON array
         JSONObject diagram = new JSONObject();
 
@@ -42,6 +42,9 @@ public class DiagramSaverNoGui {
 
         JSONArray relationships = saveRelationships(diagrams.getClassDiagram());
         diagram.put("relationships", relationships);
+
+        JSONArray sequenceDiagrams = saveSeqDia(seqDiagramsGui);
+        diagram.put("sequenceDiagrams", sequenceDiagrams);
 
         //saveClassDiagram(diagrams.getClassDiagram());
         // Write JSON file
@@ -67,14 +70,22 @@ public class DiagramSaverNoGui {
      * Save sequence diagram
      * @param seq list with all the sequence diagrams
      */
-    public static void saveSeqDia(List<UMLSeqDiaGui> seq){
-
+    public static JSONArray saveSeqDia(List<UMLSeqDiaGui> seq){
+        JSONArray seqDiagrams = new JSONArray();
         // for each sequence diagram
         for (UMLSeqDiaGui seqDiaGui : seq){
-            saveActors(seqDiaGui);
+            JSONObject oneDiagram = new JSONObject();
+            // save name of the sequence diagram
+            oneDiagram.put("name", seqDiaGui.getName());
+            // save actors
+            oneDiagram.put("actors", saveActors(seqDiaGui));
+            // save messages
+            oneDiagram.put("messages", saveMessages(seqDiaGui));
 
-            saveMessages(seqDiaGui);
+            // add one diagram to the array of sequence diagrams
+            seqDiagrams.add(oneDiagram);
         }
+        return seqDiagrams;
     }
 
     /**
@@ -83,8 +94,10 @@ public class DiagramSaverNoGui {
      * @return JSON array
      */
     public static JSONArray saveMessages(UMLSeqDiaGui seqDiaGui){
-        for (UMLMessageGui mes : seqDiaGui.getMessageGui()){
+        JSONArray messages = new JSONArray();
 
+        for (UMLMessageGui mes : seqDiaGui.getMessageGui()){
+            JSONObject oneMessage = new JSONObject();
             /*
                     "classFrom" : "ClassDiagram",
                     "classTo" : "UMLClass",
@@ -94,11 +107,12 @@ public class DiagramSaverNoGui {
                     "methodName" : "createClass"
 
              */
-            String classFrom = mes.getMessage().getFromClass().getName();
-            String classTo = mes.getMessage().getToClass().getName();
-            String from = mes.getMessage().getFromActor();
-            String to = mes.getMessage().getToActor();
-            String type = mes.getMessage().getType();
+            oneMessage.put("classFrom", mes.getMessage().getFromClass().getName());
+            oneMessage.put("classTo", mes.getMessage().getToClass().getName());
+            oneMessage.put("from", mes.getMessage().getFromActor());
+            oneMessage.put("to", mes.getMessage().getToActor());
+            oneMessage.put("type", mes.getMessage().getType());
+
             // methodName
             String methodName;
             if (mes.getMessage().getMethod() == null){
@@ -109,14 +123,12 @@ public class DiagramSaverNoGui {
                 methodName = mes.getMessage().getMethod().getName();
                 System.out.println(".... " + mes.getMessage().getMethod().getName());
             }
+            oneMessage.put("methodName", methodName);
 
-            System.out.println(".. " + mes.getMessage().getFromClass().getName());
-            System.out.println(".. " + mes.getMessage().getToClass().getName());
-            System.out.println(".. " + mes.getMessage().getFromActor());
-            System.out.println(".. " + mes.getMessage().getToActor());
-            System.out.println(".. " + mes.getMessage().getType());
+            // add one message to the array of all messages
+            messages.add(oneMessage);
         }
-        return null;
+        return messages;
     }
 
 
@@ -126,16 +138,20 @@ public class DiagramSaverNoGui {
      * @return JSON array
      */
     public static JSONArray saveActors(UMLSeqDiaGui seqDiaGui){
+        JSONArray actors = new JSONArray();
 
         int i = 0;
-
         List<Boolean> createdByMessage =  seqDiaGui.getSeqDiagram().getActorsCreatedByMessage();
         for (UMLActorGui act : seqDiaGui.getActorsGui()){
+            JSONObject oneActor = new JSONObject();
+
+            // TODO check!!!
             boolean oneCreated;
+            String oneCreatedStr = "";
             if (createdByMessage.size() < i)
                 oneCreated = createdByMessage.get(i);
             else
-                oneCreated = false;
+                oneCreatedStr = "false";
 
             /*
             {
@@ -144,16 +160,20 @@ public class DiagramSaverNoGui {
               "createdByMessage": "true"
             }
              */
-            String actorName = act.getActorName();
-            String actClass = act.getClassName();
+            oneActor.put("actorName", act.getActorName());
+            oneActor.put("class", act.getClassName());
+            oneActor.put("createdByMessage", oneCreatedStr);
             // oneCreated
 
             System.out.println(".. " + act.getActorName());
             System.out.println(".. " + act.getClassName());
-            System.out.println(".. " + oneCreated);
+            //System.out.println(".. " + oneCreated);
             i++;
+
+            // add one actor to the array of actors
+            actors.add(oneActor);
         }
-        return null;
+        return actors;
     }
 
 
