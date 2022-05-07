@@ -26,6 +26,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -92,7 +95,7 @@ public class GuiMain extends Application {
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
-        saveButton.setOnAction(e -> DiagramSaverNoGui.saveJSON(e, BEdiagrams, "savedDiagram.json"));
+        saveButton.setOnAction(e -> saveMessage());
         //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootClass));
         Menu save = this.createMenu(saveButton);
 
@@ -262,6 +265,42 @@ public class GuiMain extends Application {
 
         helpStage.show();
     }
+
+    private void saveMessage(){
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n         Insert absolute file path");
+        helpGroup.getChildren().add(text);
+
+        TextField textInput = new TextField();
+        textInput.setLayoutX(42);
+        textInput.setLayoutY(42);
+        helpGroup.getChildren().add(textInput);
+
+        Stage helpStage = new Stage();
+
+        // confirming button
+        Button confirm = new Button("Save");
+        confirm.setLayoutX(70);
+        confirm.setLayoutY(70);
+        confirm.setOnAction(event -> {
+            Path path = Paths.get(textInput.getText());
+            DiagramSaverNoGui.saveJSON(BEdiagrams, path.toAbsolutePath().toString());
+            System.out.println("Diagram saved to: " + path.toAbsolutePath());
+            helpStage.close();
+        });
+        helpGroup.getChildren().add(confirm);
+
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Save diagram");
+        helpStage.show();
+    }
+
 
     private void removeClassMessage(){
         Group helpGroup = new Group();

@@ -29,7 +29,7 @@ public class DiagramSaverNoGui {
      * @param event
      * @param diagrams
      */
-    public static void saveJSON(ActionEvent event, Diagrams diagrams, String filename) {
+    public static void saveJSON(Diagrams diagrams, String filename) {
         // create JSON array
         JSONObject diagram = new JSONObject();
 
