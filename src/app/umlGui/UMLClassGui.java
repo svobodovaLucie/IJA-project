@@ -27,6 +27,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import javax.swing.text.Position;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -169,16 +170,20 @@ public class UMLClassGui extends VBox {
         }));
 
         this.setOnDragDetected(ev -> {
+        //this.setOnMouseReleased(ev -> {
+            System.out.println("REL");
             owner.executeCommand(new CommandBuilder.Command() {
-                //List <Double> oldPosition;
+                double oldPosX;
+                double oldPosY;
                 @Override
                 public void execute() {
-                    //oldPosition = draggableObject.getPosition();
+                    oldPosX = draggableObject.getPosX();
+                    oldPosY = draggableObject.getPosY();
                     support.firePropertyChange(umlClass.getName(), 0, 1);
                 }
                 @Override
                 public void undo() {
-                    //draggableObject.setOldPosition();
+                    draggableObject.setPos(oldPosX, oldPosY);
                     support.firePropertyChange(umlClass.getName(), 1, 0);
                 }
             });

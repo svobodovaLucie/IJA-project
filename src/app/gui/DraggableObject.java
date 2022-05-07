@@ -120,11 +120,6 @@ public class DraggableObject extends Group {
         this.node.setViewOrder(-1);
     }
 
-
-    public List<Double> getAfterMouseReleased() {
-        return this.afterMouseReleased;
-    }
-
     public List <Double> getPosition() {
         List<Double> position = new ArrayList<>();
         position.add(oldXscene);
@@ -132,23 +127,31 @@ public class DraggableObject extends Group {
         return position;
     }
 
-    /*
-    public List <Double> getOldPosition() {
-        List<Double> position = new ArrayList<>();
-        position.add(oldX);
-        position.add(oldY);
-        return position;
-    }
-
-     */
-
     public void setPosition(List <Double> oldPosition) {
         this.mouseX = oldPosition.get(0);
         this.mouseY = oldPosition.get(1);
     }
 
-    public void setOldPosition() {
-        this.mouseX = oldXs.remove(0);
-        this.mouseY = oldYs.remove(0);
+    public Double getPosX() {
+        return posX;
+    }
+
+    public Double getPosY() {
+        return posY;
+    }
+    public void setPos(double posX, double posY) {
+        VBox classNode = (VBox) this.node;
+        node.setLayoutX(posX);
+        node.setLayoutY(posY);
+        for (Node n : this.nodesFrom) {
+            Arrow l = (Arrow) n;
+            l.setStartX((posX) + (classNode.getWidth())/2);
+            l.setStartY((posY) + 10);
+        }
+        for (Node n : this.nodesTo) {
+            Arrow l = (Arrow) n;
+            l.setEndX((posX) + (classNode.getWidth())/2);
+            l.setEndY((posY) + classNode.getHeight() - 10);
+        }
     }
 }
