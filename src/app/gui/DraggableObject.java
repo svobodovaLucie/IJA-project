@@ -8,13 +8,11 @@
  */
 
 package app.gui;
-import app.uml.UMLClass;
+
 import app.umlGui.UMLClassGui;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,24 +36,10 @@ public class DraggableObject extends Group {
     private List<Node> nodesFrom = new ArrayList<>();
     private List<Node> nodesTo = new ArrayList<>();
 
-
-    public SimpleDoubleProperty posX;
-    public SimpleDoubleProperty posY;
+    public double posX;
+    public double posY;
 
     public UMLClassGui owner;
-
-
-
-
-    /*
-    public void setParentEntity(UMLClassGui owner) {
-        this.owner = owner;
-        this.posX = new SimpleDoubleProperty(owner.x.getValue());
-        this.posY = new SimpleDoubleProperty(owner.y.getValue());
-    }
-
-     */
-
 
     /**
      * Method makes an object draggable in the GUI.
@@ -67,6 +51,9 @@ public class DraggableObject extends Group {
         this.afterMouseReleased.add(0, 0.0);
         this.afterMouseReleased.add(1, 0.0);
 
+        posX = node.getLayoutX();
+        posY = node.getLayoutY();
+
         this.node.setOnMousePressed(mouseEvent -> {
             oldXscene = (mouseEvent.getSceneX() - mouseX);
             oldYscene = (mouseEvent.getSceneY() - mouseY);
@@ -75,9 +62,22 @@ public class DraggableObject extends Group {
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
 
-            System.out.println("mouseX = " + mouseX);
-
             node.setMouseTransparent(true);
+
+            posX = node.localToScene(node.getBoundsInLocal()).getMinX();
+            posY = node.localToScene(node.getBoundsInLocal()).getMinY();
+
+            VBox classNode = (VBox) this.node;
+            for (Node n : this.nodesFrom) {
+                Arrow l = (Arrow) n;
+                l.setStartX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
+                l.setStartY((mouseEvent.getSceneY() - mouseY) + 10);
+            }
+            for (Node n : this.nodesTo) {
+                Arrow l = (Arrow) n;
+                l.setEndX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
+                l.setEndY((mouseEvent.getSceneY() - mouseY) + classNode.getHeight() - 10);
+            }
         });
 
         this.node.setOnMouseDragged(mouseEvent -> {
@@ -103,9 +103,10 @@ public class DraggableObject extends Group {
             afterMouseReleased.set(0, mouseEvent.getSceneX() - mouseX);
             afterMouseReleased.set(1, mouseEvent.getSceneY() - mouseY);
 
-            System.out.println("after released");
-
             node.setMouseTransparent(false);
+
+            posX = mouseEvent.getSceneX();
+            posY = mouseEvent.getSceneY();
         });
     }
 
@@ -147,10 +148,6 @@ public class DraggableObject extends Group {
     }
 
     public void setOldPosition() {
-        System.out.println("setOldPosition():");
-        System.out.println("mouseX = " + mouseX);
-        //this.node.setLayoutX(oldXs.get(0));
-        //this.node.setLayoutY(oldYs.get(0));
         this.mouseX = oldXs.remove(0);
         this.mouseY = oldYs.remove(0);
     }

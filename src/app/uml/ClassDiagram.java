@@ -154,9 +154,28 @@ public class ClassDiagram extends Element {
         return result;
     }
 
-    /**
-     * @return List of all classes
-     */
+    public void removeRelation(String classFrom, String classTo, String type) {
+        UMLRelation toRemove = findRelation(classFrom, classTo, type);
+        // observer
+        support.firePropertyChange("removeRelationship", toRemove, null);
+        try {
+            this.getRelations().remove(toRemove);
+        } catch (Exception ignored) {
+            System.out.println("EXC removeRelation");
+        }
+    }
+
+    private UMLRelation findRelation(String classFrom, String classTo, String type) {
+        for (UMLRelation rel : this.getRelations()) {
+            if (Objects.equals(rel.getClassFrom().getName(), classFrom) &&
+                    Objects.equals(rel.getClassTo().getName(), classTo) &&
+                    Objects.equals(rel.getRelationType(), type)) {
+                return rel;
+            }
+        }
+        return null;
+    }
+
     public List<UMLClass> getInterfaces() {
         return this.interfaces;
     }
@@ -202,6 +221,12 @@ public class ClassDiagram extends Element {
         this.relations.add(umlRelation);
     }
 
+    public UMLRelation createRelation(ClassDiagram classDiagram, String classFrom, String classTo, String type) {
+        UMLRelation umlRelation = new UMLRelation(classDiagram, classFrom, classTo, type);
+        this.relations.add(umlRelation);
+        return umlRelation;
+    }
+
     /**
      * @return List of all the relations
      */
@@ -215,5 +240,11 @@ public class ClassDiagram extends Element {
      */
     public void addInterface(UMLClass umlInterface) {
         this.interfaces.add(umlInterface);
+    }
+
+    public List<UMLClass> getClassesInterfaces() {
+        List<UMLClass> result = new ArrayList<>(this.classes);
+        result.addAll(this.interfaces);
+        return result;
     }
 }

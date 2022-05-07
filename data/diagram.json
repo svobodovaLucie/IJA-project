@@ -1,311 +1,296 @@
 {
   "classes" : [
     {
-      "name" : "Element",
+      "name" : "Tvar",
       "attributes" : [
         {
-          "name" : "name",
-          "type" : "String",
+          "name" : "pocatek",
+          "type" : "Point",
+          "access" : "public"
+        },
+        {
+          "name" : "sirka",
+          "type" : "int",
+          "access" : "public"
+        },
+        {
+          "name" : "vyska",
+          "type" : "int",
           "access" : "public"
         }
       ],
       "methods" : [
         {
-          "name" : "Element",
+          "name" : "kreslit",
           "type" : "void",
-          "access" : "public",
-          "attributes" : [
-            {
-              "type" : "String"
-            }
-          ]
-        },
-        {
-          "name" : "getName",
-          "type" : "String",
           "access" : "public",
           "attributes" : []
         },
         {
-          "name" : "rename",
+          "name" : "obsah",
           "type" : "void",
+          "access" : "public",
+          "attributes" : []
+        },
+        {
+          "name" : "zmenSirku",
+          "type" : "int",
           "access" : "public",
           "attributes" : [
             {
-              "type" : "String"
+              "type" : "int"
             }
           ]
         }
       ]
     },
     {
-      "name" : "UMLClassifier",
+      "name" : "Ctverec",
       "attributes" : [],
       "methods" : [
         {
-          "name" : "UMLClassifier",
+          "name" : "kreslit",
           "type" : "void",
-          "attributes" : [
-            {
-              "type" : "String"
-            }
-          ],
+          "attributes" : [],
           "access" : "public"
         },
         {
-          "name": "isUserDefined",
-          "type": "boolean",
+          "name": "obsah",
+          "type": "void",
           "attributes": [],
           "access": "public"
         }
       ]
     },
     {
-      "name" : "ClassDiagram",
+      "name" : "Kruh",
       "attributes" : [
         {
-          "name" : "classes",
-          "type" : "List<UMLCLassifier>",
+          "name" : "polomer",
+          "type" : "int",
           "access" : "public"
         }
       ],
       "methods" : [
         {
-          "name" : "createClass",
-          "type" : "UMLClass",
-          "attributes" : [
-            {
-              "type" : "String"
-            }
-          ],
+          "name" : "kreslit",
+          "type" : "void",
+          "attributes" : [],
           "access" : "public"
         },
         {
-          "name": "ClassifierForName",
-          "type": "UMLClassifier",
-          "attributes": [
-            {
-              "type" : "String"
-            }
-          ],
-          "access": "public"
-        }
-
-      ]
-    },
-    {
-      "name" : "UMLAttribute",
-      "attributes" : [
-        {
-          "name" : "type",
-          "type" : "UMLClassifier",
-          "access" : "public"
-        }
-      ],
-      "methods" : [
-        {
-          "name" : "getType",
-          "type" : "UMLClassifier",
-          "attributes" : [
-          ],
-          "access" : "public"
-        }
-      ]
-    },
-    {
-      "name" : "UMLClass",
-      "attributes" : [
-        {
-          "name" : "attributes",
-          "type" : "List<UMLAttributes>",
-          "access" : "public"
-        }
-      ],
-      "methods" : [
-        {
-          "name" : "addAttribute",
-          "type" : "boolean",
-          "attributes" : [
-            {
-              "type" : "UMLAttribute"
-            }
-          ],
-          "access" : "public"
-        },
-        {
-          "name": "getAttrPosition",
-          "type": "int",
-          "attributes": [
-            {
-              "type" : "UMLAttribute"
-            }
-          ],
+          "name": "obsah",
+          "type": "void",
+          "attributes": [],
           "access": "public"
         }
       ]
     }
   ],
-  "interfaces" : [],
+  "interfaces" : [
+    {
+    "name" : "My Interface",
+    "attributes" : [
+      {
+        "name" : "neco",
+        "type" : "int",
+        "access" : "package"
+      },
+      {
+        "name" : "dalsi",
+        "type" : "void",
+        "access" : "public"
+      }
+    ],
+    "methods" : [
+      {
+        "name" : "exec",
+        "type" : "void",
+        "access" : "public",
+        "attributes" : []
+      },
+      {
+        "name" : "undo",
+        "type" : "void",
+        "access" : "protected",
+        "attributes" : [
+          {
+            "type" : "int",
+            "type" : "void"
+          }
+        ]
+      }
+    ]
+  }],
   "relationships" : [
     {
       "from" : "Ctverec",
       "to" : "Tvar",
-      "type" : "generalisation"
+      "type" : "inheritance"
     },
     {
       "from" : "Kruh",
       "to" : "Tvar",
-      "type" : "generalisation"
+      "type" : "inheritance"
+    },
+    {
+      "from" : "My Interface",
+      "to" : "Tvar",
+      "type" : "association"
+    },
+    {
+      "from" : "My Interface",
+      "to" : "Ctverec",
+      "type" : "aggregation"
+    },
+    {
+      "from" : "Ctverec",
+      "to" : "Kruh",
+      "type" : "composition"
     }
   ],
   "Sequence_diagrams" : [
     {
-      "name_seq": "Sequence Diagram",
+      "name_seq": "Seq_one",
       "Actors" : [
         {
-          "actorName" : "Main",
-          "class" : "ClassDiagram",
+          "actorName" : "Lucius",
+          "class" : "Tvar",
           "createdByMessage": "false"
         },
         {
-          "actorName" : "ClassDiagram",
-          "class" : "UMLClass",
+          "actorName" : "Kubogos",
+          "class" : "Tvar",
           "createdByMessage": "false"
         },
         {
-          "actorName" : "c1",
-          "class" : "UMLClass",
-          "createdByMessage": "true"
+          "actorName" : "Studentos",
+          "class" : "Tvar",
+          "createdByMessage": "false"
         },
         {
-          "actorName" : "a1",
-          "class" : "UMLAttribute",
+          "actorName" : "NepisteOPM",
+          "class" : "Tvar",
           "createdByMessage": "true"
         }
       ],
       "Messages" : [
         {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLClass",
-          "from" : "Main",
-          "to" : "ClassDiagram",
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "Studentos",
           "type" : "synch",
-          "methodName" : "createClass"
+          "methodName" : "kreslit"
         },
         {
-          "classFrom" : "UMLClass",
-          "classTo" : "ClassDiagram",
-          "from" : "ClassDiagram",
-          "to" : "Main",
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Kubogos",
+          "type" : "synch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "NepisteOPM",
+          "type" : "creat",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "Lucius",
+          "type" : "synch",
+          "methodName" : "krenovat"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Kubogos",
+          "type" : "synch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Kubogos",
+          "to" : "Lucius",
           "type" : "response",
           "methodName" : ""
         },
         {
-          "classFrom" : "UMLClass",
-          "classTo" : "UMLClass",
-          "from" : "ClassDiagram",
-          "to" : "c1",
-          "type" : "create",
-          "methodName" : ""
-        },
-        {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLClass",
-          "from" : "Main",
-          "to" : "ClassDiagram",
-          "type" : "synch",
-          "methodName": "ClassifierForName"
-        },
-        {
-          "classFrom" : "UMLClass",
-          "classTo" : "ClassDiagram",
-          "from" : "ClassDiagram",
-          "to" : "Main",
-          "type" : "response",
-          "methodName" : ""
-        },
-        {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLAttribute",
-          "from" : "Main",
-          "to" : "a1",
-          "type" : "create",
-          "methodName" : ""
-        },
-        {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLClass",
-          "from" : "Main",
-          "to" : "c1",
-          "type" : "synch",
-          "methodName" : "addAttribute"
-        },
-        {
-          "classFrom" : "UMLClass",
-          "classTo" : "ClassDiagram",
-          "from" : "c1",
-          "to" : "Main",
-          "type" : "response",
-          "methodName" : ""
-        },
-        {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLAttribute",
-          "from" : "Main",
-          "to" : "a1",
-          "type" : "synch",
-          "methodName" : "isAbstract"
-        },
-        {
-          "classFrom" : "UMLAttribute",
-          "classTo" : "ClassDiagram",
-          "from" : "a1",
-          "to" : "Main",
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Kubogos",
           "type" : "asynch",
-          "methodName" : "false"
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Studentos",
+          "to" : "Kubogos",
+          "type" : "free",
+          "methodName" : ""
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Lucius",
+          "to" : "Studentos",
+          "type" : "asynch",
+          "methodName" : "kreslit"
         }
       ]
-    },
-    {
-      "name_seq": "Sequence Diagram",
+    },{
+      "name_seq": "Seq_two",
       "Actors" : [
         {
-          "actorName" : "Main",
-          "class" : "ClassDiagram",
+          "actorName" : "Ctverec",
+          "class" : "NELZE",
           "createdByMessage": "false"
         },
         {
-          "actorName" : "ClassDiagram",
-          "class" : "UMLClass",
+          "actorName" : "Ctverec2",
+          "class" : "Tvar",
+          "createdByMessage": "true"
+        },
+        {
+          "actorName" : "Ctverec3",
+          "class" : "Tvar",
           "createdByMessage": "false"
-        },
-        {
-          "actorName" : "c1",
-          "class" : "UMLClass",
-          "createdByMessage": "true"
-        },
-        {
-          "actorName" : "a1",
-          "class" : "UMLAttribute",
-          "createdByMessage": "true"
         }
       ],
       "Messages" : [
         {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLClass",
-          "from" : "Main",
-          "to" : "ClassDiagram",
-          "type" : "synch",
-          "methodName" : "createClass"
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Ctverec",
+          "to" : "Ctverec2",
+          "type" : "create",
+          "methodName" : "null"
         },
         {
-          "classFrom" : "UMLClass",
-          "classTo" : "ClassDiagram",
-          "from" : "ClassDiagram",
-          "to" : "Main",
-          "type" : "response",
-          "methodName" : ""
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Ctverec",
+          "to" : "Ctverec2",
+          "type" : "asynch",
+          "methodName" : "kreslit"
+        },
+        {
+          "classFrom" : "Tvar",
+          "classTo" : "Tvar",
+          "from" : "Ctverec",
+          "to" : "Ctverec2",
+          "type" : "free",
+          "methodName" : "null"
         }
       ]
     }

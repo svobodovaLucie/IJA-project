@@ -72,48 +72,6 @@ public class UMLClassGui extends VBox {
 
     private PropertyChangeSupport support;
 
-
-    /*
-    public void setDraggable() {
-
-        System.out.println("Setting draggable");
-
-        this.draggableObject.setOnMousePressed(e -> {
-            System.out.println("Mouse pressed");
-            this.draggableObject.setCursor(Cursor.MOVE);
-            posX = e.getX();
-            posY = e.getY();
-        });
-
-     */
-        /*
-        this.draggableObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-            double distanceX = e.getX()
-        });
-         */
-        /*
-        this.draggableObject.setOnMouseDragged(e -> {
-            System.out.println("Mouse dragged");
-            double distX = e.getX() - posX;
-            double distY = e.getY() - posY;
-
-            x.setValue(this.x.getValue() + distX);
-            y.setValue(this.y.getValue() + distY);
-
-            this.draggableObject.relocate(x.doubleValue(), y.doubleValue());
-        });
-
-         */
-
-        //this.draggableObject.setOnMouseEntered(e -> this.draggableObject.setCursor(Customiz));
-        /*
-        this.draggableObject.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            this.draggableObject.setCursor(Cursor.MOVE);
-            posX = event.getX();
-        });
-         */
-    //}
-
     /**
      * UMLClass constructor. The UML class is not abstract.
      *
@@ -129,8 +87,6 @@ public class UMLClassGui extends VBox {
 
         // make the UMLClassGui object dragable
         draggableObject.makeDraggable(this);
-        //setDraggable();
-        //this.draggableObject.setParentEntity(this);
 
         // observable
         support = new PropertyChangeSupport(this);
@@ -171,6 +127,9 @@ public class UMLClassGui extends VBox {
         }
         this.nameLabel.setAlignment(Pos.CENTER);
         this.getChildren().add(nameLabel);
+
+        // check if there is only one class with this name
+        checkNames();
 
         // create lists of attributes
         this.nodeAttributes = new ArrayList<>();
@@ -264,11 +223,11 @@ public class UMLClassGui extends VBox {
     }
 
     public double getXpos() {
-        return this.posX;
+        return this.draggableObject.posX;
     }
 
     public double getYpos() {
-        return this.posY;
+        return this.draggableObject.posY;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {

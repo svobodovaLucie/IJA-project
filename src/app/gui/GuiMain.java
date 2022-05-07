@@ -11,6 +11,7 @@
 package app.gui;
 
 import app.uml.UMLMessage;
+import app.uml.UMLRelation;
 import app.umlGui.UMLSeqDiaGui;
 import app.backend.Diagrams;
 import app.uml.UMLClass;
@@ -67,7 +68,7 @@ public class GuiMain extends Application {
         List<Group> rootSeq = guiLoader.loadSeqDiagramGui(BEdiagrams.getSeqDiagrams());
 
         // create class diagram scene
-        //createClassDiagScene(rootClass);
+        createClassDiagScene(rootClass);
 
         // set the scene for sequence diagram
         // todo button (add Message) (should choose from some types)
@@ -92,7 +93,7 @@ public class GuiMain extends Application {
         // options for adding new elements
         Menu addOptions = addMenuAdd(rootClass);
         // options for removing elements
-        Menu removeOptions = addMenuRemove();
+        Menu removeOptions = addMenuRemove(rootClass);
 
         // add save button (fix releasing the button)
         Button saveButton = this.createButton("Save JSON", 0);
@@ -158,6 +159,7 @@ public class GuiMain extends Application {
         MenuItem addRelation = new MenuItem("Add relation");
         addRelation.setOnAction(e -> {
             System.out.println("Adding new relation (not implemented yet)");
+            editRelationMessage(rootClass, true);      // true == add relationship
         });
 
         addOptions.getItems().addAll(addClass, addInterface, addRelation);
@@ -169,6 +171,7 @@ public class GuiMain extends Application {
      * Display warning using alert box
      */
     private void customAlertBox() {
+        // TODO alert box
         Group helpGroup = new Group();
         Text text = new Text();
         text.setFont(new Font(15));
@@ -185,11 +188,7 @@ public class GuiMain extends Application {
         helpStage.show();
     }
 
-    /**
-     * Create Menu
-     * @return Menu
-     */
-    private Menu addMenuRemove() {
+    private Menu addMenuRemove(Group rootClass) {
         Menu removeOptions = new Menu("Remove...");
         removeOptions.setStyle("-fx-font-size: 15;");
         // button for adding new class
@@ -200,13 +199,12 @@ public class GuiMain extends Application {
         // button for adding new interface
         MenuItem removeInterface = new MenuItem("Remove interface");
         removeInterface.setOnAction(e -> {
-            System.out.println("Removing new interface (not implemented yet)");
             removeInterfaceMessage();
         });
         // button for adding new relation
-        MenuItem removeRelation = new MenuItem("Remove relation");
+        MenuItem removeRelation = new MenuItem("Remove relationship");
         removeRelation.setOnAction(e -> {
-            System.out.println("Removing new relation (not implemented yet)");
+            editRelationMessage(rootClass, false);     // false == remove relationship
         });
 
         removeOptions.getItems().addAll(removeClass, removeInterface, removeRelation);
@@ -214,9 +212,70 @@ public class GuiMain extends Application {
         return removeOptions;
     }
 
-    /**
-     * todo
-     */
+    public void editRelationMessage(Group rootClass, boolean add_remove) {   // add - true, remove - false
+        Group helpGroup = new Group();
+        Text text = new Text();
+        text.setFont(new Font(15));
+        helpGroup.setStyle("-fx-label-padding: 100 100 100 100");
+        text.setWrappingWidth(350);
+        text.setTextAlignment(TextAlignment.JUSTIFY);
+        text.setText("\n\n         Select relationship to be edited.");
+        helpGroup.getChildren().add(text);
+
+        // classFrom
+        ComboBox<String> classFromCB = new ComboBox<>();
+        // classTo
+        ComboBox<String> classToCB = new ComboBox<>();
+        // get names of all classes
+        for (UMLClass cls : BEdiagrams.getClassDiagram().getClassesInterfaces()) {
+            classFromCB.getItems().add(cls.getName());
+            classToCB.getItems().add(cls.getName());
+        }
+        classFromCB.setPromptText("Select From");
+        classFromCB.setLayoutX(42);
+        classFromCB.setLayoutY(42);
+
+        // relationship type
+        ComboBox<String> typeCB = new ComboBox<>();
+        // get names of all types (better arrows)
+        typeCB.getItems().addAll("association", "inheritance", "aggregation", "composition");
+        typeCB.setPromptText("Select Type");
+        typeCB.setLayoutX(42);
+        typeCB.setLayoutY(82);
+
+        // classTo continue
+        classToCB.setPromptText("Select To");
+        classToCB.setLayoutX(42);
+        classToCB.setLayoutY(122);
+
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        Stage helpStage = new Stage();
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Edit relationship");
+
+        // confirming button
+        Button confirm = new Button("Confirm");
+        confirm.setLayoutX(100);
+        confirm.setLayoutY(162);
+        if (add_remove) {   // add relationship
+            confirm.setOnAction(event -> {
+                UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
+                UMLRelation newRelation = BEdiagrams.getClassDiagram().createRelation(BEdiagrams.getClassDiagram(), classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
+                UMLRelationGui newRelationGui = new UMLRelationGui(newRelation, umlClassDiagramGui);
+                umlClassDiagramGui.getChildren().add(newRelationGui.getRelationArrow());
+                helpStage.close();
+            });
+        } else {
+            confirm.setOnAction(event -> {
+                BEdiagrams.getClassDiagram().removeRelation(classFromCB.getValue(), classToCB.getValue(), typeCB.getValue());
+                helpStage.close();
+            });
+        }
+        helpGroup.getChildren().addAll(classFromCB, typeCB, classToCB, confirm);
+
+        helpStage.show();
+    }
+
     private void removeClassMessage(){
         Group helpGroup = new Group();
         Text text = new Text();
@@ -237,10 +296,7 @@ public class GuiMain extends Application {
         cb.setLayoutY(42);
         helpGroup.getChildren().add(cb);
 
-        Scene helpScene = new Scene(helpGroup, 400, 400);
         Stage helpStage = new Stage();
-        helpStage.setScene(helpScene);
-        helpStage.setTitle("Remove class");
 
         // confirming button
         Button confirm = new Button("Confirm");
@@ -254,12 +310,12 @@ public class GuiMain extends Application {
         });
         helpGroup.getChildren().add(confirm);
 
+        Scene helpScene = new Scene(helpGroup, 400, 400);
+        helpStage.setScene(helpScene);
+        helpStage.setTitle("Edit relationship");
         helpStage.show();
     }
 
-    /**
-     * todo
-     */
     private void removeInterfaceMessage(){
         Group helpGroup = new Group();
         Text text = new Text();

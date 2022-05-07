@@ -4,16 +4,22 @@ package app.umlGui;
 import app.backend.CommandBuilder;
 import app.uml.ClassDiagram;
 import app.uml.UMLClass;
+import app.uml.UMLRelation;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class UMLClassDiagramGui extends Group implements PropertyChangeListener {
 
     private ClassDiagram classDiagram;
+
+    private List<UMLRelationGui> relationships = new ArrayList<>();
 
     private final CommandBuilder.Invoker invoker = new CommandBuilder.Invoker();
 
@@ -22,17 +28,45 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
         this.classDiagram = classDiagram;
         this.classDiagram.addPropertyChangeListener(this);
     }
+
+    public void addRelation(UMLRelationGui umlRelationGui) {
+        this.relationships.add(umlRelationGui);
+    }
+
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() == "removeClass") {
+        if (Objects.equals(evt.getPropertyName(), "removeClass")) {
             try {
+                // remove relationships
+                for (UMLRelationGui rel : this.relationships) {
+                    if (rel.umlRelation.getClassFrom() == evt.getOldValue() ||
+                        rel.umlRelation.getClassTo() == evt.getOldValue()) {
+                        // remove relation
+                        this.classDiagram.removeRelation(rel.umlRelation.getClassFrom().getName(), rel.umlRelation.getClassTo().getName(), rel.umlRelation.getRelationType());
+                    }
+                }
+                // remove class itself
                 this.getChildren().remove(findClassGui((UMLClass) evt.getOldValue()));
-                System.out.println("ClassDiagramGui - class removed");
             } catch (Exception ignored) {
             }
-        } else {
+        } else if (Objects.equals(evt.getPropertyName(), "removeInterface")) {
             try {
+                // TODO remove relationships
+                // remove relationships
+                for (UMLRelationGui rel : this.relationships) {
+                    if (rel.umlRelation.getClassFrom() == evt.getOldValue() ||
+                            rel.umlRelation.getClassTo() == evt.getOldValue()) {
+                        // remove relation
+                        this.classDiagram.removeRelation(rel.umlRelation.getClassFrom().getName(), rel.umlRelation.getClassTo().getName(), rel.umlRelation.getRelationType());
+                    }
+                }
+                // remove the interface
                 this.getChildren().remove(findInterfaceGui((UMLClass) evt.getOldValue()));
-                System.out.println("ClassDiagramGui - interface removed");
+            } catch (Exception ignored) {
+            }
+        } else if (Objects.equals(evt.getPropertyName(), "removeRelationship")) {
+            try {
+                Node relationGui = findRelationGui((UMLRelation) evt.getOldValue());
+                this.getChildren().removeIf(rel -> (rel == relationGui));
             } catch (Exception ignored) {
             }
         }
@@ -72,6 +106,17 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
                 }
             } catch (Exception e) {
                 continue;
+            }
+        }
+        // not found
+        return null;
+    }
+
+    public Node findRelationGui(UMLRelation toFind) {
+        // prochazime vsechny RelationsGui
+        for (UMLRelationGui relationGui : this.relationships) {
+            if (relationGui.umlRelation == toFind) {
+                return relationGui.getRelationArrow();
             }
         }
         // not found
