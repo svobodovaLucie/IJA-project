@@ -3,65 +3,47 @@ package app.gui;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 
 // https://stackoverflow.com/questions/41353685/how-to-draw-arrow-javafx-pane
 public class InheritanceArrow extends Group implements Arrow {
 
     private final Line line;
 
-    public InheritanceArrow() {
-        this(new Line(), new Line(), new Line(), new Line());
+    public InheritanceArrow(double sX, double sY, double eX, double eY) {
+        this(new Line(sX, sY, eX, eY), new Polygon(), sX, sY);
     }
 
-    private static final double arrowLength = 20;
-    private static final double arrowWidth = 7;
-
-    private InheritanceArrow(Line line, Line arrow1, Line arrow2, Line arrow3) {
-        super(line, arrow1, arrow2, arrow3);
+    private InheritanceArrow(Line line, Polygon triangle, double sX, double sY) {
+        super(line, triangle);
         this.line = line;
+        triangle.setStroke(Color.BLACK);
+        triangle.setFill(Color.WHITE);
+        triangle.setStrokeWidth(2);
+
+        sX = getStartX() + 27;
+        sY = getStartY() - 27;
+
+        triangle.getPoints().setAll(
+                (sX-20.0), (sY-10.0),
+                (sX+0.0), (sY+0.0),
+                (sX-20.0), (sY+10.0)
+        );
+
+        triangle.setRotate(90);
+
         InvalidationListener updater = o -> {
-            double ex = getEndX();
-            double ey = getEndY();
-            double sx = getStartX();
-            double sy = getStartY();
+            double posX = getEndX();
+            double posY = getEndY();
 
-            arrow1.setEndX(ex);
-            arrow1.setEndY(ey);
-            arrow2.setEndX(ex);
-            arrow2.setEndY(ey);
-
-            if (ex == sx && ey == sy) {
-                // arrow parts of length 0
-                arrow1.setStartX(ex);
-                arrow1.setStartY(ey);
-                arrow2.setStartX(ex);
-                arrow2.setStartY(ey);
-                arrow3.setStartX(arrow1.getStartX());
-                arrow3.setStartY(arrow1.getStartY());
-                arrow3.setEndX(arrow2.getStartX());
-                arrow3.setEndY(arrow2.getStartY());
-            } else {
-                double factor = arrowLength / Math.hypot(sx-ex, sy-ey);
-                double factorO = arrowWidth / Math.hypot(sx-ex, sy-ey);
-
-                // part in direction of main line
-                double dx = (sx - ex) * factor;
-                double dy = (sy - ey) * factor;
-
-                // part ortogonal to main line
-                double ox = (sx - ex) * factorO;
-                double oy = (sy - ey) * factorO;
-
-                arrow1.setStartX(ex + dx - oy);
-                arrow1.setStartY(ey + dy + ox);
-                arrow2.setStartX(ex + dx + oy);
-                arrow2.setStartY(ey + dy - ox);
-                arrow3.setStartX(arrow1.getStartX());
-                arrow3.setStartY(arrow1.getStartY());
-                arrow3.setEndX(arrow2.getStartX());
-                arrow3.setEndY(arrow2.getStartY());
-            }
+            triangle.getPoints().setAll(
+                    (posX - 20.0), (posY + 0.0),
+                    (posX + 0.0), (posY - 10.0),
+                    (posX + 0.0), (posY + 10.0)
+            );
+            triangle.setRotate(90);
         };
 
         // add updater to properties

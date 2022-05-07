@@ -48,7 +48,8 @@ public class UMLRelationGui {
             classFromGui.draggableObject.addNodeFrom(this.associationArrow);
             classToGui.draggableObject.addNodeTo(this.associationArrow);
         } else if (Objects.equals(umlRelation.getRelationType().toLowerCase(), "inheritance")) {
-            this.inheritanceArrow = new InheritanceArrow();
+            this.inheritanceArrow = new InheritanceArrow(classFromGui.getXpos(), classFromGui.getYpos(),
+                    classToGui.getXpos(), classToGui.getYpos());
             classFromGui.draggableObject.addNodeFrom(this.inheritanceArrow);
             classToGui.draggableObject.addNodeTo(this.inheritanceArrow);
             checkOverridenMethods();
