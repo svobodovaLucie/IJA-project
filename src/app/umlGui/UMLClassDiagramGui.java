@@ -35,11 +35,30 @@ public class UMLClassDiagramGui extends Group implements PropertyChangeListener 
     public void propertyChange(PropertyChangeEvent evt) {
         if (Objects.equals(evt.getPropertyName(), "removeClass")) {
             try {
+                // remove relationships
+                for (UMLRelationGui rel : this.relationships) {
+                    if (rel.umlRelation.getClassFrom() == evt.getOldValue() ||
+                        rel.umlRelation.getClassTo() == evt.getOldValue()) {
+                        // remove relation
+                        this.classDiagram.removeRelation(rel.umlRelation.getClassFrom().getName(), rel.umlRelation.getClassTo().getName(), rel.umlRelation.getRelationType());
+                    }
+                }
+                // remove class itself
                 this.getChildren().remove(findClassGui((UMLClass) evt.getOldValue()));
             } catch (Exception ignored) {
             }
         } else if (Objects.equals(evt.getPropertyName(), "removeInterface")) {
             try {
+                // TODO remove relationships
+                // remove relationships
+                for (UMLRelationGui rel : this.relationships) {
+                    if (rel.umlRelation.getClassFrom() == evt.getOldValue() ||
+                            rel.umlRelation.getClassTo() == evt.getOldValue()) {
+                        // remove relation
+                        this.classDiagram.removeRelation(rel.umlRelation.getClassFrom().getName(), rel.umlRelation.getClassTo().getName(), rel.umlRelation.getRelationType());
+                    }
+                }
+                // remove the interface
                 this.getChildren().remove(findInterfaceGui((UMLClass) evt.getOldValue()));
             } catch (Exception ignored) {
             }
