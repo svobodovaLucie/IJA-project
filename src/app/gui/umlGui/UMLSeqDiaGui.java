@@ -1,11 +1,11 @@
 /*
- * File:         UMLClassGui.java
+ * File:         UMLSeqDiaGui.java
  * Institution:  FIT BUT 2021/2022
  * Course:       IJA - Java Programming Language
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation of sequence diagram gui
+ * File contains implementation of the sequence diagram represented in GUI.
  */
 package app.gui.umlGui;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that represent Sequence diagram in GUI. It is connected with it Backed
+ * Class that represent Sequence diagram in GUI. It is connected with it Backend
  * representation via SeqDiagram class.
  */
 public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
@@ -32,21 +32,13 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     private int messageCounter;
     private int actorsCounter;
 
-    // Gui data
+    // GUI data
     private ArrayList<UMLActorGui> actorsGui;
     private ArrayList<UMLMessageGui> messageGui;
 
     // current vertical lines postion
     private int yPos;
 
-    public void propertyChange(PropertyChangeEvent ev) {
-        for (UMLActorGui actor : this.getActorsGui()) {
-            if (actor.getUmlClass() == ev.getOldValue()) {
-                actor.setUmlClass(null);
-                actor.setRed();
-            }
-        }
-    }
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
      * When constructor is called everything is painted
@@ -67,26 +59,23 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * Load all the messages from backend class
+     * Load all the messages from backend class.
+     *
      * @param seqDiagram BE sequence diagram implementation that hold all the data
      */
     private void loadMessagesFromBE(SeqDiagram seqDiagram){
-        System.out.println("GET ALL MESSAGES");
-
         List<UMLMessage> messages = seqDiagram.getMessages();
-
         for (UMLMessage mes : messages){
             paintMessage(mes);
         }
     }
 
     /**
-     * Load all the actors from backend class
+     * Load all the actors from backend class.
      *
      * @param seqDiagram BE sequence diagram implementation that hold all the data
      */
     private void loadActorsFromBE(SeqDiagram seqDiagram) {
-
         // three information about actors they are interconnected by index.
         List<UMLClass> actors          = seqDiagram.getActors();
         List<String> actorsName        = seqDiagram.getActorsName();
@@ -96,13 +85,10 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
         String oneActorName      = null;
         Boolean oneCreated;
 
-        System.out.println("LOADING ACTORS");
         for (int i = 0; i < actors.size(); i++) {
-
             oneActorName = actorsName.get(i);
             oneActorClass = actors.get(i);
             oneCreated = createdByMessage.get(i);
-
             // if Actor is created by message we will paint him later
             if (oneCreated == Boolean.FALSE){
                 this.paintActor(oneActorName, oneActorClass);
@@ -111,20 +97,17 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * Paint new actor
-     * @param actorName
-     * @param actorClass
+     * Paint new actor.
+     *
+     * @param actorName name of the actor
+     * @param actorClass actor's class
      */
     public void paintNewActor(String actorName, UMLClass actorClass){
-
         int n = getActorsCounter();
-        System.out.println("messages " + this.getMessageCounter());
-
         String aClass;
         if (actorClass == null){
             aClass = ":(null)";
-        }
-        else{
+        } else{
             aClass = ":(" + actorClass.getName() + ")";
         }
 
@@ -134,16 +117,31 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
         for (int i = 0; i < this.getMessageCounter(); i++) {
             this.getChildren().add(newActor.paintLine(2));
         }
-
-
         this.getChildren().add(newActor.getTextField());
         setActorsCounter(n+1);
-
     }
 
     /**
-     * @param umlA
-     * @return index of message in message list.
+     * Method implements the observer design pattern. It reacts to the event that
+     * happened in observable.  It sets the actor's name to the new value if name
+     * of the backend class changed.
+     *
+     * @param ev event
+     */
+    public void propertyChange(PropertyChangeEvent ev) {
+        for (UMLActorGui actor : this.getActorsGui()) {
+            if (actor.getUmlClass() == ev.getOldValue()) {
+                actor.setUmlClass(null);
+                actor.setRed();
+            }
+        }
+    }
+
+    /**
+     * Method returns an index of the message.
+     *
+     * @param umlA message
+     * @return index of message in message list
      */
     public int getMessageGuiIndex(UMLMessageGui umlA){
         int i = 0;
@@ -157,29 +155,13 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * @param umlA
-     * @return index of actor in actor list.
-     */
-    public int getActorGuiIndex(UMLActorGui umlA){
-        int i = 0;
-        for (UMLActorGui act : this.getActorsGui()){
-            if(umlA == act){
-                return i;
-            }
-            i++;
-        }
-        return -1;
-    }
-
-    /**
      * Remove message from message list.
+     *
      * @param type message type
      * @param order message order
      */
     public void removeMessage(String type, int order){
         order = order - 1;
-        System.out.println(type);
-        System.out.println(order);
 
         for( UMLMessageGui mes : this.getMessageGui()){
             if(mes.getMessage().getType().equals(type)){
@@ -189,69 +171,15 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
                 }
             }
         }
-
     }
 
     /**
-     * Repaint all the object
-     */
-    public void paintEVERYTHINGAGAIN(){
-        int i = 0;
-        for (UMLActorGui acG : getActorsGui()){
-            this.getChildren().remove(acG.getActorNameGui());
-            for (Line lin : acG.getLines()){
-               this.getChildren().remove(lin);
-            }
-            acG.freeLines();
-            UMLActorGui newAcG = new UMLActorGui(acG.getUmlClass(), acG.getActorName(), acG.getClasNamespecial(), getActorGuiIndex(acG) ,75);
-            getActorsGui().set(i, newAcG);
-            i++;
-        }
-        int k = 0;
-        for(UMLMessageGui meG : getMessageGui()){
-            this.getChildren().remove(meG.getArrow());
-            //public UMLMessageGui(UMLMessage message, int order, UMLSeqDiaGui seq){
-            UMLMessageGui newMess = new UMLMessageGui(meG.getMessage(), k, this);
-            getMessageGui().remove(meG);
-            getMessageGui().add(newMess);
-            k++;
-        }
-        this.yPos = 75;
-        this.messageCounter = 0;
-        this.actorsCounter = 0;
-
-        for (UMLActorGui acG : getActorsGui()){
-            // if Actor is created by message we will paint him later
-            this.getChildren().add(acG.getTextField());
-            this.setActorsCounter(this.getActorsCounter()+1);
-        }
-
-        for (UMLMessageGui meg : getMessageGui()){
-
-            // then paint message
-            if (meg.getArrow() != null)
-                this.getChildren().add(meg.getArrow());
-
-            for (UMLActorGui act : this.getActorsGui()) {
-               if (act.getFreed() == false){
-                   this.getChildren().add(act.paintLine(2));
-               }
-            }
-            this.setMessageCounter(this.messageCounter+1);
-            this.incrementYpos();
-
-        }
-
-    }
-
-    /**
-     * Remove messages that contains to actor given actor
-     * @param umlA
+     * Remove messages that contain the given actor as toActor.
+     *
+     * @param umlA actor
      */
     public void removeMessagesToActor(UMLActorGui umlA){
         int actIndex = umlA.getActorOrder();
-
-
         for(UMLMessageGui mesG : getMessageGui()){
             if(mesG.getIndexActTo() == actIndex){
                 this.getChildren().remove(mesG.getArrow());
@@ -261,8 +189,9 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * Remove messages that contains from actor given actor
-     * @param umlA
+     * Remove messages that contain fromActor given actor.
+     *
+     * @param umlA actor
      */
     public void removeMessagesFromActor(UMLActorGui umlA){
         int actIndex = umlA.getActorOrder();
@@ -270,16 +199,15 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
         for(UMLMessageGui mesG : getMessageGui()){
             if(mesG.getIndexActFrom() == actIndex){
                 this.getChildren().remove(mesG.getArrow());
-                System.out.println("------- " + this.getMessageGui());
-                System.out.println("------- " + this.getMessageGuiIndex(mesG));
                 this.getMessageGui().remove(mesG);
             }
         }
     }
 
     /**
-     * Remove actor
-     * @param umlA
+     * Remove actor.
+     *
+     * @param umlA actor to be removed
      */
     public void removeActor(UMLActorGui umlA){
 
@@ -292,11 +220,11 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
 
         this.getChildren().remove(umlA.getTextField());
         this.getActorsGui().remove(umlA);
-
     }
 
     /**
-     * Paint actor
+     * Paint actor.
+     *
      * @param actorName actor name
      * @param actorClass class where is actor instanced from (could be null)
      */
@@ -311,18 +239,16 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
             aClass = ":(" + actorClass.getName() + ")";
         }
 
-        System.out.println("tu");
         UMLActorGui newActor = new UMLActorGui(actorClass, actorName , aClass, n, this.getyPos());
         this.actorsGui.add(newActor);
-
         this.getChildren().add(newActor.getTextField());
-
         setActorsCounter(n+1);
     }
 
 
     /**
-     * Find actor in actor list by gis gui name
+     * Find actor in actor list by actor gui name.
+     *
      * @param actorName actor gui name.
      * @return UMLActorGui if found or null
      */
@@ -340,24 +266,7 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * Finds actor gui class
-     * @param actorName name to look for
-     * @return UMLActorGui or null
-     */
-    public UMLActorGui findActorGuiByName(String actorName){
-
-        // find class
-        for (UMLActorGui act : this.getActorsGui()) {
-            if (act.getActorName().equals(actorName)) {
-                return act;
-            }
-        }
-        // not found -> null
-        return null;
-    }
-
-    /**
-     * Use int Ypos
+     * Use int Ypos for paintin a message.
      *
      * ... synch
      * ... asynch
@@ -372,8 +281,6 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
      */
     public void paintMessage(UMLMessage message){
 
-        //UMLActorGui temp = this.findActorGui(message.getFromActor());
-
         UMLMessageGui umlMessGui = new UMLMessageGui(message, getMessageGui().size(),this);
         this.addMessageGui(umlMessGui);
 
@@ -383,7 +290,7 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
 
         // Paint vertical line for all the actors
         for (UMLActorGui act : this.getActorsGui()) {
-            if (act.getFreed() == false){
+            if (!act.getFreed()){
                 this.getChildren().add(act.paintLine(2));
             }
         }
@@ -392,9 +299,11 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * @param actorName
-     * @param actClass
-     * @return index of actor if there is no actor return -1
+     * Method returns an index of the actor.
+     *
+     * @param actorName actor
+     * @param actClass actor's class
+     * @return index of actor in actor list
      */
     public int getActorGuiIndex(String actorName, UMLClass actClass){
         String aClass;
@@ -411,25 +320,26 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
         int i = 0;
         for (UMLActorGui act : this.getActorsGui()) {
             if (act.getDisplayedName().equals(searchStr)) {
-                System.out.println(searchStr + "ANO");
                 return i;
             }
             i++;
         }
-        System.out.println(searchStr + "NE");
         // not found -> -1
         return -1;
     }
 
     /**
-     * Add message to message list
-     * @param mess
+     * Add message to message list.
+     *
+     * @param mess message to be added
      */
     public void addMessageGui(UMLMessageGui mess){
         this.messageGui.add(mess);
     }
 
     /**
+     * Method returns the list of GUI messages.
+     *
      * @return list with all the messages
      */
     public List<UMLMessageGui> getMessageGui(){
@@ -437,16 +347,27 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
+     * Method returns list of GUI actors.
+     *
      * @return list with all the actors
      */
     public List<UMLActorGui> getActorsGui(){
         return this.actorsGui;
     }
+
+    /**
+     * Method returns actor on the index n.
+     *
+     * @param n index of the actor to be returned
+     * @return UMLActorGui
+     */
     public UMLActorGui getNthActorGui(int n){
         return this.actorsGui.get(n);
     }
 
     /**
+     * Method returns the message COUNTER.
+     *
      * @return message counter
      */
     public int getMessageCounter() {
@@ -454,6 +375,8 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
+     * Method returns the actors counter.
+     *
      * @return actor counter
      */
     public int getActorsCounter() {
@@ -461,35 +384,44 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
     }
 
     /**
-     * Set actor counter
-     * @param i
+     * Set actor counter.
+     *
+     * @param i number to be set
      */
     public void setActorsCounter(int i) {
         this.actorsCounter = i;
     }
 
     /**
-     * Set message counter
-     * @param i
+     * Set message counter.
+     *
+     * @param i number to be set
      */
     public void setMessageCounter(int i) {
         this.messageCounter = i;
     }
 
     /**
-     * Increment y pos by constant
+     * Increment y pos by constant.
      */
     public void incrementYpos(){
         this.yPos = this.yPos + 50;
     }
 
     /**
+     * Method returns current Y position.
+     *
      * @return current y position.
      */
     public int getyPos(){
         return this.yPos;
     }
 
+    /**
+     * Method returns sequence diagram.
+     *
+     * @return backend sequence diagram
+     */
     public SeqDiagram getSeqDiagram() {
         return seqDiagram;
     }

@@ -4,7 +4,9 @@
  * Course:       IJA - Java Programming Language
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
- * TODO
+ *
+ * File contains implementation of DraggableObject class that is used
+ * for moving and dragging objects on the scene.
  */
 
 package app.gui.helpers;
@@ -17,28 +19,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class used for making objects draggable.
+ * Class used for making objects in the GUI draggable.
  */
 public class DraggableObject extends Group {
+    // positions
     private double mouseX;
     private double mouseY;
+    public double posX;
+    public double posY;
 
-
-    private List<Double> oldXs = new ArrayList<>();
-    private List<Double> oldYs = new ArrayList<>();
-
-    private List<Double> afterMouseReleased = new ArrayList<>();
-
-    private double oldXscene;
-    private double oldYscene;
-
+    // nodes
     private Node node;
     private List<Node> nodesFrom = new ArrayList<>();
     private List<Node> nodesTo = new ArrayList<>();
 
-    public double posX;
-    public double posY;
-
+    // owner
     public UMLClassGui owner;
 
     /**
@@ -48,8 +43,6 @@ public class DraggableObject extends Group {
      */
     public void makeDraggable(Node node) {
         this.node = node;
-        this.afterMouseReleased.add(0, 0.0);
-        this.afterMouseReleased.add(1, 0.0);
 
         node.setLayoutX(Math.random() * 1300);
         node.setLayoutY(Math.random() * 500);
@@ -57,10 +50,6 @@ public class DraggableObject extends Group {
         posY = node.getLayoutY();
 
         this.node.setOnMousePressed(mouseEvent -> {
-            oldXscene = (mouseEvent.getSceneX() - mouseX);
-            oldYscene = (mouseEvent.getSceneY() - mouseY);
-            oldXs.add(0, mouseX);
-            oldYs.add(0, mouseY);
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
 
@@ -96,14 +85,9 @@ public class DraggableObject extends Group {
                 l.setEndX((mouseEvent.getSceneX() - mouseX) + (classNode.getWidth())/2);
                 l.setEndY((mouseEvent.getSceneY() - mouseY) + classNode.getHeight() - 10);
             }
-
-            oldXscene = (mouseEvent.getSceneX() - mouseX);
-            oldYscene = (mouseEvent.getSceneY() - mouseY);
         });
 
         this.node.setOnMouseReleased(mouseEvent -> {
-            afterMouseReleased.set(0, mouseEvent.getSceneX() - mouseX);
-            afterMouseReleased.set(1, mouseEvent.getSceneY() - mouseY);
 
             node.setMouseTransparent(false);
 
@@ -112,35 +96,50 @@ public class DraggableObject extends Group {
         });
     }
 
+    /**
+     * Method adds a node to the list nodesFrom.
+     *
+     * @param node node to be added to the list
+     */
     public void addNodeFrom(Node node) {
         this.nodesFrom.add(node);
         this.node.setViewOrder(-1);
     }
 
+    /**
+     * Method adds a node to the list nodesTo.
+     *
+     * @param node node to be added to the list
+     */
     public void addNodeTo(Node node) {
         this.nodesTo.add(node);
         this.node.setViewOrder(-1);
     }
 
-    public List <Double> getPosition() {
-        List<Double> position = new ArrayList<>();
-        position.add(oldXscene);
-        position.add(oldYscene);
-        return position;
-    }
-
-    public void setPosition(List <Double> oldPosition) {
-        this.mouseX = oldPosition.get(0);
-        this.mouseY = oldPosition.get(1);
-    }
-
+    /**
+     * Method returns the X position.
+     *
+     * @return X position
+     */
     public Double getPosX() {
         return posX;
     }
 
+    /**
+     * Method returns the Y position.
+     *
+     * @return Y position
+     */
     public Double getPosY() {
         return posY;
     }
+
+    /**
+     * Method sets the current position to the (posX, posY).
+     *
+     * @param posX X position
+     * @param posY Y position
+     */
     public void setPos(double posX, double posY) {
         VBox classNode = (VBox) this.node;
         node.setLayoutX(posX);

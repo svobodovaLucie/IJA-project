@@ -98,7 +98,6 @@ public class GuiMain extends Application {
         // add undo button - TODO, fix releasing the button
         Button undoButton = this.createButton("Undo", 0);
         undoButton.setOnAction(e -> {
-            System.out.println("undoButton.onAction()");
             UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
             umlClassDiagramGui.undo();
         });
@@ -134,7 +133,6 @@ public class GuiMain extends Application {
                 UMLClass newClass = BEdiagrams.getClassDiagram().createClass("Untitled");
                 umlClassDiagramGui.getChildren().add(new UMLClassGui(newClass, umlClassDiagramGui));
             } catch (Exception exception) {
-                System.out.println("Can't create two classes/interfaces with the same name!");
                 customAlertBox();
             }
         });
@@ -158,8 +156,6 @@ public class GuiMain extends Application {
         // button for adding new sequence diagram
         MenuItem addSequenceDiagram = new MenuItem("Add sequence diagram");
         addSequenceDiagram.setOnAction(e -> {
-            System.out.println("Adding new sequence diagram (not implemented yet)");
-            //rootSeq.add(new Group());
             this.createNewSeqDiagScene(rootSeq);
         });
 
@@ -315,7 +311,6 @@ public class GuiMain extends Application {
         confirm.setOnAction(event -> {
             Path path = Paths.get(textInput.getText());
             DiagramSaver.saveJSON(BEdiagrams, seqDiagrams, path.toAbsolutePath().toString());
-            System.out.println("Diagram saved to: " + path.toAbsolutePath());
             helpStage.close();
         });
         helpGroup.getChildren().add(confirm);
@@ -356,9 +351,7 @@ public class GuiMain extends Application {
         confirm.setLayoutX(70);
         confirm.setLayoutY(70);
         confirm.setOnAction(event -> {
-            System.out.println("confirming");
             BEdiagrams.getClassDiagram().removeClass(cb.getValue());
-            System.out.println("removed");
             helpStage.close();
         });
         helpGroup.getChildren().add(confirm);
@@ -403,7 +396,6 @@ public class GuiMain extends Application {
         confirm.setLayoutY(70);
         confirm.setOnAction(event -> {
             BEdiagrams.getClassDiagram().removeInterface(cb.getValue());
-            System.out.println("removed");
             helpStage.close();
         });
         helpGroup.getChildren().add(confirm);
@@ -442,8 +434,6 @@ public class GuiMain extends Application {
             }
 
             confirm.setOnAction( ev -> {
-                System.out.println(actorName.getText());
-                System.out.println(comboBox1.getValue());
                 rootSeq.get(n).getChildren().remove(comboBox1);
                 rootSeq.get(n).getChildren().remove(actorName);
                 rootSeq.get(n).getChildren().remove(confirm);
@@ -558,8 +548,6 @@ public class GuiMain extends Application {
                 actorsCB.getItems().add(agui.getDisplayedName());
             }
             confirm.setOnAction( ev -> {
-                System.out.println(confirm.getText());
-                System.out.println(actorsCB.getValue());
                 UMLActorGui umlActorGui = seqDiaGui.findActorGuiByWholeName(actorsCB.getValue());
                 seqDiaGui.removeActor(umlActorGui);
                 rootSeq.get(n).getChildren().remove(actorsCB);
@@ -582,7 +570,6 @@ public class GuiMain extends Application {
             // fill up combobox
             int indexI = 1;
             for (UMLMessageGui agui : seqDiaGui.getMessageGui()){
-                System.out.println("~~~~~ " + agui.getMessage());
                 messagesCB.getItems().add(indexI++ + " " + agui.getMessage().getType());
             }
             confirm3.setOnAction( ev -> {
@@ -621,7 +608,6 @@ public class GuiMain extends Application {
     /**
      * Create scene for completely new sequence diagram with all the graphics elements.
      *
-     * @param n index of diagram that ll be processed.
      * @param rootSeq all sequecne diagrams group
      */
     private void createNewSeqDiagScene(List<Group> rootSeq){
@@ -654,8 +640,6 @@ public class GuiMain extends Application {
             }
 
             confirm.setOnAction( ev -> {
-                System.out.println(actorName.getText());
-                System.out.println(comboBox1.getValue());
                 rootSeq.get(rootSeq.size() - 1).getChildren().remove(comboBox1);
                 rootSeq.get(rootSeq.size() - 1).getChildren().remove(actorName);
                 rootSeq.get(rootSeq.size() - 1).getChildren().remove(confirm);
@@ -776,8 +760,6 @@ public class GuiMain extends Application {
                 actorsCB.getItems().add(agui.getDisplayedName());
             }
             confirm.setOnAction( ev -> {
-                System.out.println(confirm.getText());
-                System.out.println(actorsCB.getValue());
                 UMLActorGui umlActorGui = seqDiaGui.findActorGuiByWholeName(actorsCB.getValue());
                 seqDiaGui.removeActor(umlActorGui);
                 rootSeq.get(rootSeq.size() - 1).getChildren().remove(actorsCB);
@@ -800,7 +782,6 @@ public class GuiMain extends Application {
             // fill up combobox
             int indexI = 1;
             for (UMLMessageGui agui : seqDiaGui.getMessageGui()){
-                System.out.println("~~~~~ " + agui.getMessage());
                 messagesCB.getItems().add(indexI++ + " " + agui.getMessage().getType());
             }
 

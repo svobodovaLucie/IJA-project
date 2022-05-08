@@ -11,7 +11,6 @@ package app.gui.umlGui;
 
 import app.backend.uml.UMLAttribute;
 import javafx.scene.control.TextField;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +53,6 @@ public class UMLAttributeGui extends TextField {
 		this.textProperty().addListener(((observableValue, s, t1) ->
 				this.umlAttribute.setNameTypeAccess(this.getNameTypeAccess())
 		));
-
 	}
 
 	/**
@@ -62,6 +60,7 @@ public class UMLAttributeGui extends TextField {
 	 * public    ->  +
 	 * private   ->  -
 	 * protected ->  #
+	 * package   -> ~
 	 *
 	 * @param access access type
 	 * @return string +, -, # or " " if invalid
@@ -93,7 +92,7 @@ public class UMLAttributeGui extends TextField {
 	/**
 	 * Method returns string that contains the type of UML attribute.
 	 *
-	 * @return string
+	 * @return type of the attribute
 	 */
 	public String toStringType() {
 		return this.type;
@@ -105,6 +104,7 @@ public class UMLAttributeGui extends TextField {
 	 * + -> public
 	 * - -> private
 	 * # -> protected
+	 * ~ -> package
 	 *
 	 * @param access short version of access (+, -, #)
 	 * @return long version of access (public, private, protected)
@@ -151,6 +151,8 @@ public class UMLAttributeGui extends TextField {
 	}
 
 	/**
+	 * Method returns the UML attribute.
+	 *
 	 * @return UMLAttribute
 	 */
 	public UMLAttribute getAttribute() {
@@ -158,7 +160,8 @@ public class UMLAttributeGui extends TextField {
 	}
 
 	/**
-	 * Check if input format is ok.
+	 * Method checks if the attribute's format in text field is valid.
+	 * If it is not valid, the text fill is set to red.
 	 */
 	private void checkInputFormat() {
 		String style = "-fx-background-color: transparent;\n" +

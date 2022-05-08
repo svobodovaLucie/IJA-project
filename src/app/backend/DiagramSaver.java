@@ -117,11 +117,9 @@ public class DiagramSaver {
             String methodName;
             if (mes.getMessage().getMethod() == null){
                 methodName = "";
-                System.out.println(".. " + "");
             }
             else {
                 methodName = mes.getMessage().getMethod().getName();
-                System.out.println(".... " + mes.getMessage().getMethod().getName());
             }
             oneMessage.put("methodName", methodName);
 
@@ -167,11 +165,6 @@ public class DiagramSaver {
             oneActor.put("actorName", act.getActorName());
             oneActor.put("class", act.getClassName());
             oneActor.put("createdByMessage", oneCreatedStr);
-            // oneCreated
-
-            System.out.println(".. " + act.getActorName());
-            System.out.println(".. " + act.getClassName());
-            //System.out.println(".. " + oneCreated);
             i++;
 
             // add one actor to the array of actors
@@ -188,19 +181,14 @@ public class DiagramSaver {
      * @param classDiagram contains the class diagram
      */
     public static JSONArray saveClasses(ClassDiagram classDiagram) {
-
-        if (classDiagram == null) { // TODO
-            System.out.println("Can't save the diagram\n");
-            return null; // TODO catch exception
+        if (classDiagram == null) {
+            return null;
         }
-
         // save classes
         JSONArray classes = new JSONArray();
         for (UMLClass cls : classDiagram.getClasses()) {
             classes.add(saveClass(cls));
         }
-        // save relations
-
         return classes;
     }
 

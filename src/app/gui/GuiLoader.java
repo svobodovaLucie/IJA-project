@@ -14,7 +14,6 @@ import app.backend.uml.*;
 import app.gui.umlGui.*;
 import javafx.scene.Group;
 import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,6 @@ public class GuiLoader {
             // group for one diagram
             Group rootSeq = new Group();
 
-            //TODO TADY FIX
             // load the diagram
             UMLSeqDiaGui seqDiaGui = new UMLSeqDiaGui(seqDig);
             rootSeq.getChildren().add(seqDiaGui);
@@ -80,9 +78,7 @@ public class GuiLoader {
         int i = 0;
         for (UMLRelation relation : relations) {
             // create new relation GUI and add it to the class diagram GUI
-            System.out.println("i: " + i++);
             UMLRelationGui umlRelationGui = new UMLRelationGui(relation, umlClassDiagramGui);
-            System.out.println("j");
 
             // add relation to the GUI
             umlClassDiagramGui.addRelation(umlRelationGui);

@@ -1,5 +1,5 @@
 /*
- * File:         UMLAttributeGui.java
+ * File:         UMLMessageGui.java
  * Institution:  FIT BUT 2021/2022
  * Course:       IJA - Java Programming Language
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
@@ -7,9 +7,8 @@
  *
  * File contains implementation of the UML Message displayed in GUI.
  */
-
-
 package app.gui.umlGui;
+
 import app.backend.uml.UMLMessage;
 import app.backend.uml.UMLMethod;
 import javafx.scene.Group;
@@ -18,9 +17,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.control.Label;
 
-
 /**
- * Represent one UMLMessage in sequence diagram. Hold all the GUI information about message.
+ * Represents one UMLMessage in sequence diagram. Hold all the GUI information about message.
  */
 public class UMLMessageGui {
 
@@ -47,7 +45,8 @@ public class UMLMessageGui {
     int indexActTo;
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param message Backend message representation
      * @param order order of message.
      * @param seq sequence diagram of message
@@ -60,9 +59,6 @@ public class UMLMessageGui {
                                                 message.getFromClass());
         int indexActTo   = seq.getActorGuiIndex(message.getToActor(),
                                                 message.getToClass());
-        if (indexActFrom < 0 || indexActTo < 0) {
-            System.out.println("ERROR: indexFrom " + indexActFrom + "indexTo " + indexActTo);
-        }
 
         this.indexActFrom = indexActFrom;
         this.indexActTo = indexActTo;
@@ -111,11 +107,12 @@ public class UMLMessageGui {
     }
 
     /**
-     * Create line
-     * @param xFrom
-     * @param xTo
-     * @param yFrom
-     * @param yTo
+     * Create line.
+     *
+     * @param xFrom x from
+     * @param xTo x to
+     * @param yFrom y from
+     * @param yTo y to
      * @return line
      */
     private Line createLine(int xFrom, int xTo, int yFrom, int yTo){
@@ -128,10 +125,11 @@ public class UMLMessageGui {
     }
 
     /**
-     * Create circle
+     * Create circle.
+     *
      * @param x x center position
      * @param y y center positon
-     * @param radius
+     * @param radius radius
      * @return circle
      */
     private Circle createCircle(int x, int y, int radius){
@@ -144,8 +142,8 @@ public class UMLMessageGui {
 
     /**
      * Create horizontal dotted line
-     * @param posFrom
-     * @param posTo
+     * @param posFrom pos from
+     * @param posTo pos to
      * @param yPos both from to
      * @return doted line
      */
@@ -165,9 +163,10 @@ public class UMLMessageGui {
     }
 
     /**
-     * Create dotted arrow from actor to actor
-     * @param indexActorFrom
-     * @param indexActorTo
+     * Create dotted arrow from actor to actor.
+     *
+     * @param indexActorFrom index actor from
+     * @param indexActorTo index actor to
      * @param text that ll be on arrow.
      */
     private void createDottedArrow(int indexActorFrom, int indexActorTo, String text){
@@ -199,17 +198,17 @@ public class UMLMessageGui {
 
         if(indexActorFrom > indexActorTo){
             group.getChildren().add(createArrowText(textXpos-20, textYpos, text));
-        }
-        else {
+        } else {
             group.getChildren().add(createArrowText(textXpos, textYpos, text));
         }
         setArrow(group);
     }
 
     /**
-     * Create synchronous arrow
-     * @param indexActorFrom
-     * @param indexActorTo
+     * Create synchronous arrow.
+     *
+     * @param indexActorFrom index actor from
+     * @param indexActorTo index actor to
      * @param text on arrow
      */
     private void createSynchArrow(int indexActorFrom, int indexActorTo, String text){
@@ -229,8 +228,7 @@ public class UMLMessageGui {
                     (posTo+0.0), (yPos+0.0),
                     (posTo-20.0), (yPos+10.0)
             );
-        }
-        else {
+        } else {
             triangle.getPoints().setAll(
                     (posTo+20.0), (yPos-10.0),
                     (posTo+0.0), (yPos+0.0),
@@ -251,9 +249,10 @@ public class UMLMessageGui {
     }
 
     /**
-     * Create asynchronous arrow
-     * @param indexActorFrom
-     * @param indexActorTo
+     * Create asynchronous arrow.
+     *
+     * @param indexActorFrom index actor from
+     * @param indexActorTo index actor to
      * @param text on arrow
      */
     private void createAsynchArrow(int indexActorFrom, int indexActorTo, String text){
@@ -288,14 +287,14 @@ public class UMLMessageGui {
 
         group.getChildren().add(createArrowText(textXpos, textYpos, text));
         setArrow(group);
-
     }
 
     /**
-     * Create text on top of arrow
-     * @param x
-     * @param y
-     * @param text
+     * Create text on top of arrow.
+     *
+     * @param x x
+     * @param y y
+     * @param text text
      * @return Label
      */
     private Label createArrowText(int x, int y, String text){
@@ -305,23 +304,14 @@ public class UMLMessageGui {
         if (this.getType().equals("create") ||
                 this.getType().equals("free") ||
                 this.getType().equals("response")){
-
             label.setStyle("-fx-font-size: 14;");
-
-        }
-        else {
+        } else {
             if (this.getMethod() == null){
-                System.out.println("....");
-                System.out.println(text);
-                System.out.println(this.getMethod());
-                System.out.println("....");
                 label.setStyle("-fx-border-color: red; -fx-font-size:15;");
-            }
-            else{
+            } else{
                 label.setStyle("-fx-font-size: 14;");
             }
         }
-
         // set position
         label.setLayoutX(x);
         label.setLayoutY(y);
@@ -330,14 +320,17 @@ public class UMLMessageGui {
     }
 
     /**
-     * Store arrow
-     * @param arrow
+     * Store arrow.
+     *
+     * @param arrow arrow to be stored
      */
     private void setArrow(Group arrow){
         this.arrow = arrow;
     }
 
     /**
+     * Method returns the order of the message.
+     *
      * @return message order
      */
     public int getOrder(){
@@ -345,6 +338,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method returns the arrow.
+     *
      * @return message arrow
      */
     public Group getArrow(){
@@ -353,7 +348,8 @@ public class UMLMessageGui {
 
     /**
      * Count x position from.
-     * @param indexActorFrom
+     *
+     * @param indexActorFrom index actor from
      * @return position where to start drawing.
      */
     private int countPosFrom(int indexActorFrom){
@@ -361,10 +357,11 @@ public class UMLMessageGui {
     }
 
     /**
-     * Count x postiton where to end.
-     * @param posFrom
-     * @param indexActorFrom
-     * @param indexActorTo
+     * Count x position where to end.
+     *
+     * @param posFrom pos from
+     * @param indexActorFrom index actor from
+     * @param indexActorTo index actor true
      * @return position where to end drawing.
      */
     private int countPosTo(int posFrom, int indexActorFrom, int indexActorTo){
@@ -373,8 +370,7 @@ public class UMLMessageGui {
         if (indexActorFrom < indexActorTo){
             a = indexActorTo - indexActorFrom;
             res = posFrom + (this.spaceBetweenActors*a);
-        }
-        else {
+        } else {
             a = indexActorFrom - indexActorTo;
             res = posFrom - (this.spaceBetweenActors*a);
         }
@@ -382,6 +378,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method returns the uml message.
+     *
      * @return UMLMessage
      */
     public UMLMessage getMessage(){
@@ -389,6 +387,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method counts the Y position.
+     *
      * @return y position where to draw
      */
     private int countYPos(){
@@ -396,6 +396,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method returns the UML method.
+     *
      * @return UMLMethod of message
      */
     private UMLMethod getMethod(){
@@ -403,6 +405,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method returns the type.
+     *
      * @return message type
      */
     private String getType(){
@@ -410,6 +414,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method returns the actor's index from.
+     *
      * @return index actor to
      */
     public int getIndexActFrom() {
@@ -417,6 +423,8 @@ public class UMLMessageGui {
     }
 
     /**
+     * Method returns the actor's index to.
+     *
      * @return index actor to
      */
     public int getIndexActTo(){

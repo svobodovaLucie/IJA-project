@@ -1,10 +1,11 @@
 /*
- * File:         DiagramLoader.java
+ * File:         UMLActorGui.java
  * Institution:  FIT BUT 2021/2022
  * Course:       IJA - Java Programming Language
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
- * File represent Actor as gui object.
+ *
+ * File represent Actor as GUI object.
  */
 
 package app.gui.umlGui;
@@ -13,15 +14,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Class holds all Graphical information about actor and its graphical objects.
+ * Class holds all graphical information about UML actor and its graphical objects.
  */
 public class UMLActorGui extends Label implements PropertyChangeListener {
 
@@ -59,7 +58,7 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     int actorOrder;
 
     /**
-     * Paint Actor Constructor
+     * Paint Actor Constructor.
      *
      * @param umlClass UMLClass
      * @param n Actor order
@@ -85,11 +84,9 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
         this.actorNameGui.prefHeight(80);
         this.actorNameGui.prefWidth(80);
         if(umlClass == null){
-            System.out.println("null");
             this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15; -fx-padding: 3 5 3 5;");
         }
         else{
-            System.out.println("notnull");
             this.actorNameGui.setStyle("-fx-border-color: black; -fx-font-size:15; -fx-padding: 3 5 3 5;");
         }
 
@@ -100,26 +97,36 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
 
         this.freed = false;
 
-        // add observer
+        // add this actor as an observer of uml class
         umlClass.addPropertyChangeListener(this);
     }
 
+    /**
+     * Method adds the UMLClass to the Actor.
+     * @param umlClass
+     */
     public void setUmlClass(UMLClass umlClass) {
         this.umlClass = umlClass;
     }
 
-    public void setRed() {
-        this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15; -fx-padding: 3 5 3 5; -fx-text-fill: red;");
-
-    }
     /**
-     * Create new lines arraylist
+     * Method sets the actor's color to red (inconsistency).
+     */
+    public void setRed() {
+        this.actorNameGui.setStyle("-fx-border-color: red; -fx-font-size:15" +
+                "; -fx-padding: 3 5 3 5; -fx-text-fill: red;");
+    }
+
+    /**
+     * Creates new lines arraylist.
      */
     public void freeLines(){
         this.lines = new ArrayList<Line>();
     }
 
     /**
+     * Method returns displayed name.
+     *
      * @return displayed name
      */
     public String getDisplayedName(){
@@ -127,6 +134,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
+     * Method returns the actorNameGui label.
+     *
      * @return Label
      */
     public Label getTextField(){
@@ -134,7 +143,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * Draw vertically line + 50 points
+     * Draw vertically line + 50 points.
+     *
      * @param thick line thickness
      */
     public Line paintLine(int thick){
@@ -163,14 +173,17 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * add line to actors lines
-     * @param line
+     * Adds line to actors lines.
+     *
+     * @param line line
      */
     public void addLine(Line line){
         getLines().add(line);
     }
 
     /**
+     * Method returns the actor's label.
+     *
      * @return actor name that is displayed
      */
     public Label getActorNameGui(){
@@ -178,6 +191,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
+     * Method returns list of actor's vertical lines.
+     *
      * @return list with all the actor vertical lines
      */
     public List<Line> getLines(){
@@ -185,6 +200,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
+     * Method returns Y position of an actor.
+     *
      * @return actor y pos
      */
     public int getActorY(){
@@ -192,6 +209,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
+     * Method returns X position of an actor.
+     *
      * @return actor x pos
      */
     public int getActorX(){
@@ -199,7 +218,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * set vertical lines y position.
+     * Method sets vertical lines y position.
+     *
      * @param i y pos of vertical lines
      */
     public void setCurrentLineYPos(int i) {
@@ -207,13 +227,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * @return Vertical line y pos.
-     */
-    public int getCurrentLineYPos() {
-        return currentLineYPos;
-    }
-
-    /**
+     * Method returns name of the uml class.
+     *
      * @return class name
      */
     public String getClassName(){
@@ -221,6 +236,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
+     * Method returns name of the actor.
+     *
      * @return actor name
      */
     public String getActorName(){
@@ -228,6 +245,9 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
+     * Method returns boolean information
+     * - was the actor freed by a message?
+     *
      * @return information if actor is freed by message
      */
     public boolean getFreed(){
@@ -235,7 +255,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * Set information if actor is freed
+     * Sets information if actor is freed.
+     *
      * @param b bool true means actor is freed
      */
     public void setFreed(boolean b){
@@ -243,7 +264,12 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * @param e A PropertyChangeEvent object describing the event source
+     * Method implements observer - reaction to a change
+     * of the name of observable class.
+     * It sets the name of the actor to new value
+     * (consistent with the name of the observable class).
+     *
+     * @param e a PropertyChangeEvent object describing the event source
      *          and the property that has changed.
      */
     public void propertyChange(PropertyChangeEvent e) {
@@ -251,13 +277,17 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
     }
 
     /**
-     * @return get name without ()
+     * Method returns actor's name without ().
+     *
+     * @return name without ()
      */
     public String getClasNamespecial() {
         return clasNamespecial;
     }
 
     /**
+     * Method returns actor's uml class.
+     *
      * @return actor uml class
      */
     public UMLClass getUmlClass() {
@@ -266,6 +296,8 @@ public class UMLActorGui extends Label implements PropertyChangeListener {
 
 
     /**
+     * Method returns the order of an actor.
+     *
      * @return order of actor
      */
     public int getActorOrder(){

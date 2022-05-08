@@ -5,8 +5,8 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation od UMLClass class that represents
- * the UML class.
+ * File contains implementation od UMLClassGui class that represents
+ * the UML class in the GUI.
  */
 package app.gui.umlGui;
 
@@ -16,7 +16,6 @@ import app.backend.uml.UMLAttribute;
 import app.backend.uml.UMLClass;
 import app.backend.uml.UMLClassifier;
 import app.backend.uml.UMLMethod;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,17 +25,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Class represents a UML class. It is inherited from UMLClassifier.
- * It contains a list of its UML attributes and a list of its UML
- * methods. The UML class may be abstract.
+ * Class represents a GUI class. It is inherited from VBox,
+ * and it contains the list of attributes and methods.
  */
 public class UMLClassGui extends VBox {
 
@@ -53,12 +48,6 @@ public class UMLClassGui extends VBox {
     GridPane attributesGridPane;
     GridPane methodsGridPane;
 
-    // position
-    private double posX;
-    private double posY;
-    public SimpleDoubleProperty x = new SimpleDoubleProperty(150);
-    public SimpleDoubleProperty y = new SimpleDoubleProperty(150);
-
     // draggable property
     public DraggableObject draggableObject = new DraggableObject();
 
@@ -70,8 +59,6 @@ public class UMLClassGui extends VBox {
     private List<UMLMethodGui> nodeMethods;
     private List<Button> methodButtons;
 
-    private PropertyChangeSupport support;
-
     /**
      * UMLClass constructor. The UML class is not abstract.
      *
@@ -81,15 +68,8 @@ public class UMLClassGui extends VBox {
         // add BE class
         this.umlClass = umlClass;
 
-        // set initial positions TODO load from JSON
-        this.posX = 100;
-        this.posY = 100;
-
         // make the UMLClassGui object dragable
         draggableObject.makeDraggable(this);
-
-        // observable
-        support = new PropertyChangeSupport(this);
 
         // set margin
         HBox.setMargin(this, new Insets(15, 15, 15, 15));
@@ -168,6 +148,7 @@ public class UMLClassGui extends VBox {
             checkNames();
         }));
 
+        // save current position -> UNDO can be used later
         this.setOnDragDetected(ev -> {
             owner.executeCommand(new CommandBuilder.Command() {
                 double oldPosX;
@@ -176,17 +157,73 @@ public class UMLClassGui extends VBox {
                 public void execute() {
                     oldPosX = draggableObject.getPosX();
                     oldPosY = draggableObject.getPosY();
-                    support.firePropertyChange(umlClass.getName(), 0, 1);
                 }
                 @Override
                 public void undo() {
                     draggableObject.setPos(oldPosX, oldPosY);
-                    support.firePropertyChange(umlClass.getName(), 1, 0);
                 }
             });
         });
     }
 
+    /**
+     * Method returns the list of attributes (nodes).
+     *
+     * @return list of UMLAttributeGui
+     */
+    public List<UMLAttributeGui> getAttributes() {
+        return this.nodeAttributes;
+    }
+
+    /**
+     * Method returns the list of methods (nodes).
+     *
+     * @return list of UMLMethodGui
+     */
+    public List<UMLMethodGui> getMethods() {
+        return this.nodeMethods;
+    }
+
+    /**
+     * Method returns name of the class.
+     *
+     * @return name of the class
+     */
+    public String getName() {
+        return this.nameLabel.getText();
+    }
+
+    /**
+     * Method returns the UML class that is represented in the GUI.
+     *
+     * @return UMLClass
+     */
+    public UMLClass getUmlClass() {
+        return this.umlClass;
+    }
+
+    /**
+     * Method returns X position of the GUI class.
+     *
+     * @return x position
+     */
+    public double getXpos() {
+        return this.draggableObject.posX;
+    }
+
+    /**
+     * Method returns Y position of the GUI class.
+     *
+     * @return y position
+     */
+    public double getYpos() {
+        return this.draggableObject.posY;
+    }
+
+    /**
+     * Method checks if there are multiple classes with the same name.
+     * If true, sets the name label red.
+     */
     private void checkNames() {
         String style = "-fx-font-weight: bold;\n" +
                 "-fx-background-color: white;\n" +
@@ -223,24 +260,35 @@ public class UMLClassGui extends VBox {
             }
         }
     }
-
-    public double getXpos() {
-        return this.draggableObject.posX;
-    }
-
-    public double getYpos() {
-        return this.draggableObject.posY;
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
+    /**
+     * Method adds new attribute to the class.
+     */
+    private void insertNewAttribute() {
+        // add attribute to BE
+        UMLClassifier umlClassifier = new UMLClassifier("");
+        UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
+        // add attribute to backend
+        this.umlClass.addAttribute(umlAttribute);
+        // add that attribute to GUI
+        UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
+        this.addAttributeGui(umlAttributeGui);
     }
 
     /**
+     * Method adds new method to the class.
+     */
+    private void insertNewMethod() {
+        // add method to backend
+        UMLClassifier umlClassifier = new UMLClassifier("");
+        UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
+        this.umlClass.addMethod(umlMethod);
+        // add to GUI
+        UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
+        this.addMethodGui(umlMethodGui);
+    }
+
+    /**
+     * Method that adds a button bor adding new attributes/methods to VBox.
      *
      * @param attribute_method 0 for adding an attribute
      *                         1 for adding a method
@@ -281,34 +329,12 @@ public class UMLClassGui extends VBox {
         addGridPane.getChildren().add(addButton);
     }
 
-    private void insertNewAttribute() {
-        // add attribute to BE
-        UMLClassifier umlClassifier = new UMLClassifier("");
-        UMLAttribute umlAttribute = new UMLAttribute("", umlClassifier, "private");
-        // add attribute to backend
-        this.umlClass.addAttribute(umlAttribute);
-        // add that attribute to GUI
-        UMLAttributeGui umlAttributeGui = new UMLAttributeGui(umlAttribute);
-        this.addAttributeGui(umlAttributeGui);
-    }
-
-    private void insertNewMethod() {
-        // add method to backend
-        UMLClassifier umlClassifier = new UMLClassifier("");
-        UMLMethod umlMethod = new UMLMethod("", umlClassifier, "");
-        this.umlClass.addMethod(umlMethod);
-        // add to GUI
-        UMLMethodGui umlMethodGui = new UMLMethodGui(umlMethod);
-        this.addMethodGui(umlMethodGui);
-    }
-
     /**
-     * Method inserts a UML argument to the UML class. The argument is
+     * Method inserts an attribute to the UML class. The argument is
      * inserted at the end of the arguments list. If there is an argument
      * with the same name as the one to be added, new argument is not added.
      *
-     * @param attr UML argument to be inserted to the list
-     *
+     * @param attr attribute to be inserted to the list
      * @return true if the argument was successfully added, false if not
      */
     public boolean addAttributeGui(UMLAttributeGui attr) {
@@ -335,45 +361,42 @@ public class UMLClassGui extends VBox {
                 UMLAttributeGui umlAttributeGui = null;
                 // row number 0 may be null
                 if (lastRowNumber == 0) {
-                    //this.attributesGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
                     fl = this.attributesGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     for (Node node : fl) {
                         try {
-                            // FIXME mela by byt vzdy jen jedna nalezena
                             umlAttributeGui = (UMLAttributeGui) node;
                         } catch (Exception exception) {
-                            // button -> simply continue
+                            // button -> continue
                             continue;
                         }
+                        // rmeove the attribute from backend
                         UMLAttribute umlAttribute = umlAttributeGui.getAttribute();
                         this.getUmlClass().removeAttribute(umlAttribute);
-
-                        // TODO remove i ze seznamu atributu UMLClassGui
                     }
+                    // remove the attribute from GUI
                     this.attributesGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
                     this.getAttributes().remove(umlAttributeGui);
                 } else {
-                    //this.attributesGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     fl = this.attributesGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     for (Node node : fl) {
                         try {
-                            // FIXME mela by byt vzdy jen jedna nalezena
                             umlAttributeGui = (UMLAttributeGui) node;
                         } catch (Exception exception) {
-                            // button -> simply continue
+                            // button -> continue
                             continue;
                         }
+                        // remove the attribute from backend
                         UMLAttribute umlAttribute = umlAttributeGui.getAttribute();
                         this.getUmlClass().removeAttribute(umlAttribute);
-                        // TODO remove i ze seznamu metod UMLClassGui
                     }
+                    // remove the attribute from GUI
                     this.attributesGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     this.getAttributes().remove(umlAttributeGui);
                 }
             });
+            // adds the button to the VBox
             GridPane.setConstraints(this.attributeButtons.get(lastRowNumber), 1, lastRowNumber);
             this.attributesGridPane.getChildren().add(this.attributeButtons.get(lastRowNumber));
-
         } catch (UnsupportedOperationException uoe) {
             return false;
         }
@@ -381,15 +404,15 @@ public class UMLClassGui extends VBox {
     }
 
     /**
-     * Method insert a UML method to the UML class. The amethod is inserted
+     * Method inserts a method to the class. The method is inserted
      * at the end of the methods list. If there is already a method with the
      * same name as the one to be added, the method is not added.
      *
-     * @param meth UML method to be inserted to the list
-     *
+     * @param meth method to be inserted to the list
      * @return true if the method was successfully added, false if not
      */
     public boolean addMethodGui(UMLMethodGui meth) {
+        // don't add new method if it already exists
         if (this.nodeMethods.contains(meth))
             return true;
         try {
@@ -412,59 +435,43 @@ public class UMLClassGui extends VBox {
                     fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     for (Node node : fl) {
                         try {
-                            // FIXME mela by byt vzdy jen jedna nalezena
                             umlMethodGui = (UMLMethodGui) node;
                         } catch (Exception exception) {
-                            // button -> simply continue
+                            // button -> continue
                             continue;
                         }
+                        // rmeove the method from backend
                         UMLMethod umlMethod = umlMethodGui.getMethod();
                         this.getUmlClass().removeMethod(umlMethod);
-                        // TODO remove i ze seznamu metod UMLClassGui
                     }
+                    // rmeove the method from GUI
                     this.methodsGridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == null || GridPane.getRowIndex(node) == 0);
                     this.getMethods().remove(umlMethodGui);
                 } else {
                     fl = this.methodsGridPane.getChildren().filtered(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     for (Node node : fl) {
                         try {
-                            // FIXME mela by byt vzdy jen jedna nalezena
                             umlMethodGui = (UMLMethodGui) node;
                         } catch (Exception exception) {
-                            // button -> simply continue
+                            // button -> continue
                             continue;
                         }
+                        // remove the method from backend
                         UMLMethod umlMethod = umlMethodGui.getMethod();
                         this.getUmlClass().removeMethod(umlMethod);
-                        // TODO remove i ze seznamu metod UMLClassGui
                     }
+                    // remove the method from GUI
                     this.methodsGridPane.getChildren().removeIf(node -> Objects.equals(GridPane.getRowIndex(node), lastRowNumber));
                     this.getMethods().remove(umlMethodGui);
                 }
             });
+            // add the button to the VBox
             GridPane.setConstraints(this.methodButtons.get(lastRowNumber), 1, lastRowNumber);
             this.methodsGridPane.getChildren().add(this.methodButtons.get(lastRowNumber));
-
         } catch (UnsupportedOperationException uoe) {
             return false;
         }
         return true;
-    }
-
-    public List<UMLAttributeGui> getAttributes() {
-        return this.nodeAttributes;
-    }
-
-    public List<UMLMethodGui> getMethods() {
-        return this.nodeMethods;
-    }
-
-    public String getName() {
-        return this.nameLabel.getText();
-    }
-
-    public UMLClass getUmlClass() {
-        return this.umlClass;
     }
 }
 

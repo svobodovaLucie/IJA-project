@@ -5,7 +5,7 @@
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
  *
- * File contains implementation od UMLMethodGui class that represents
+ * File contains implementation of UMLMethodGui class that represents
  * the UML method displayed in the GUI.
  */
 package app.gui.umlGui;
@@ -13,7 +13,6 @@ package app.gui.umlGui;
 import app.backend.uml.UMLAttribute;
 import app.backend.uml.UMLMethod;
 import javafx.scene.control.TextField;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +56,15 @@ public class UMLMethodGui extends TextField {
 	}
 
 	/**
+	 * Method returns the UML method that is represented by this UMLMethodGui.
+	 *
+	 * @return backend UML method
+	 */
+	public UMLMethod getMethod() {
+		return this.umlMethod;
+	}
+
+	/**
 	 * Method converts the access string to the character.
 	 * public    ->  +
 	 * private   ->  -
@@ -75,6 +83,28 @@ public class UMLMethodGui extends TextField {
 		if (Objects.equals(access, "package"))
 			return "~";
 		return " ";
+	}
+
+	/**
+	 * Method returns string with the full name of access
+	 * from a string containing the shortened version.
+	 * + -> public
+	 * - -> private
+	 * # -> protected
+	 *
+	 * @param access short version of access (+, -, #)
+	 * @return long version of access (public, private, protected)
+	 */
+	public String toStringAccess(String access) {
+		if (Objects.equals(access, "+"))
+			return "public";
+		if (Objects.equals(access, "-"))
+			return "private";
+		if (Objects.equals(access, "#"))
+			return "protected";
+		if (Objects.equals(access, "~"))
+			return "package";
+		return "";
 	}
 
 	/**
@@ -122,15 +152,6 @@ public class UMLMethodGui extends TextField {
 	}
 
 	/**
-	 * Method returns a list of UMLAttributeGui attributes.
-	 *
-	 * @return list of attributes
-	 */
-	public List<UMLAttributeGui> getMethodAttributes() {
-		return this.attributes;
-	}
-
-	/**
 	 * Method loads the text input and saves the types of method's attributes
 	 * in a list of strings.
 	 * Eg. [int, void, string]
@@ -165,28 +186,6 @@ public class UMLMethodGui extends TextField {
 	}
 
 	/**
-	 * Method returns string with the full name of access
-	 * from a string containing the shortened version.
-	 * + -> public
-	 * - -> private
-	 * # -> protected
-	 *
-	 * @param access short version of access (+, -, #)
-	 * @return long version of access (public, private, protected)
-	 */
-	public String toStringAccess(String access) {
-		if (Objects.equals(access, "+"))
-			return "public";
-		if (Objects.equals(access, "-"))
-			return "private";
-		if (Objects.equals(access, "#"))
-			return "protected";
-		if (Objects.equals(access, "~"))
-			return "package";
-		return "";
-	}
-
-	/**
 	 * Method returns a list of strings that contains name,
 	 * type and access of UML method.
 	 *
@@ -218,7 +217,9 @@ public class UMLMethodGui extends TextField {
 		return nameTypeAccess;
 	}
 
-	// checks input and returns true if okay and false if not okay (red)
+	/**
+	 * Method checks the input and returns true if okay and false if not okay (red).
+ 	 */
 	private boolean checkInputFormat() {
 		String style = "-fx-background-color: transparent;\n" +
 				"-fx-border-style: none none none none;\n" +
@@ -236,7 +237,10 @@ public class UMLMethodGui extends TextField {
 		}
 	}
 
-	public void setOverriden() {
+	/**
+	 * Method sets the message color to green (-> overriden).
+	 */
+	public void setOverridden() {
 		String style = "-fx-background-color: transparent;\n" +
 				"-fx-border-style: none none none none;\n" +
 				"-fx-background-insets: 0, 0 0 1 0 ;\n" +
@@ -245,6 +249,9 @@ public class UMLMethodGui extends TextField {
 		this.setStyle(style);
 	}
 
+	/**
+	 * Method checks the attributes types.
+	 */
 	private void checkArgumentsTypes() {
 		// get UMLMethod attributes and attributes from the text input
 		List<String> attributesGui = getMethodAttributesTypes();
@@ -263,10 +270,6 @@ public class UMLMethodGui extends TextField {
 		for (UMLAttribute a : attributes) {
 			a.setType(attributesGui.get(n++));
 		}
-	}
-
-	public UMLMethod getMethod() {
-		return this.umlMethod;
 	}
 }
 
