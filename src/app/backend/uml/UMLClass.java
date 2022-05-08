@@ -24,15 +24,14 @@ import java.util.List;
 public class UMLClass extends UMLClassifier {
     private List<UMLAttribute> attributes;
     private List<UMLMethod> methods;
-
     private boolean isInterface;
-
-    private PropertyChangeSupport support;
-
     private ClassDiagram owner;
 
+    // UMLClass is observable
+    private PropertyChangeSupport support;
+
     /**
-     * UMLClass constructor. The UML class is not abstract.
+     * UMLClass constructor.
      *
      * @param name name of the UML class
      */
@@ -45,23 +44,12 @@ public class UMLClass extends UMLClassifier {
         this.owner = classDiagram;
     }
     /**
-     * Method returns true if the class is abstract, false if not.
+     * Method returns true if the class is interface, false if not.
      *
-     * @return true if the UML class is abstract, false if not
+     * @return true if the UML class is interface, false if not
      */
     public boolean isInterface() {
         return this.isInterface;
-    }
-
-    /**
-     * Method sets the UML class abstract if the argument isAbstract
-     * is true, else the UML class is set not to be abstract.
-     *
-     * @param isAbstract boolean that represents if the UML class
-     *                   will be abstract or not
-     */
-    public void setAbstract(boolean isAbstract) {
-        this.isInterface = isAbstract;
     }
 
     /**
@@ -105,42 +93,12 @@ public class UMLClass extends UMLClassifier {
     }
 
     /**
-     * Method returns the position af an UML argument in the list
-     * of UML class' arguments. The position starts at 0. If the
-     * UML argument is not in the arguments list, -1 is returned.
+     * Method finds a UMLMethod in the list of methods.
      *
-     * @param attr UML argument to be found in the list
-     * @return index of the UML argument in the arguments list,
-     *         -1 if not found
+     * @param name name of the method to be found
+     * @return UMLMethod if found,
+     *         null if not
      */
-    public int getAttrPosition(UMLAttribute attr) {
-        if (!attributes.contains(attr))
-            return -1;
-        return attributes.indexOf(attr);
-    }
-
-    /**
-     * Method moves the UML argument specified by attr to the position
-     * pos (counting from 0). If the argument is not present in the
-     * UML class, -1 is returned. When moving to the position pos
-     * all arguments starting at pos will be moved to the right.
-     *
-     * @param attr UML argument to be moved
-     * @param pos position on thatt the UML argument should be moved
-     * @return -1 if the UML argument is not in the list, 0 if moved
-     */
-    public int moveAttrAtPosition(UMLAttribute attr, int pos) {
-        if (!this.attributes.contains(attr))
-            return -1;
-
-        int indexFrom = this.attributes.indexOf(attr);
-        if (indexFrom <= pos)
-            Collections.rotate(this.attributes.subList(indexFrom, pos + 1),-1);
-        else
-            Collections.rotate(this.attributes.subList(pos, indexFrom + 1),1);
-        return 0;
-    }
-
     public UMLMethod findMethod(String name){
         // find class
         for (UMLMethod mtd : this.getMethods()) {
@@ -148,70 +106,64 @@ public class UMLClass extends UMLClassifier {
                 return mtd;
             }
         }
-
         // not found -> null
         return null;
     }
 
     /**
-     * Method returns unmodifiable list of UML class' arguments.
+     * Method returns a list of UML class' arguments.
      *
      * @return list of arguments of the UML class
      */
     public List<UMLAttribute> getAttributes() {
-        return Collections.unmodifiableList(this.attributes);
+        return this.attributes;
     }
 
     /**
-     * Method returns unmodifiable list of UML class' methods.
+     * Method returns a list of UML class' methods.
      *
      * @return list of methods of the UML class
      */
     public List<UMLMethod> getMethods() {
-        return Collections.unmodifiableList(this.methods);
+        return this.methods;
     }
 
-    // method change the name
+    /**
+     * Method sets name of the class to the newName.
+     *
+     * @param newName new name to be set
+     */
     public void setName(String newName) {
-        // TODO bind to SequenceDiagram
+        // fire message to all observers
         this.support.firePropertyChange("newClassName", this.name, newName);
         this.name = newName;
-
-        for (UMLClass cls : this.owner.getClasses()) {
-            if (this.name == cls.getName()) {
-                // set red
-            } else {
-                // set black
-            }
-        }
-        //if (this.name == )
     }
 
+    /**
+     * Method removes UMLMethod from the class diagram.
+     *
+     * @param umlMethod method to be removed
+     */
     public void removeMethod(UMLMethod umlMethod) {
         this.methods.removeIf(method -> (umlMethod == method));
-        /*
-        for (UMLMethod method : this.methods) {
-            if (umlMethod == method) {
-                // remove umlMethod
-                this.methods.remove(method);
-            }
-        }
-
-         */
-        // TODO remove method's attributes
     }
 
+    /**
+     * Method removes UMLAttribute from the list of attributes.
+     *
+     * @param umlAttribute attribute to be removed
+     */
     public void removeAttribute(UMLAttribute umlAttribute) {
         this.attributes.removeIf(attribute -> (umlAttribute == attribute));
     }
 
+    /**
+     * Method adds new observer to the list of observers.
+     *
+     * @param pcl observer to be added
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
-
 }
 

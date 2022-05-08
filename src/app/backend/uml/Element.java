@@ -10,7 +10,7 @@
 package app.backend.uml;
 
 /**
- * Class represents an UML element present in the diagram.
+ * Class represents a UML element present in the diagram.
  */
 public class Element {
 
@@ -32,14 +32,5 @@ public class Element {
 	 */
 	public String getName() {
 		return this.name;
-	}
-
-	/**
-	 * Method renames the element to newName.
-	 *
-	 * @param newName new name of the element
-	 */
-	public void rename(String newName) {
-		this.name = newName;
 	}
 }

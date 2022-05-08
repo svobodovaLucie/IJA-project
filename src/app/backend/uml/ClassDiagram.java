@@ -25,6 +25,7 @@ public class ClassDiagram extends Element {
     private List<UMLRelation> relations;
     private List<UMLClass> interfaces;
 
+    // class diagram is observable
     private PropertyChangeSupport support;
 
     /**
@@ -40,15 +41,14 @@ public class ClassDiagram extends Element {
         this.support = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Method adds property change listener (observer).
+     *
+     * @param pcl observer
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
-
-    // TODO osetrit, aby se nemohla stejna trida pridat vickrat
 
     /**
      * Method adds new class to the class diagram.
@@ -59,10 +59,26 @@ public class ClassDiagram extends Element {
         this.classes.add(umlClass);
     }
 
-    // TODO
-    public List <UMLClass> getClasses () {
-        return this.classes;
+    /**
+     * Method adds interface to class diagram.
+     *
+     * @param umlInterface interface to be added.
+     */
+    public void addInterface(UMLClass umlInterface) {
+        this.interfaces.add(umlInterface);
     }
+
+    /**
+     * Method adds new relationship to the class diagram.
+     *
+     * @param umlRelation relationship to be added
+     */
+    public void addRelation(UMLRelation umlRelation) {
+        if (umlRelation == null)
+            return;
+        this.relations.add(umlRelation);
+    }
+
     /**
      * Method creates an instance of UMLClass and inserts it to the
      * list of classes in the UML class diagram. If the class already
@@ -89,8 +105,11 @@ public class ClassDiagram extends Element {
     }
 
     /**
-     * Create interface.
-     * @param name name of interface
+     * Method creates new interface (an instance of UMLClass) and
+     * inserts it to the list of interfaces in the UML class diagram.
+     * If the interface already exists, the method returns null.
+     *
+     * @param name name of the interface to be created
      * @return new interface
      */
     public UMLClass createInterface(String name) {
@@ -110,7 +129,67 @@ public class ClassDiagram extends Element {
     }
 
     /**
-     * Finds class in diagram by name.
+     * Method creates new relationship in the class diagram.
+     *
+     * @param classDiagram relationship will be added to this class diagram
+     * @param classFrom class in that the relationship starts
+     * @param classTo class in that the relationship ends
+     * @param type type of the relationship
+     * @return new relationship
+     */
+    public UMLRelation createRelation(ClassDiagram classDiagram, String classFrom, String classTo, String type) {
+        UMLRelation umlRelation = new UMLRelation(classDiagram, classFrom, classTo, type);
+        this.relations.add(umlRelation);
+        return umlRelation;
+    }
+
+    /**
+     * Method removes given class from the class diagram.
+     *
+     * @param name class name
+     */
+    public void removeClass(String name) {
+        UMLClass toRemove = findClass(name);
+        try {
+            this.classes.remove(toRemove);
+        } catch (Exception ignored) {}
+        // observer
+        support.firePropertyChange("removeClass", toRemove, null);
+    }
+
+    /**
+     * Method removes given interface from the class diagram.
+     *
+     * @param name interface name
+     */
+    public void removeInterface(String name) {
+        UMLClass toRemove = findInterface(name);
+        try {
+            this.interfaces.remove(toRemove);
+        } catch (Exception ignored) {}
+        // observer
+        support.firePropertyChange("removeInterface", toRemove, null);
+    }
+
+    /**
+     * Method removes a relationship.
+     *
+     * @param classFrom class in that the relationship starts
+     * @param classTo class in that the relationship ends
+     * @param type type of the relationship
+     */
+    public void removeRelation(String classFrom, String classTo, String type) {
+        UMLRelation toRemove = findRelation(classFrom, classTo, type);
+        // observer
+        support.firePropertyChange("removeRelationship", toRemove, null);
+        try {
+            this.getRelations().remove(toRemove);
+        } catch (Exception ignored) {}
+    }
+
+    /**
+     * Finds class in the class diagram by name.
+     *
      * @param name name of class diagram that we are looking for.
      * @return class diagram or null
      */
@@ -127,6 +206,7 @@ public class ClassDiagram extends Element {
 
     /**
      * Finds interface in diagram by name.
+     *
      * @param name name of interface that we are looking for.
      * @return interface represented by UMLClass or null
      */
@@ -142,9 +222,11 @@ public class ClassDiagram extends Element {
     }
 
     /**
-     * Try to find class. if null then try to find interface.
+     * Method find a class or interface specified by its name.
+     *
      * @param name (class, interface) we are looking for
-     * @return class or interface or null
+     * @return class or interface if found
+     *         null if not found
      */
     public UMLClass findClassInterface(String name) {
         UMLClass result = findClass(name);
@@ -154,17 +236,15 @@ public class ClassDiagram extends Element {
         return result;
     }
 
-    public void removeRelation(String classFrom, String classTo, String type) {
-        UMLRelation toRemove = findRelation(classFrom, classTo, type);
-        // observer
-        support.firePropertyChange("removeRelationship", toRemove, null);
-        try {
-            this.getRelations().remove(toRemove);
-        } catch (Exception ignored) {
-            System.out.println("EXC removeRelation");
-        }
-    }
-
+    /**
+     * Method finds a relation. If the relation wasn't found, returns null.
+     *
+     * @param classFrom class in that the relationship starts
+     * @param classTo class in that the relationship ends
+     * @param type type of the relationship
+     * @return relationship if found,
+     *         null if not
+     */
     private UMLRelation findRelation(String classFrom, String classTo, String type) {
         for (UMLRelation rel : this.getRelations()) {
             if (Objects.equals(rel.getClassFrom().getName(), classFrom) &&
@@ -176,75 +256,41 @@ public class ClassDiagram extends Element {
         return null;
     }
 
+    /**
+     * Method returns list of all classes in the class diagram.
+     *
+     * @return list of classes
+     */
+    public List <UMLClass> getClasses () {
+        return this.classes;
+    }
+
+    /**
+     * Method returns the list of all interfaces.
+     *
+     * @return list of interfaces
+     */
     public List<UMLClass> getInterfaces() {
         return this.interfaces;
     }
 
     /**
-     * Remove given class from diagram.
-     * @param name class name
+     * Method returns a list of all classes and interfaces.
+     *
+     * @return list of all classes and interfaces
      */
-    public void removeClass(String name) {
-        UMLClass toRemove = findClass(name);
-        try {
-            this.classes.remove(toRemove);
-        } catch (Exception ignored) {
-        }
-        // observer
-        support.firePropertyChange("removeClass", toRemove, null);
-    }
-
-    /**
-     * Remove given interface from diagram.
-     * @param name interface name.
-     */
-    public void removeInterface(String name) {
-        UMLClass toRemove = findInterface(name);
-        try {
-            this.interfaces.remove(toRemove);
-        } catch (Exception ignored) {
-        }
-        // observer
-        support.firePropertyChange("removeInterface", toRemove, null);
-    }
-
-    /**
-     * Add new relations to diagram.
-     * @param umlRelation relation that 'll be added
-     */
-    public void addRelation(UMLRelation umlRelation) {
-        if (umlRelation == null) {
-            System.out.println("Null UMLRelation");
-        } else {
-            System.out.println("NotNull UMLRelation");
-        }
-        this.relations.add(umlRelation);
-    }
-
-    public UMLRelation createRelation(ClassDiagram classDiagram, String classFrom, String classTo, String type) {
-        UMLRelation umlRelation = new UMLRelation(classDiagram, classFrom, classTo, type);
-        this.relations.add(umlRelation);
-        return umlRelation;
-    }
-
-    /**
-     * @return List of all the relations
-     */
-    public List<UMLRelation> getRelations() {
-        return this.relations;
-    }
-
-    /**
-     * Add interface to diagram.
-     * @param umlInterface interface that 'll be added.
-     */
-    public void addInterface(UMLClass umlInterface) {
-        this.interfaces.add(umlInterface);
-    }
-
     public List<UMLClass> getClassesInterfaces() {
         List<UMLClass> result = new ArrayList<>(this.classes);
         result.addAll(this.interfaces);
         return result;
+    }
+
+    /**
+     * Method returns a list of all relationships in the class diagram.
+     *
+     * @return list of all relationships
+     */
+    public List<UMLRelation> getRelations() {
+        return this.relations;
     }
 }

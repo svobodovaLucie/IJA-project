@@ -18,7 +18,7 @@ import java.util.List;
  * a list of arguments. It is inherited from UMLAttribute class,
  * from that it inherits the name and the list of arguments.
  * Argument is represented by UMLAttribute class. It can be used
- * ad a part of UML classifier class or interface.
+ * as a part of UML classifier class or interface.
  */
 public class UMLMethod extends UMLAttribute {
 	private List<UMLAttribute> attributes;
@@ -36,24 +36,6 @@ public class UMLMethod extends UMLAttribute {
 	}
 
 	/**
-	 * Factory method that creates an instance of UMLMethod.
-	 *
-	 * @param name name of the UML method
-	 * @param type type of the UML method
-	 * @param args list of UML arguments
-	 * @return UMLMethod
-	 */
-	/*
-	public static UMLMethod create(String name, UMLClassifier type,
-								   UMLAttribute... args) {
-		UMLMethod inst = new UMLMethod(name, type);
-		inst.attributes.addAll(Arrays.asList(args));
-		return inst;
-	}
-
-	 */
-
-	/**
 	 * Method inserts new argument to the list of UMLMethod arguments.
 	 * Argument is inserted to the end of the list. If the list
 	 * already contains an argument with the name same, new argument
@@ -61,7 +43,7 @@ public class UMLMethod extends UMLAttribute {
 	 *
 	 * @param arg UML argument to be added to the list of UML arguments
 	 * @return true if the argument was inserted,
-	 *         false if an exception is catched
+	 *         false if an exception is caught
 	 */
 	public boolean addArgument(UMLAttribute arg) {
 		if (this.attributes.contains(arg))
@@ -74,56 +56,37 @@ public class UMLMethod extends UMLAttribute {
 		return true;
 	}
 
+	/**
+	 * Method creates new attribute of UMLMethod with
+	 * empty name, empty type and empty access.
+	 */
 	public void createArgument() {
 		UMLClassifier c = new UMLClassifier("");
 		UMLAttribute atr = new UMLAttribute("", c, "");
 		this.attributes.add(atr);
 	}
 
+	/**
+	 * Method removes an attribute of the UMLMethod.
+	 */
 	public void removeArgument() {
 		this.attributes.remove(0);
 	}
-	public void removeSpecificArgument(UMLAttribute arg) {
-		this.attributes.removeIf(atr -> (atr == arg));
-	}
 
+	/**
+	 * Method returns name of the UMLMethod.
+	 *
+	 * @return name of the method
+	 */
 	public String getName(){
 		return super.name;
 	}
 
-
 	/**
-	 * Method returns a unmodifiable list of the UML method's arguments.
+	 * Method returns a list of method's attributes.
 	 *
-	 * @return list of the method's argument
+	 * @return
 	 */
-	/*
-	public List <UMLAttribute> getArguments() {
-		return this.attributes;
-	}
-
-	 */
-
-	/**
-	 * Method returns a list of strings that contains name,
-	 * type and access of UML method.
-	 *
-	 * @return list of strings [name, type, access]
-	 */
-	/*
-	// TODO zde se uz vse uklada ve spravnem formatu
-	public List<String> getNameTypeAccess() {
-		List<String> nameTypeAccess = new ArrayList<>();
-		nameTypeAccess.add(this.name);
-		nameTypeAccess.add(this.type.getName());
-		nameTypeAccess.add(this.access);
-
-		return nameTypeAccess;
-	}
-
-	 */
-
-	// TODO
 	public List<UMLAttribute> getAttributes() {
 		return this.attributes;
 	}

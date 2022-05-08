@@ -16,10 +16,9 @@ package app.backend.uml;
  * attribute etc.
  */
 public class UMLClassifier {
-	//private boolean isUserDefined;
-
 	// name
 	protected String name;
+
 	/**
 	 * UMLClassifier constructor.
 	 *
@@ -27,71 +26,21 @@ public class UMLClassifier {
 	 */
 	public UMLClassifier(String name) {
 		this.name = name;
-		//this.isUserDefined = true;
 	}
 
 	/**
-	 * UMLClassifier constructor.
+	 * Method sets name of the UMLClassifier.
 	 *
-	 * @param name name of the classifier
-	 * @param isUserDefined true if the classifier is user defined
-	 *                      (is implemented in the diagram), false if not
-	 */
-	/*
-	public UMLClassifier(String name, boolean isUserDefined) {
-		super(name);
-		this.isUserDefined = isUserDefined;
-	}
-
-	 */
-
-	/**
-	 * Factory method that creates an instance of the UML classifier.
-	 * It sets the isUserDefined boolean to false.
-	 *
-	 * @param name name of the classifier
-	 * @return UMLClassifier
-	 */
-	public static UMLClassifier forName(String name) {
-		return new UMLClassifier(name);
-	}
-
-	/**
-	 * Method returns true if the classifier is user defined.
-	 * "modelován uživatelem v diagramu".
-	 *
-	 * @return true if the classifier is user defined,
-	 *         false if not
-	 */
-	/*
-	public boolean isUserDefined() {
-		return this.isUserDefined;
-	}
-	 */
-
-
-	/**
-	 * Method returns the classifier as a string:
-	 * "name(isUserDefined)", isUserDefined is true/false.
-	 *
-	 * @return string "name(isUserDefined)"
-	 */
-	/*
-	public String toString() {
-		return getName() + "(" + this.isUserDefined + ")";
-	}
-	 */
-
-	/**
-	 * Set name of classifier
-	 * @param name name that ll be set
+	 * @param name new name
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return classifier name
+	 * Method returns name of the classifier.
+	 *
+	 * @return name of the classifier
 	 */
 	public String getName() {
 		return this.name;

@@ -4,6 +4,7 @@
  * Course:       IJA - Java Programming Language
  * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
  *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
  * File contains backend representation of sequence diagram message.
  *
  */
@@ -49,8 +50,10 @@ public class UMLMessage {
         this.method     = method;
     }
 
-
     /**
+     *
+     * Method return class that sends the message.
+     *
      * @return From UMLClass
      */
     public UMLClass getFromClass(){
@@ -58,6 +61,8 @@ public class UMLMessage {
     }
 
     /**
+     * Method returns class that receives the message.
+     *
      * @return To UMLCLass
      */
     public UMLClass getToClass(){
@@ -65,6 +70,8 @@ public class UMLMessage {
     }
 
     /**
+     * Method returns name of the actor that receives the message.
+     *
      * @return To actor name
      */
     public String getToActor(){
@@ -72,6 +79,8 @@ public class UMLMessage {
     }
 
     /**
+     * Method returns name of the actor that sends the message.
+     *
      * @return Return From actor name
      */
     public String getFromActor(){
@@ -79,30 +88,36 @@ public class UMLMessage {
     }
 
     /**
-     * @return message type.
+     * Method returns type of the message.
+     *
+     * @return message type
      */
     public String getType() {
         return this.type;
     }
 
     /**
-     * @return method.
+     * Method returns UMLMethod.
+     *
+     * @return method
      */
     public UMLMethod getMethod() {
         return this.method;
     }
 
     /**
-     * Set method that was used in message.
-     * @param method used in message.
+     * Method sets method that is used in the message.
+     *
+     * @param method used in message
      */
     public void setMethod(UMLMethod method) {
         this.method = method;
     }
 
     /**
-     * Set message type
-     * @param type of message.
+     * Method sets type of the message.
+     *
+     * @param type of the message
      */
     public void setType(String type) {
         this.type = type;

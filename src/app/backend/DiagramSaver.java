@@ -15,7 +15,6 @@ import app.gui.umlGui.UMLMessageGui;
 import app.gui.umlGui.UMLSeqDiaGui;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -27,8 +26,10 @@ public class DiagramSaver {
 
     /**
      * Method saves the diagrams in a JSON format to a file.
-     * @param event
-     * @param diagrams
+     *
+     * @param diagrams backend diagrams
+     * @param seqDiagramsGui sequence diagrams loaded in GUI
+     * @param filename name of the file in that the diagram will be saved to
      */
     public static void saveJSON(Diagrams diagrams, List<UMLSeqDiaGui> seqDiagramsGui, String filename) {
         // create JSON array
@@ -47,12 +48,10 @@ public class DiagramSaver {
         JSONArray sequenceDiagrams = saveSeqDia(seqDiagramsGui);
         diagram.put("sequenceDiagrams", sequenceDiagrams);
 
-        //saveClassDiagram(diagrams.getClassDiagram());
         // Write JSON file
         try (FileWriter file = new FileWriter(filename)) { // saves the file to dest/
             file.write(diagram.toJSONString());
             file.flush();
-            System.out.println("Diagram saved in DiagramSaver.\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

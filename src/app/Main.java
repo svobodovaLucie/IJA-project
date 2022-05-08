@@ -24,7 +24,7 @@ public class Main {
     /**
      * Main method.
      *
-     * @param args
+     * @param args command line arguments
      * @throws IOException
      * @throws ParseException
      */

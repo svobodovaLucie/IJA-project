@@ -19,7 +19,6 @@ import java.util.List;
  * be used as UML class attribute or UML method argument.
  */
 public class UMLAttribute {
-	//private UMLClassifier type;
 	// type
 	protected UMLClassifier type;
 	// name
@@ -46,13 +45,11 @@ public class UMLAttribute {
 	 *
 	 * @return list of strings [name, type, access]
 	 */
-	// TODO zde se uz vse uklada ve spravnem formatu
 	public List<String> getNameTypeAccess() {
 		List<String> nameTypeAccess = new ArrayList<>();
 		nameTypeAccess.add(this.name);
 		nameTypeAccess.add(this.type.getName());
 		nameTypeAccess.add(this.access);
-
 		return nameTypeAccess;
 	}
 
@@ -66,20 +63,9 @@ public class UMLAttribute {
 	}
 
 	/**
-	 * Method returns an UMLAttribute as a string in the format:
-	 * "name:type".
+	 * Method sets name, type and access.
 	 *
-	 * @return "name:type" string that represens the UMLAttribute
-	 */
-	/*
-	public String toString() {
-		return this.getName() + ":" + this.type.toString();
-	}
-	*/
-
-	/**
-	 * Set Name, Type and Access
-	 * @param nameTypeAccess List with strings that represents Name, Type, Access
+	 * @param nameTypeAccess list of strings that represent Name, Type, Access
 	 */
 	public void setNameTypeAccess(List <String> nameTypeAccess) {
 		this.name = nameTypeAccess.get(0);
@@ -88,7 +74,8 @@ public class UMLAttribute {
 	}
 
 	/**
-	 * Set attribute type
+	 * Method sets type of the attribute.
+	 *
 	 * @param type string that represent attribute type
 	 */
 	public void setType(String type) {
