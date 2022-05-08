@@ -1,3 +1,13 @@
+/*
+ * File:         InheritanceArrow.java
+ * Institution:  FIT BUT 2021/2022
+ * Course:       IJA - Java Programming Language
+ * Authors:      Lucie Svobodová, xsvobo1x@stud.fit.vutbr.cz
+ *               Jakub Kuzník, xkuzni04@stud.fit.vutbr.cz
+ *
+ * File contains implementation od UMLMethodGui class that represents
+ * the UML method displayed in the GUI.
+ */
 package app.gui.helpers;
 
 import javafx.beans.InvalidationListener;
@@ -13,7 +23,7 @@ public class InheritanceArrow extends Group implements Arrow {
     private final Line line;
 
     public InheritanceArrow(double sX, double sY, double eX, double eY) {
-        this(new Line(sX, sY, eX, eY), new Polygon(), sX, sY);
+        this(new Line(sX + 50, sY + 100, eX + 50, eY + 100), new Polygon(), sX + 50, sY + 100);
     }
 
     private InheritanceArrow(Line line, Polygon triangle, double sX, double sY) {
@@ -23,20 +33,12 @@ public class InheritanceArrow extends Group implements Arrow {
         triangle.setFill(Color.WHITE);
         triangle.setStrokeWidth(2);
 
-        sX = getStartX() + 27;
-        sY = getStartY() - 27;
-
-        triangle.getPoints().setAll(
-                (sX-20.0), (sY-10.0),
-                (sX+0.0), (sY+0.0),
-                (sX-20.0), (sY+10.0)
-        );
-
-        triangle.setRotate(90);
-
         InvalidationListener updater = o -> {
             double posX = getEndX();
             double posY = getEndY();
+
+            posX += 10;
+            posY -= 6;
 
             triangle.getPoints().setAll(
                     (posX - 20.0), (posY + 0.0),
@@ -93,7 +95,7 @@ public class InheritanceArrow extends Group implements Arrow {
     }
 
     public void setEndY(double value) {
-        line.setEndY(value);
+        line.setEndY(value + 20);
     }
 
     public final double getEndY() {
