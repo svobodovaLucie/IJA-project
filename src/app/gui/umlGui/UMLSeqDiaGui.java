@@ -9,6 +9,7 @@
  */
 package app.gui.umlGui;
 
+import app.backend.CommandBuilder;
 import app.backend.uml.SeqDiagram;
 import app.backend.uml.UMLClass;
 import app.backend.uml.UMLMessage;
@@ -38,6 +39,9 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
 
     // current vertical lines postion
     private int yPos;
+
+    // undo
+    private final CommandBuilder.Invoker invoker = new CommandBuilder.Invoker();
 
     /**
      * UMLSeqDiaGui - UML Sequence diagram gui - Constructor
@@ -103,22 +107,44 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
      * @param actorClass actor's class
      */
     public void paintNewActor(String actorName, UMLClass actorClass){
-        int n = getActorsCounter();
-        String aClass;
-        if (actorClass == null){
-            aClass = ":(null)";
-        } else{
-            aClass = ":(" + actorClass.getName() + ")";
-        }
+        executeCommand(new CommandBuilder.Command() {
+            UMLActorGui actor;
+            @Override
+            public void execute() {
+                int n = getActorsCounter();
+                String aClass;
+                if (actorClass == null){
+                    aClass = ":(null)";
+                } else{
+                    aClass = ":(" + actorClass.getName() + ")";
+                }
 
-        UMLActorGui newActor = new UMLActorGui(actorClass, actorName , aClass, n, 75);
-        this.actorsGui.add(newActor);
+                UMLActorGui newActor = new UMLActorGui(actorClass, actorName , aClass, n, 75);
+                actorsGui.add(newActor);
 
-        for (int i = 0; i < this.getMessageCounter(); i++) {
-            this.getChildren().add(newActor.paintLine(2));
-        }
-        this.getChildren().add(newActor.getTextField());
-        setActorsCounter(n+1);
+                for (int i = 0; i < getMessageCounter(); i++) {
+                    getChildren().add(newActor.paintLine(2));
+                }
+                getChildren().add(newActor.getTextField());
+                setActorsCounter(n+1);
+                actor = newActor;
+            }
+            @Override
+            public void undo() {
+                removeActor(actor);
+            }
+        });
+    }
+
+    public void executeCommand(CommandBuilder.Command command) {
+        invoker.execute(command);
+    }
+
+    /**
+     * Method executes undo operation.
+     */
+    public void undo() {
+        invoker.undo();
     }
 
     /**
@@ -195,13 +221,14 @@ public class UMLSeqDiaGui extends AnchorPane implements PropertyChangeListener {
      */
     public void removeMessagesFromActor(UMLActorGui umlA){
         int actIndex = umlA.getActorOrder();
-
-        for(UMLMessageGui mesG : getMessageGui()){
-            if(mesG.getIndexActFrom() == actIndex){
-                this.getChildren().remove(mesG.getArrow());
-                this.getMessageGui().remove(mesG);
+        try {
+            for (UMLMessageGui mesG : getMessageGui()) {
+                if (mesG.getIndexActFrom() == actIndex) {
+                    this.getChildren().remove(mesG.getArrow());
+                    this.getMessageGui().remove(mesG);
+                }
             }
-        }
+        } catch (Exception ignored) {}
     }
 
     /**

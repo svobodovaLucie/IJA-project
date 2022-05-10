@@ -144,8 +144,20 @@ public class UMLClassGui extends VBox {
 
         // event listener
         this.nameLabel.textProperty().addListener(((observableValue, s, t1) -> {
-            this.umlClass.setName(t1);
-            checkNames();
+            owner.executeCommand(new CommandBuilder.Command() {
+                String oldName;
+                @Override
+                public void execute() {
+                    umlClass.setName(t1);
+                    oldName = s;
+                    checkNames();
+                }
+                @Override
+                public void undo() {
+                    umlClass.setName(oldName);
+                    nameLabel.setText(oldName);
+                }
+            });
         }));
 
         // save current position -> UNDO can be used later

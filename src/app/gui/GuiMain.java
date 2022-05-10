@@ -95,7 +95,7 @@ public class GuiMain extends Application {
         //saveButton.setOnAction(e -> DiagramSaver.saveJSON(e, rootClass));
         Menu save = this.createMenu(saveButton);
 
-        // add undo button - TODO, fix releasing the button
+        // add undo button
         Button undoButton = this.createButton("Undo", 0);
         undoButton.setOnAction(e -> {
             UMLClassDiagramGui umlClassDiagramGui = (UMLClassDiagramGui) rootClass.getChildren().get(0);
@@ -595,8 +595,16 @@ public class GuiMain extends Application {
         });
         options2.getItems().addAll(removeActor, removeMessage);
 
+        // add undo button
+        Button undoButton = this.createButton("Undo", 0);
+        undoButton.setOnAction(e -> {
+            seqDiaGui.undo();
+        });
+        Menu undo = this.createMenu(undoButton);
+
+
         // add MenuBar
-        MenuBar menuBar = new MenuBar(options, options2);
+        MenuBar menuBar = new MenuBar(options, options2, undo);
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         rootSeq.get(n).getChildren().add(menuBar);
 
@@ -828,14 +836,17 @@ public class GuiMain extends Application {
         text.setWrappingWidth(350);
         text.setTextAlignment(TextAlignment.JUSTIFY);
         text.setText("\n\n    Your JSON file was loaded.\n\n" +
-                "    Attributes and methods can be edited\n" +
-                "    (adding them is not implemented yet).\n\n" +
-                "    New class can be added with \n" +
-                "    \"Add Class\" button.\n\n" +
-                "    Your diagrams can be saved with \n" +
-                "    \"Save JSON\" option on the Menu Bar.\n\n" +
-                "    Your file will be saved to:\n" +
-                "    \"dest/savedDiagram.json\".");
+                "    You can edit your class diagram:\n" +
+                "      - add class/interface/relationship\n" +
+                "      - remove class/interface/relationship\n" +
+                "      - add attributes/methods\n" +
+                "      - remove attributes/methods\n" +
+                "      - add sequence diagram\n\n" +
+                "    You can edit your sequence diagrams\n" +
+                "      - add actors/messages\n" +
+                "      - remove actors/messages\n\n" +
+                "    Then you can save them using Save JSON \n" +
+                "    option on the Menu bar.\n");
         helpGroup.getChildren().add(text);
         Scene helpScene = new Scene(helpGroup, 400, 400);
         Stage helpStage = new Stage();
