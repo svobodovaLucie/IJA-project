@@ -602,7 +602,6 @@ public class GuiMain extends Application {
         });
         Menu undo = this.createMenu(undoButton);
 
-
         // add MenuBar
         MenuBar menuBar = new MenuBar(options, options2, undo);
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
@@ -815,8 +814,15 @@ public class GuiMain extends Application {
         });
         options2.getItems().addAll(removeActor, removeMessage);
 
+        // add undo button
+        Button undoButton = this.createButton("Undo", 0);
+        undoButton.setOnAction(e -> {
+            seqDiaGui.undo();
+        });
+        Menu undo = this.createMenu(undoButton);
+
         // add MenuBar
-        MenuBar menuBar = new MenuBar(options, options2);
+        MenuBar menuBar = new MenuBar(options, options2, undo);
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         rootSeq.get(rootSeq.size() - 1).getChildren().add(menuBar);
 
