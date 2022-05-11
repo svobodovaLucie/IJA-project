@@ -290,49 +290,6 @@
           "methodName" : "false"
         }
       ]
-    },
-    {
-      "name": "Sequence Diagram",
-      "actors" : [
-        {
-          "actorName" : "Main",
-          "class" : "ClassDiagram",
-          "createdByMessage": "false"
-        },
-        {
-          "actorName" : "ClassDiagram",
-          "class" : "UMLClass",
-          "createdByMessage": "false"
-        },
-        {
-          "actorName" : "c1",
-          "class" : "UMLClass",
-          "createdByMessage": "true"
-        },
-        {
-          "actorName" : "a1",
-          "class" : "UMLAttribute",
-          "createdByMessage": "true"
-        }
-      ],
-      "messages" : [
-        {
-          "classFrom" : "ClassDiagram",
-          "classTo" : "UMLClass",
-          "from" : "Main",
-          "to" : "ClassDiagram",
-          "type" : "synch",
-          "methodName" : "createClass"
-        },
-        {
-          "classFrom" : "UMLClass",
-          "classTo" : "ClassDiagram",
-          "from" : "ClassDiagram",
-          "to" : "Main",
-          "type" : "response",
-          "methodName" : ""
-        }
-      ]
     }
   ]
 }
